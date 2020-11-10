@@ -7,6 +7,8 @@ import androidx.fragment.app.Fragment;
 import android.annotation.SuppressLint;
 import android.os.Bundle;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.Button;
 
 import com.example.fitty.databinding.ActivityMainBinding;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
@@ -16,7 +18,6 @@ import java.util.zip.Inflater;
 public class MainActivity extends AppCompatActivity {
 
     private ActivityMainBinding binding;
-    private BottomNavigationView bottomNavigationView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -26,10 +27,11 @@ public class MainActivity extends AppCompatActivity {
         binding = ActivityMainBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
-        bottomNavigationView=findViewById(R.id.bottomNav);
+        BottomNavigationView bottomNavigationView = findViewById(R.id.bottomNav);
         bottomNavigationView.setOnNavigationItemSelectedListener(bottomNavMethod);
         getSupportFragmentManager().beginTransaction().replace(R.id.container, new Home()).commit();
         binding.topAppBar.setTitle(R.string.home);
+
     }
 
     private final BottomNavigationView.OnNavigationItemSelectedListener bottomNavMethod = new
@@ -58,4 +60,5 @@ public class MainActivity extends AppCompatActivity {
                     return true;
                 }
             };
+
 }

@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <com.google.android.material.card.MaterialCardView
+        android:id="@+id/card"
+        android:layout_width="190dp"
+        android:layout_height="wrap_content"
+        android:layout_margin="10dp"
+        app:strokeWidth="1dp"
+        app:strokeColor="@color/black"
+        app:cardElevation="0dp"
+        tools:ignore="MissingConstraints">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <!-- Media -->
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="100dp"
+                android:contentDescription="@string/home"
+                android:scaleType="centerCrop"
+                app:srcCompat="@drawable/ic_baseline_favorite_black_full" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="119dp"
+                android:orientation="vertical"
+                android:padding="8dp">
+
+                <!-- Title, secondary and supporting text -->
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Titulo"
+                        android:textAppearance="?attr/textAppearanceHeadline6" />
+
+                    <ImageButton
+                        android:id="@+id/share_btn"
+                        android:layout_width="wrap_content"
+                        android:layout_height="33dp"
+                        android:layout_alignParentEnd="true"
+                        app:backgroundTint="@color/white"
+                        app:srcCompat="@drawable/ic_favorite_border_black" />
+
+                </RelativeLayout>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:text="Descripción..."
+                    android:textAppearance="?attr/textAppearanceBody2"
+                    android:textColor="?android:attr/textColorSecondary" />
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="41dp"
+                    android:layout_marginTop="10dp">
+
+                    <RatingBar
+                        android:id="@+id/ratingBar"
+                        style="?android:attr/ratingBarStyleIndicator"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:max="5"
+                        android:progressTint="@color/yellow"
+                        android:rating="3.5"
+                        android:scaleX=".6"
+                        android:scaleY=".6"
+                        android:transformPivotX="0dp"
+                        android:transformPivotY="0dp" />
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentEnd="true">
+
+                        <ImageView
+                            android:layout_width="wrap_content"
+                            android:layout_height="20dp"
+                            android:layout_marginEnd="5dp"
+                            app:srcCompat="@drawable/ic_timer" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="45'"
+                            android:textAppearance="?attr/textAppearanceBody1" />
+                    </LinearLayout>
+
+                </RelativeLayout>
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+    </com.google.android.material.card.MaterialCardView>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

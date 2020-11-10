@@ -12,4 +12,7 @@
         android:layout_height="wrap_content"
         android:text="Home fragment" />
 
+    <include android:id="@+id/card_1"
+        layout="@layout/card_item"/>
+
 </RelativeLayout>
