@@ -29,6 +29,7 @@ public class MainActivity extends AppCompatActivity {
         bottomNavigationView=findViewById(R.id.bottomNav);
         bottomNavigationView.setOnNavigationItemSelectedListener(bottomNavMethod);
         getSupportFragmentManager().beginTransaction().replace(R.id.container, new Home()).commit();
+        binding.topAppBar.setTitle(R.string.home);
     }
 
     private final BottomNavigationView.OnNavigationItemSelectedListener bottomNavMethod = new
