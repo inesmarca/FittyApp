@@ -1,3 +1,9 @@
 <resources>
     <string name="app_name">FITTY</string>
+    <string name="rutinas">Rutinas</string>
+    <string name="progreso">Progreso</string>
+    <string name="home">Inicio</string>
+    <string name="favoritas">Favoritas</string>
+    <string name="search">Buscar</string>
+    <string name="content_description_search">Buscador</string>
 </resources>
