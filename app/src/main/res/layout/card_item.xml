@@ -21,12 +21,19 @@
             android:orientation="vertical">
 
             <!-- Media -->
-            <ImageView
+            <RelativeLayout
                 android:layout_width="match_parent"
-                android:layout_height="100dp"
-                android:contentDescription="@string/home"
-                android:scaleType="centerCrop"
-                app:srcCompat="@drawable/ic_baseline_favorite_black_full" />
+                android:layout_height="match_parent">
+                <ImageView
+                    android:layout_width="80dp"
+                    android:layout_height="80dp"
+                    android:layout_margin="10dp"
+                    android:contentDescription="@string/home"
+                    android:layout_centerHorizontal="true"
+                    android:scaleType="centerCrop"
+                    app:srcCompat="@drawable/ic_cardio"
+                    />
+            </RelativeLayout>
 
             <LinearLayout
                 android:layout_width="match_parent"

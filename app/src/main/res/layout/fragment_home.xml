@@ -5,14 +5,9 @@
     android:layout_height="match_parent"
     tools:context=".Home">
 
-    <!-- TODO: Update blank fragment layout -->
-    <TextView
-        android:layout_centerInParent="true"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Home fragment" />
+    <include
+        android:id="@+id/card_1"
+        layout="@layout/card_item" />
 
-    <include android:id="@+id/card_1"
-        layout="@layout/card_item"/>
 
 </RelativeLayout>
