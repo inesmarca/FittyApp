@@ -27,8 +27,7 @@ public class MainActivity extends AppCompatActivity {
         binding = ActivityMainBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
-        BottomNavigationView bottomNavigationView = findViewById(R.id.bottomNav);
-        bottomNavigationView.setOnNavigationItemSelectedListener(bottomNavMethod);
+        binding.bottomNav.setOnNavigationItemSelectedListener(bottomNavMethod);
         getSupportFragmentManager().beginTransaction().replace(R.id.container, new Home()).commit();
         binding.topAppBar.setTitle(R.string.home);
 

@@ -1,4 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <!-- General -->
     <string name="app_name">FITTY</string>
     <string name="rutinas">Rutinas</string>
     <string name="progreso">Progreso</string>
@@ -6,4 +8,17 @@
     <string name="favoritas">Favoritas</string>
     <string name="search">Buscar</string>
     <string name="content_description_search">Buscador</string>
+
+    <!-- Login y registro -->
+    <string name="login_bienvenida">Ingresá a tu cuenta</string>
+    <string name="signup_bienvenida">Creá tu cuenta</string>
+    <string name="field_email">Email</string>
+    <string name="field_password">Contraseña</string>
+    <string name="btn_login">Ingresar</string>
+    <string name="divider_login_text">¿Aun no tienes cuenta?</string>
+    <string name="divider_signup_text">¿Ya tienes una cuenta?</string>
+    <string name="btn_to_signup">Crear cuenta</string>
+    <string name="btn_to_login">Ingresar</string>
+    <string name="field_name">Nombre</string>
+    <string name="btn_signup">Registrarme</string>
 </resources>
