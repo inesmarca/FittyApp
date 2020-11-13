@@ -15,8 +15,8 @@
             style="@style/Widget.MaterialComponents.Toolbar.Primary"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:textAlignment="center"
             app:itemIconSize="60dp"
-            app:menu="@menu/top_bar"
             app:navigationIcon="@drawable/ic_account_circle"
             app:title="FITTY" />
     </com.google.android.material.appbar.AppBarLayout>

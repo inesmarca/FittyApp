@@ -7,13 +7,9 @@ import androidx.fragment.app.Fragment;
 import android.annotation.SuppressLint;
 import android.os.Bundle;
 import android.view.MenuItem;
-import android.view.View;
-import android.widget.Button;
 
 import com.example.fitty.databinding.ActivityMainBinding;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
-
-import java.util.zip.Inflater;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -45,7 +41,7 @@ public class MainActivity extends AppCompatActivity {
                             fragment = new Progress();
                             break;
                         case R.id.rutines:
-                            fragment = new Rutines();
+                            fragment = new Routines();
                             break;
                         case R.id.favorites:
                             fragment = new Favoritas();
