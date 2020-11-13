@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    app:startDestination="@id/home"
+    android:id="@+id/main_nav_graph.xml">
+
+
+
+    <fragment
+        android:id="@+id/home"
+        android:label="@string/home"
+        android:name="com.example.fitty.Home"
+        tools:layout="@layout/fragment_home">
+    </fragment>
+
+    <fragment
+        android:label="@string/favoritas"
+        android:id="@+id/favorites"
+        android:name="com.example.fitty.Favoritas"
+        tools:layout="@layout/fragment_favoritas">
+    </fragment>
+
+    <fragment
+        android:label="@string/progreso"
+        android:id="@+id/progress"
+        android:name="com.example.fitty.Progress"
+        tools:layout="@layout/fragment_progress">
+    </fragment>
+
+    <fragment
+        android:label="@string/rutinas"
+        android:id="@+id/rutines"
+        android:name="com.example.fitty.Routines"
+        tools:layout="@layout/fragment_routines">
+    </fragment>
+
+</navigation>
