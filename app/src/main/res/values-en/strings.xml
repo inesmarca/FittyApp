@@ -2,7 +2,7 @@
 <resources>
     <!-- General -->
     <string name="app_name">FITTY</string>
-    <string name="rutinas">Rutines</string>
+    <string name="rutinas">Routines</string>
     <string name="progreso">Progress</string>
     <string name="home">Home</string>
     <string name="favoritas">Favorites</string>
