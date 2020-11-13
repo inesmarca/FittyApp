@@ -5,7 +5,13 @@ import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.navigation.ui.NavigationUI;
 import android.os.Bundle;
+import android.widget.Toast;
+
+import com.example.fitty.api.ApiClient;
+import com.example.fitty.api.UserApiService;
 import com.example.fitty.databinding.ActivityMainBinding;
+import com.example.fitty.models.User;
+import com.example.fitty.models.UserCredentials;
 import com.google.android.material.appbar.MaterialToolbar;
 
 public class MainActivity extends AppCompatActivity {
@@ -27,9 +33,30 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        AppPreferences preferences = new AppPreferences(getApplication());
         binding = ActivityMainBinding.inflate(getLayoutInflater());
+      /*  binding.loginButton.setOnClickListener(v->{
+            UserApiService userApiService = ApiClient.create(this,UserApiService.class);
+            userApiService.login(new UserCredentials("johndoe","1234567890")).observe(this, t->{
+                if(t.getError()==null){
+                    preferences.setAuthToken(t.getData().getToken());
+                    Toast.makeText(getApplicationContext(),preferences.getAuthToken(),Toast.LENGTH_SHORT).show();
+
+                }
+            });
+
+
+        });
+        binding.tocame.setOnClickListener(v->{
+            if(preferences.getAuthToken()==null)
+                Toast.makeText(getApplicationContext(),"No estas logeado rey",Toast.LENGTH_SHORT).show();
+            else
+                Toast.makeText(getApplicationContext(),"Tas logeado kinga",Toast.LENGTH_SHORT).show();
+
+        });*/
         setContentView(binding.getRoot());
         toolbar = findViewById(R.id.topAppBar);
+
         initNavigation();
     }
 

@@ -30,4 +30,24 @@
         app:itemTextColor="@drawable/bottom_navigation_selector"
         app:menu="@menu/bottom_bar" />
 
+    <!--Button
+        android:id="@+id/login_button"
+        android:layout_width="141dp"
+        android:layout_height="149dp"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentBottom="true"
+        android:layout_marginEnd="176dp"
+        android:layout_marginBottom="221dp"
+        android:text="@string/login" />
+
+    <Button
+        android:id="@+id/tocame"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/login_button"
+        android:layout_alignParentEnd="true"
+        android:layout_marginEnd="88dp"
+        android:layout_marginBottom="76dp"
+        android:text="tocame" /!-->
+
 </RelativeLayout>
