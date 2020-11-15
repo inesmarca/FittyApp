@@ -30,5 +30,10 @@ public class LoginActivity extends AppCompatActivity {
             Intent homeIntent = new Intent(this, MainActivity.class);
             startActivity(homeIntent);
         });
+
+        binding.btnHack2.setOnClickListener((view) -> {
+            Intent verificationCodeIntent = new Intent(this, VerificationCodeActivity.class);
+            startActivity(verificationCodeIntent);
+        });
     }
 }

@@ -109,4 +109,13 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/btnToSignup" />
+
+    <Button
+        android:id="@+id/btnHack2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="hack para ir a verificacion"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/btnHack" />
 </androidx.constraintlayout.widget.ConstraintLayout>

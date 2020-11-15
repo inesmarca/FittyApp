@@ -26,4 +26,6 @@
     <string name="female">Female</string>
     <string name="male">Male</string>
     <string name="other">Other</string>
+    <string name="verification_code_bienvenida">Enter the verification code that we sent you by email</string>
+    <string name="btn_validate_code">Validate</string>
 </resources>

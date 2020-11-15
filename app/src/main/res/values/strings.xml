@@ -27,4 +27,6 @@
     <string name="female">Femenino</string>
     <string name="male">Masculino</string>
     <string name="other">Otro</string>
+    <string name="verification_code_bienvenida">Ingrese el código de verificación que le enviamos por email</string>
+    <string name="btn_validate_code">Validar</string>
 </resources>
