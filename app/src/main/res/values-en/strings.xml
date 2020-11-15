@@ -31,4 +31,8 @@
     <string name="btn_validate_code">Validate</string>
     <string name="btn_signup_next">Next</string>
 <string name="btn_signup_back">Back</string>
+    <string name="logo_categoria">Logo Categoria</string>
+    <string name="logo_categor_a">Logo Categoría</string>
+    <string name="favorita">Favorita</string>
+    <string name="tiempo">Tiempo</string>
 </resources>

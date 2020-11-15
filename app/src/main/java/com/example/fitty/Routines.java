@@ -1,19 +1,25 @@
 package com.example.fitty;
 
 import android.os.Bundle;
-
-import androidx.fragment.app.Fragment;
-
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+
+import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
+import com.example.fitty.adapters.CategoriesAdapter;
+import com.example.fitty.models.Category;
+
+import java.util.ArrayList;
 
 /**
  * A simple {@link Fragment} subclass.
  * Use the {@link Routines#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class Routines extends Fragment {
+public class Routines extends Fragment implements CategoriesAdapter.OnCategoryListener {
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -23,6 +29,7 @@ public class Routines extends Fragment {
     // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
+    CategoriesAdapter adapter;
 
     public Routines() {
         // Required empty public constructor
@@ -59,6 +66,32 @@ public class Routines extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_routines, container, false);
+        View rootView = inflater.inflate(R.layout.fragment_routines, container, false);
+
+        ArrayList<Category> categories = new ArrayList<>();
+        categories.add(new Category(0, "cardio", "cardio"));
+        categories.add(new Category(1, "tren superior", "tren superior"));
+        categories.add(new Category(2, "piernas", "piernas"));
+        categories.add(new Category(3, "fuerza", "fuerza"));
+        categories.add(new Category(4, "yoga", "yoga"));
+        categories.add(new Category(5, "resistencia", "resistencia"));
+        categories.add(new Category(6, "relajacion", "relajacion"));
+        categories.add(new Category(7, "elongacion", "elongacion"));
+
+        RecyclerView listView = rootView.findViewById(R.id.listCategories);
+        adapter = new CategoriesAdapter(categories, this);
+        listView.setLayoutManager(new GridLayoutManager(getContext(), 2));
+        listView.setAdapter(adapter);
+
+        return rootView;
+    }
+
+    @Override
+    public void OnCategoryClick(int id) {
+        Fragment fragment = new CategoryRoutines();
+        Bundle bundle = new Bundle();
+        bundle.putInt("idCategory", id);
+        fragment.setArguments(bundle);
+        getParentFragmentManager().beginTransaction().replace(R.id.main_nav_host_fragment, fragment).commit();
     }
 }

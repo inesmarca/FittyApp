@@ -1,17 +1,13 @@
 package com.example.fitty;
 
+import android.os.Bundle;
+
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.navigation.ui.NavigationUI;
-import android.os.Bundle;
-import android.widget.Toast;
 
-import com.example.fitty.api.ApiClient;
-import com.example.fitty.api.UserApiService;
 import com.example.fitty.databinding.ActivityMainBinding;
-import com.example.fitty.models.User;
-import com.example.fitty.models.UserCredentials;
 import com.google.android.material.appbar.MaterialToolbar;
 
 public class MainActivity extends AppCompatActivity {
@@ -19,8 +15,6 @@ public class MainActivity extends AppCompatActivity {
     private ActivityMainBinding binding;
     private NavController navController;
     MaterialToolbar toolbar;
-
-
 
     private void initNavigation() {
         navController =  Navigation.findNavController(this, R.id.main_nav_host_fragment);
@@ -59,5 +53,4 @@ public class MainActivity extends AppCompatActivity {
 
         initNavigation();
     }
-
 }

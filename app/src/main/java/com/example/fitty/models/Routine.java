@@ -20,6 +20,9 @@ public class Routine {
     @SerializedName("category")
     @Expose
     private Category category;
+    @SerializedName("duration")
+    @Expose
+    private String duration;
 
     /**
      * No args constructor for use in serialization
@@ -39,10 +42,13 @@ public class Routine {
     public Routine(String name, String detail, boolean isPublic, String difficulty, Category category) {
         super();
         this.name = name;
-        this.detail = detail;
         this.isPublic = isPublic;
         this.difficulty = difficulty;
         this.category = category;
+
+        String[] strings = detail.split("\\|", 2);
+        this.detail = strings[1];
+        this.duration = strings[0] + "'";
     }
 
     public String getName() {
@@ -84,5 +90,9 @@ public class Routine {
     public void setCategory(Category category) {
         this.category = category;
     }
+
+    public int getRating() { return 3; }
+
+    public String getDuration() { return duration; }
 
 }

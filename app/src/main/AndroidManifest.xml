@@ -11,7 +11,8 @@
         android:theme="@style/Theme.FITTY"
         android:usesCleartextTraffic="true"
         >
-        <activity android:name=".MainActivity" />
+        <activity android:name=".MainActivity"
+            android:windowSoftInputMode="adjustPan" />
         <activity android:name=".SignupActivity" android:noHistory="true" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

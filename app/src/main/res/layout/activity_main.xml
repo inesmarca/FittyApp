@@ -16,6 +16,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_marginTop="?attr/actionBarSize"
+        android:layout_marginBottom="71dp"
         app:defaultNavHost="true"
         app:navGraph="@navigation/main_nav_graph" />
 
@@ -28,6 +29,7 @@
         app:itemIconSize="26dp"
         app:itemIconTint="@drawable/bottom_navigation_selector"
         app:itemTextColor="@drawable/bottom_navigation_selector"
+        android:isScrollContainer="false"
         app:menu="@menu/bottom_bar" />
 
     <!--Button
