@@ -17,7 +17,7 @@
         android:layout_height="wrap_content"
         android:id="@+id/viewLoginBienvenida"
         android:text="@string/login_bienvenida"
-        android:textSize="26sp"
+        android:textSize="24sp"
         android:textStyle="bold"
         app:layout_constraintTop_toBottomOf="@+id/navLogin"
         app:layout_constraintEnd_toEndOf="parent"
@@ -31,7 +31,7 @@
         android:id="@+id/txtLoginEmail"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
+        android:layout_marginTop="12dp"
         app:boxBackgroundColor="@color/transparent"
         android:layout_marginHorizontal="20dp"
         app:layout_constraintEnd_toEndOf="parent"
@@ -42,7 +42,7 @@
         android:textColorHint="@color/black" >
         <com.google.android.material.textfield.TextInputEditText
             android:inputType="textEmailAddress"
-            android:textSize="22sp"
+            android:textSize="18sp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"/>
     </com.google.android.material.textfield.TextInputLayout>
@@ -52,7 +52,7 @@
         android:id="@+id/txtLoginPassword"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
+        android:layout_marginTop="12dp"
         app:endIconMode="password_toggle"
         app:boxBackgroundColor="@color/transparent"
         android:layout_marginHorizontal="20dp"
@@ -63,7 +63,7 @@
         android:textColorHint="@color/black" >
         <com.google.android.material.textfield.TextInputEditText
             android:inputType="textPassword"
-            android:textSize="22sp"
+            android:textSize="18sp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"/>
     </com.google.android.material.textfield.TextInputLayout>
@@ -84,15 +84,14 @@
         android:layout_height="wrap_content"
         android:id="@+id/divider_login"
         layout="@layout/divider_text"
-        app:title="@{@string/divider_login_text}"
         app:layout_constraintTop_toBottomOf="@+id/btnLogin"
-        android:layout_marginTop="60dp" />
+        android:layout_marginTop="30dp" />
 
     <com.google.android.material.button.MaterialButton
         android:id="@+id/btnToSignup"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="48dp"
+        android:layout_marginTop="30dp"
         android:paddingVertical="15dp"
         android:text="@string/btn_to_signup"
         app:flow_horizontalAlign="center"

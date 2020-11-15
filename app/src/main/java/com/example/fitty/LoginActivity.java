@@ -19,6 +19,8 @@ public class LoginActivity extends AppCompatActivity {
         binding = LoginActivityBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
+        binding.dividerLogin.txtDividerText.setText(getString(R.string.divider_login_text));
+
         binding.btnToSignup.setOnClickListener((view) -> {
             Intent signupIntent = new Intent(this, SignupActivity.class);
             startActivity(signupIntent);

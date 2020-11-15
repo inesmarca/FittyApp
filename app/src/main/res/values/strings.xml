@@ -22,4 +22,9 @@
     <string name="field_name">Nombre</string>
     <string name="btn_signup">Registrarme</string>
     <string name="login">Login</string>
+    <string name="field_nacimiento">Fecha de nacimiento</string>
+    <string name="hint_gender">Género</string>
+    <string name="female">Femenino</string>
+    <string name="male">Masculino</string>
+    <string name="other">Otro</string>
 </resources>
