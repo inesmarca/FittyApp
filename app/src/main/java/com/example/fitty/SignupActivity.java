@@ -18,6 +18,7 @@ public class SignupActivity extends AppCompatActivity {
 
     String[] genders;
 
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
