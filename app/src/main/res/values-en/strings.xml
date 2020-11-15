@@ -19,7 +19,8 @@
     <string name="divider_signup_text">Already have an account?</string>
     <string name="btn_to_signup">Create cccount</string>
     <string name="btn_to_login">Log in</string>
-    <string name="field_name">Name</string>
+    <string name="field_full_name">Full name</string>
+    <string name="field_username">Username</string>
     <string name="btn_signup">Sign up</string>
     <string name="field_nacimiento">Birthdate</string>
     <string name="hint_gender">Gender</string>
@@ -28,4 +29,6 @@
     <string name="other">Other</string>
     <string name="verification_code_bienvenida">Enter the verification code that we sent you by email</string>
     <string name="btn_validate_code">Validate</string>
+    <string name="btn_signup_next">Next</string>
+<string name="btn_signup_back">Back</string>
 </resources>

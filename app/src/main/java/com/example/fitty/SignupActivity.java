@@ -32,6 +32,16 @@ public class SignupActivity extends AppCompatActivity {
             startActivity(loginIntent);
         });
 
+        binding.btnSignupNext.setOnClickListener((view) -> {
+            binding.linearLayoutSignupEtapa1.setVisibility(View.GONE);
+            binding.linearLayoutSignupEtapa2.setVisibility(View.VISIBLE);
+        });
+
+        binding.btnSignupBack.setOnClickListener((view) -> {
+            binding.linearLayoutSignupEtapa2.setVisibility(View.GONE);
+            binding.linearLayoutSignupEtapa1.setVisibility(View.VISIBLE);
+        });
+
         genders = new String[]{getString(R.string.hint_gender), getString(R.string.female), getString(R.string.male), getString(R.string.other)};
 
         binding.spinnerGender.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
