@@ -1,6 +1,7 @@
 package com.example.fitty;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,10 +15,14 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.fitty.adapters.CategoryRoutinesAdapter;
 import com.example.fitty.models.Category;
+import com.example.fitty.models.Error;
 import com.example.fitty.models.Routine;
 import com.google.android.material.appbar.MaterialToolbar;
+import com.example.fitty.repository.Resource;
+import com.example.fitty.repository.Status;
 
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -32,6 +37,7 @@ public class CategoryRoutines extends Fragment implements View.OnClickListener {
     private CategoryRoutinesAdapter adapter;
     String[] orderTypes = {"Mejor Rating", "Más Recientes", "Dificultad"};
     View rootView;
+    List<Routine> routines;
 
     public CategoryRoutines() {
         // Required empty public constructor
@@ -62,18 +68,35 @@ public class CategoryRoutines extends Fragment implements View.OnClickListener {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        rootView = inflater.inflate(R.layout.fragment_category_routines, container, false);
-
-        ArrayList<Routine> routines = new ArrayList<>();
+        View rootView = inflater.inflate(R.layout.fragment_category_routines, container, false);
+/*
         routines.add(new Routine("Fuerza de Brazos", "45|Ejercicios de brazos", true, "Rookie", new Category(0, "cardio", "cardio")));
         routines.add(new Routine("Brazos", "25|Ejercicios de brazos", true, "Rookie", new Category(0, "tren superior", "cardio")));
         routines.add(new Routine("Relajación", "35|Ejercicios de brazos", true, "Rookie", new Category(0, "yoga", "yoga")));
+*/
 
 
         RecyclerView listView = rootView.findViewById(R.id.listCategoryRoutines);
-        adapter = new CategoryRoutinesAdapter(routines);
-        listView.setLayoutManager(new GridLayoutManager(getContext(), 2));
-        listView.setAdapter(adapter);
+
+        FittyApp fittyApp = (FittyApp) getActivity().getApplication();
+        fittyApp.getRoutineRepository().getRoutines(null,"rookie",0,100,"averageRating","asc").observe(getActivity(),r->{
+            if(r.getStatus()== Status.SUCCESS){
+                routines = r.getData().getResults();
+                routines.removeIf(routine ->
+                    routine.getCategory().getId()!=idCategory
+                );
+                Log.d("IDD", String.format("%d",idCategory));
+
+                adapter = new CategoryRoutinesAdapter(routines);
+                listView.setLayoutManager(new GridLayoutManager(getContext(), 2));
+                listView.setAdapter(adapter);
+            }
+            else
+                defaultResourceHandler(r);
+        });
+
+
+ 
 
         Spinner orderSpinner = rootView.findViewById(R.id.order_spinner);
 
@@ -107,5 +130,18 @@ public class CategoryRoutines extends Fragment implements View.OnClickListener {
         toolbar.setOnClickListener(null);
         toolbar.setTitle(R.string.rutinas);
         getParentFragmentManager().beginTransaction().replace(R.id.main_nav_host_fragment, new Routines()).commit();
+    }
+    private void defaultResourceHandler(Resource<?> resource) {
+        switch (resource.getStatus()) {
+            case LOADING:
+                Log.d("UI", getString(R.string.loading));
+
+                break;
+            case ERROR:
+                Error error = resource.getError();
+                String message = getString(R.string.error, error.getDescription(), error.getCode());
+                Log.d("UI", message);
+                break;
+        }
     }
 }

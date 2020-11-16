@@ -9,14 +9,18 @@ import com.example.fitty.models.Category;
 import com.example.fitty.models.PagedList;
 import com.example.fitty.models.Routine;
 
+import java.util.StringJoiner;
+
 import retrofit2.Call;
 import retrofit2.http.GET;
 import retrofit2.http.Path;
+import retrofit2.http.Query;
 
 public interface RoutineApiService {
 
     @GET("routines")
-    LiveData<PagedList<Routine>> getRoutines();
+    LiveData<ApiResponse<PagedList<Routine>>>getRoutines(@Query("search") String seaerch, @Query("difficulty")String difficulty,
+           @Query("page") int page, @Query("size") int size,@Query("orderBy") String orderBy,@Query("direction") String direction );
 
 
     @GET("routines/{routineId}/ratings")

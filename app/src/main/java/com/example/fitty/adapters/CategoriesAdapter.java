@@ -13,13 +13,14 @@ import com.example.fitty.R;
 import com.example.fitty.models.Category;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class CategoriesAdapter extends RecyclerView.Adapter<CategoriesAdapter.CategoriesViewHolder> {
 
-    private ArrayList<Category> data;
+    private List<Category> data;
     private OnCategoryListener mOnCategoryListener;
 
-    public CategoriesAdapter(ArrayList<Category> data, OnCategoryListener onCategoryListener) {
+    public CategoriesAdapter(List<Category> data, OnCategoryListener onCategoryListener) {
         this.data = data;
         this.mOnCategoryListener = onCategoryListener;
     }

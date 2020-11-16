@@ -1,9 +1,11 @@
 package com.example.fitty;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.GridLayoutManager;
@@ -11,8 +13,12 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.fitty.adapters.CategoriesAdapter;
 import com.example.fitty.models.Category;
+import com.example.fitty.models.Error;
+import com.example.fitty.repository.Resource;
+import com.example.fitty.repository.Status;
 
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -22,7 +28,7 @@ import java.util.ArrayList;
 public class Routines extends Fragment implements CategoriesAdapter.OnCategoryListener {
 
     CategoriesAdapter adapter;
-    private ArrayList<Category> categories;
+    List<Category> categories;
 
     public Routines() {
         // Required empty public constructor
@@ -55,20 +61,47 @@ public class Routines extends Fragment implements CategoriesAdapter.OnCategoryLi
         // Inflate the layout for this fragment
         View rootView = inflater.inflate(R.layout.fragment_routines, container, false);
 
-        categories = new ArrayList<>();
-        categories.add(new Category(0, "cardio", "cardio"));
+    /*    categories.add(new Category(0, "cardio", "cardio"));
         categories.add(new Category(1, "tren superior", "tren superior"));
         categories.add(new Category(2, "piernas", "piernas"));
         categories.add(new Category(3, "fuerza", "fuerza"));
         categories.add(new Category(4, "yoga", "yoga"));
         categories.add(new Category(5, "resistencia", "resistencia"));
         categories.add(new Category(6, "relajacion", "relajacion"));
-        categories.add(new Category(7, "elongacion", "elongacion"));
+        categories.add(new Category(7, "elongacion", "elongacion"));*/
+
 
         RecyclerView listView = rootView.findViewById(R.id.listCategories);
-        adapter = new CategoriesAdapter(categories, this);
-        listView.setLayoutManager(new GridLayoutManager(getContext(), 2));
-        listView.setAdapter(adapter);
+
+        if(categories==null){
+            Log.d("routines","GETEANDO");
+
+            FittyApp fitty = (FittyApp) getActivity().getApplication();
+            fitty.getCategoryRepository().getCategories(0,15,"name","asc").observe(getActivity(),r->{
+                if (r.getStatus() == Status.SUCCESS) {
+                    categories = r.getData().getResults();
+                    adapter = new CategoriesAdapter(categories, this);
+                    listView.setLayoutManager(new GridLayoutManager(getContext(), 2));
+                    listView.setAdapter(adapter);
+
+
+                    if (categories == null)
+                        Log.d("routines", "LA PUTA MADRRE");
+                    else
+                        Log.d("routines", "ES JODA??");
+                } else {
+                    Log.d("routines", "ES JODA??????????");
+                    defaultResourceHandler(r);
+                }
+            });
+        }
+        if(categories==null)
+            Log.d("routines","JAJAJA ES JODA????");
+
+
+
+        //adapter = new CategoriesAdapter(fitty.getCategoryRepository().getCategories(0,15,"name","asc").getValue().getData().getResults(), this);
+        //listView.setLayoutManager(new GridLayoutManager(getContext(), 2));
 
         return rootView;
     }
@@ -81,5 +114,18 @@ public class Routines extends Fragment implements CategoriesAdapter.OnCategoryLi
         bundle.putString("titCategory", categories.get(position).getName());
         fragment.setArguments(bundle);
         getParentFragmentManager().beginTransaction().replace(R.id.main_nav_host_fragment, fragment).commit();
+    }
+    private void defaultResourceHandler(Resource<?> resource) {
+        switch (resource.getStatus()) {
+            case LOADING:
+                Log.d("UI", getString(R.string.loading));
+
+                break;
+            case ERROR:
+                Error error = resource.getError();
+                String message = getString(R.string.error, error.getDescription(), error.getCode());
+                Log.d("UI", message);
+                break;
+        }
     }
 }
