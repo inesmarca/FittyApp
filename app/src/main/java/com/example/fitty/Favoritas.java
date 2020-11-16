@@ -1,12 +1,19 @@
 package com.example.fitty;
 
 import android.os.Bundle;
-
-import androidx.fragment.app.Fragment;
-
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+
+import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
+import com.example.fitty.adapters.FavoriteAdapter;
+import com.example.fitty.models.Category;
+import com.example.fitty.models.Routine;
+
+import java.util.ArrayList;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -14,34 +21,17 @@ import android.view.ViewGroup;
  * create an instance of this fragment.
  */
 public class Favoritas extends Fragment {
-
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
-
-    // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
+    View rootView;
+    FavoriteAdapter adapter;
 
     public Favoritas() {
         // Required empty public constructor
     }
 
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
-     * @return A new instance of fragment Favoritas.
-     */
     // TODO: Rename and change types and number of parameters
     public static Favoritas newInstance(String param1, String param2) {
         Favoritas fragment = new Favoritas();
         Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
         fragment.setArguments(args);
         return fragment;
     }
@@ -49,16 +39,26 @@ public class Favoritas extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
-        }
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_favoritas, container, false);
+        rootView = inflater.inflate(R.layout.fragment_favoritas, container, false);
+
+
+        ArrayList<Routine> routines = new ArrayList<>();
+        routines.add(new Routine("Fuerza de Brazos", "45|Ejercicios de brazos", true, "Rookie", new Category(0, "cardio", "cardio")));
+        routines.add(new Routine("Brazos", "25|Ejercicios de brazos", true, "Rookie", new Category(0, "tren superior", "cardio")));
+        routines.add(new Routine("Relajación", "35|Ejercicios de brazos", true, "Rookie", new Category(0, "yoga", "yoga")));
+
+
+        RecyclerView listView = rootView.findViewById(R.id.listFavoriteRoutine);
+        adapter = new FavoriteAdapter(routines);
+        listView.setLayoutManager(new GridLayoutManager(getContext(), 2));
+        listView.setAdapter(adapter);
+
+        return rootView;
     }
 }

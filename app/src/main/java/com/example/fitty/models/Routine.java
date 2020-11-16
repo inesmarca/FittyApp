@@ -95,4 +95,8 @@ public class Routine {
 
     public String getDuration() { return duration; }
 
+    public Boolean isFavorite() {
+        return true;
+    }
+
 }

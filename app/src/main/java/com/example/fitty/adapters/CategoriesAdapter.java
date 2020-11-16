@@ -12,14 +12,14 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.fitty.R;
 import com.example.fitty.models.Category;
 
-import java.util.List;
+import java.util.ArrayList;
 
 public class CategoriesAdapter extends RecyclerView.Adapter<CategoriesAdapter.CategoriesViewHolder> {
 
-    private List<Category> data;
+    private ArrayList<Category> data;
     private OnCategoryListener mOnCategoryListener;
 
-    public CategoriesAdapter(List<Category> data, OnCategoryListener onCategoryListener) {
+    public CategoriesAdapter(ArrayList<Category> data, OnCategoryListener onCategoryListener) {
         this.data = data;
         this.mOnCategoryListener = onCategoryListener;
     }
@@ -40,7 +40,7 @@ public class CategoriesAdapter extends RecyclerView.Adapter<CategoriesAdapter.Ca
         holder.titCat.setText(current.getName());
     }
 
-    public static class CategoriesViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
+    public class CategoriesViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
         TextView titCat;
         ImageView imageCat;
@@ -59,7 +59,7 @@ public class CategoriesAdapter extends RecyclerView.Adapter<CategoriesAdapter.Ca
 
         @Override
         public void onClick(View itemView) {
-            onCategoryListener.OnCategoryClick(itemView.getId());
+            onCategoryListener.OnCategoryClick(data.get(getAdapterPosition()).getId());
         }
     }
 

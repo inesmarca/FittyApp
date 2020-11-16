@@ -34,6 +34,14 @@
         android:id="@+id/rutines"
         android:name="com.example.fitty.Routines"
         tools:layout="@layout/fragment_routines">
+        <action
+            android:id="@+id/category_routines"
+            app:destination="@id/categoryRoutines" />
     </fragment>
+    <fragment
+        android:id="@+id/categoryRoutines"
+        android:name="com.example.fitty.CategoryRoutines"
+        android:label="fragment_category_routines"
+        tools:layout="@layout/fragment_category_routines" />
 
 </navigation>

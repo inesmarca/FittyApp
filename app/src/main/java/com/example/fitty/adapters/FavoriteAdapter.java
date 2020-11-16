@@ -16,24 +16,23 @@ import com.example.fitty.models.Routine;
 
 import java.util.List;
 
-public class CategoryRoutinesAdapter extends RecyclerView.Adapter<CategoryRoutinesAdapter.CategoryRoutinesViewHolder> {
-
+public class FavoriteAdapter extends RecyclerView.Adapter<FavoriteAdapter.FavoriteViewHolder> {
     private List<Routine> data;
 
-    public CategoryRoutinesAdapter(List<Routine> data) {
+    public FavoriteAdapter(List<Routine> data) {
         this.data = data;
     }
 
     @NonNull
     @Override
-    public CategoryRoutinesViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+    public FavoriteViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         LayoutInflater layoutInflater = LayoutInflater.from(parent.getContext());
         View view = layoutInflater.inflate(R.layout.card_item, parent, false);
-        return new CategoryRoutinesViewHolder(view);
+        return new FavoriteViewHolder(view);
     }
 
     @Override
-    public void onBindViewHolder(@NonNull CategoryRoutinesViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull FavoriteViewHolder holder, int position) {
         Routine current = data.get(position);
 
         holder.titRoutine.setText(current.getName());
@@ -50,7 +49,7 @@ public class CategoryRoutinesAdapter extends RecyclerView.Adapter<CategoryRoutin
         return data.size();
     }
 
-    public static class CategoryRoutinesViewHolder extends RecyclerView.ViewHolder {
+    public static class FavoriteViewHolder extends RecyclerView.ViewHolder {
 
         TextView titRoutine;
         RatingBar rating;
@@ -60,7 +59,7 @@ public class CategoryRoutinesAdapter extends RecyclerView.Adapter<CategoryRoutin
 
         CategoriesAdapter.OnCategoryListener onCategoryListener;
 
-        public CategoryRoutinesViewHolder(@NonNull View itemView) {
+        public FavoriteViewHolder(@NonNull View itemView) {
             super(itemView);
 
             titRoutine = itemView.findViewById(R.id.titRoutine);

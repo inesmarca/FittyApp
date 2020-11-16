@@ -21,15 +21,8 @@ import java.util.ArrayList;
  */
 public class Routines extends Fragment implements CategoriesAdapter.OnCategoryListener {
 
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
-
-    // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
     CategoriesAdapter adapter;
+    private ArrayList<Category> categories;
 
     public Routines() {
         // Required empty public constructor
@@ -47,8 +40,6 @@ public class Routines extends Fragment implements CategoriesAdapter.OnCategoryLi
     public static Routines newInstance(String param1, String param2) {
         Routines fragment = new Routines();
         Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
         fragment.setArguments(args);
         return fragment;
     }
@@ -56,10 +47,6 @@ public class Routines extends Fragment implements CategoriesAdapter.OnCategoryLi
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
-        }
     }
 
     @Override
@@ -68,7 +55,7 @@ public class Routines extends Fragment implements CategoriesAdapter.OnCategoryLi
         // Inflate the layout for this fragment
         View rootView = inflater.inflate(R.layout.fragment_routines, container, false);
 
-        ArrayList<Category> categories = new ArrayList<>();
+        categories = new ArrayList<>();
         categories.add(new Category(0, "cardio", "cardio"));
         categories.add(new Category(1, "tren superior", "tren superior"));
         categories.add(new Category(2, "piernas", "piernas"));
@@ -87,10 +74,11 @@ public class Routines extends Fragment implements CategoriesAdapter.OnCategoryLi
     }
 
     @Override
-    public void OnCategoryClick(int id) {
+    public void OnCategoryClick(int position) {
         Fragment fragment = new CategoryRoutines();
         Bundle bundle = new Bundle();
-        bundle.putInt("idCategory", id);
+        bundle.putInt("idCategory", position);
+        bundle.putString("titCategory", categories.get(position).getName());
         fragment.setArguments(bundle);
         getParentFragmentManager().beginTransaction().replace(R.id.main_nav_host_fragment, fragment).commit();
     }
