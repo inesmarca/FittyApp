@@ -5,14 +5,21 @@ import android.os.Bundle;
 import android.os.PersistableBundle;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
+import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.fitty.databinding.VerificationCodeActivityBinding;
+import com.example.fitty.models.EmailVerification;
+import com.example.fitty.models.Error;
+import com.example.fitty.repository.Resource;
+import com.example.fitty.repository.Status;
 import com.google.android.material.textfield.TextInputEditText;
+import com.google.android.material.textfield.TextInputLayout;
 
 public class VerificationCodeActivity extends AppCompatActivity {
 
@@ -30,6 +37,28 @@ public class VerificationCodeActivity extends AppCompatActivity {
         binding.txtVerificationCode3.addTextChangedListener(new CustomTextWatcher(binding.txtVerificationCode4));
         binding.txtVerificationCode4.addTextChangedListener(new CustomTextWatcher(binding.txtVerificationCode5));
         binding.txtVerificationCode5.addTextChangedListener(new CustomTextWatcher(binding.txtVerificationCode6));
+
+        binding.btnResendCode.setOnClickListener(v->{
+            FittyApp fitty = (FittyApp) getApplication();
+            fitty.getUserRepository().resendVerification();
+            Toast.makeText(getApplicationContext(),R.string.resend_code_toast,Toast.LENGTH_SHORT).show();
+
+        });
+
+        binding.btnValidateCode.setOnClickListener(v->{
+            FittyApp fitty = (FittyApp) getApplication();
+            AppPreferences preferences = new AppPreferences(fitty);
+            System.out.println(preferences.getEmail());
+            fitty.getUserRepository().verify(new EmailVerification(preferences.getEmail(),generateCode())).observe(this,r->{
+                if(r.getStatus()== Status.SUCCESS){
+                    Toast.makeText(getApplicationContext(),R.string.welcome,Toast.LENGTH_SHORT).show();
+
+                }
+                else
+                    defaultResourceHandler(r);
+
+            });
+        });
     }
 
 
@@ -58,4 +87,35 @@ public class VerificationCodeActivity extends AppCompatActivity {
             }
         }
     }
+
+    private String generateCode(){
+        StringBuilder stringBuilder = new StringBuilder(binding.txtVerificationCode1.getText().toString());
+        stringBuilder.append(binding.txtVerificationCode2.getText().toString());
+        stringBuilder.append(binding.txtVerificationCode3.getText().toString());
+        stringBuilder.append(binding.txtVerificationCode4.getText().toString());
+        stringBuilder.append(binding.txtVerificationCode5.getText().toString());
+        stringBuilder.append(binding.txtVerificationCode6.getText().toString());
+        return stringBuilder.toString();
+
+
+    }
+    private void defaultResourceHandler(Resource<?> resource) {
+        switch (resource.getStatus()) {
+            case LOADING:
+                Log.d("UI", getString(R.string.loading));
+
+                break;
+            case ERROR:
+                Error error = resource.getError();
+                String message = getString(R.string.error, error.getDescription(), error.getCode());
+                Log.d("UI", message);
+                if(error.getCode()==8)
+                    Toast.makeText(getApplicationContext(),R.string.bad_code,Toast.LENGTH_SHORT).show();
+                else
+                    Toast.makeText(getApplicationContext(),R.string.error_feo,Toast.LENGTH_SHORT).show();
+
+                break;
+        }
+    }
+
 }

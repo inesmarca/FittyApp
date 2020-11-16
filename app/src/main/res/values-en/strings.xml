@@ -30,9 +30,16 @@
     <string name="verification_code_bienvenida">Enter the verification code that we sent you by email</string>
     <string name="btn_validate_code">Validate</string>
     <string name="btn_signup_next">Next</string>
-<string name="btn_signup_back">Back</string>
     <string name="logo_categoria">Logo Categoria</string>
     <string name="logo_categor_a">Logo Categoría</string>
     <string name="favorita">Favorita</string>
     <string name="tiempo">Tiempo</string>
+    <string name="btn_signup_back">Back</string>
+    <string name="error">Error %1$s (%2$d)</string>
+    <string name="loading">loading</string>
+    <string name="resend_code">¿You didn\'t get the code?</string>
+    <string name="btn_resend_code">RESEND</string>
+
+
+
 </resources>

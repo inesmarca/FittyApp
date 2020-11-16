@@ -16,6 +16,20 @@ public class Category {
     @Expose
     private String detail;
 
+
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+
+    public void setDetail(String detail) {
+        this.detail = detail;
+    }
+
+
+
+
     /**
      * No args constructor for use in serialization
      *

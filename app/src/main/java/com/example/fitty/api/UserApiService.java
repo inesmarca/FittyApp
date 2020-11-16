@@ -2,6 +2,7 @@ package com.example.fitty.api;
 
 import androidx.lifecycle.LiveData;
 
+import com.example.fitty.models.EmailVerification;
 import com.example.fitty.models.Token;
 import com.example.fitty.models.User;
 import com.example.fitty.models.UserCredentials;
@@ -19,6 +20,19 @@ public interface UserApiService {
     LiveData<ApiResponse<Void>> logout();
     @GET("user/current")
     LiveData<ApiResponse<User>> getCurrentUser();
+
+    @POST("user")
+    LiveData<ApiResponse<User>> signup(@Body User user);
+
+    @POST("user/resend_verification")
+    LiveData<ApiResponse<Void>> resendVerification();
+
+    @POST("user/verify_email")
+    LiveData<ApiResponse<Void>> verifyEmail(@Body EmailVerification emailVerification);
+
+
+
+
 
 
 }

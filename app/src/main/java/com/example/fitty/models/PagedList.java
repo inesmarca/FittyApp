@@ -28,23 +28,10 @@ public class PagedList<T> {
     @Expose
     private boolean isLastPage;
 
-    /**
-     * No args constructor for use in serialization
-     *
-     */
     public PagedList() {
     }
 
-    /**
-     *
-     * @param size
-     * @param isLastPage
-     * @param orderBy
-     * @param page
-     * @param totalCount
-     * @param results
-     * @param direction
-     */
+
     public PagedList(int totalCount, String orderBy, String direction, List<T> results, int size, int page, boolean isLastPage) {
         super();
         this.totalCount = totalCount;

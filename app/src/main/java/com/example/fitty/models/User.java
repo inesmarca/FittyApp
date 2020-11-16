@@ -44,6 +44,15 @@ public class User {
     @Expose
     private boolean verified;
 
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+    @SerializedName("password")
+    @Expose
+    private String password;
+
+
     /**
      * No args constructor for use in serialization
      *
@@ -65,6 +74,14 @@ public class User {
         this.dateLastActive = dateLastActive;
         this.deleted = deleted;
         this.verified = verified;
+    }
+    public User(String username, String fullName, String gender, Date birthdate, String email,String password) {
+        this.username = username;
+        this.fullName = fullName;
+        this.gender = gender;
+        this.birthdate = birthdate;
+        this.email = email;
+        this.password=password;
     }
 
     public int getId() {

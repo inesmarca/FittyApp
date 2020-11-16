@@ -5,6 +5,8 @@ import android.content.SharedPreferences;
 
 public class AppPreferences {
     private final String AUTH_TOKEN = "auth_token";
+    private final String EMAIL ="email";
+    private final String USERNAME ="username";
 
     private SharedPreferences sharedPreferences;
 
@@ -20,5 +22,25 @@ public class AppPreferences {
 
     public String getAuthToken() {
         return sharedPreferences.getString(AUTH_TOKEN, null);
+    }
+
+    public void setEmail(String email){
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putString(EMAIL,email);
+        editor.apply();
+    }
+
+    public void setUsername(String username){
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putString(USERNAME,username);
+        editor.apply();
+    }
+
+    public String getUsername(){
+        return sharedPreferences.getString(USERNAME,null);
+    }
+
+    public String getEmail(){
+        return sharedPreferences.getString(EMAIL,null);
     }
 }

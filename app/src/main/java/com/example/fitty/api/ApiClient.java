@@ -26,7 +26,7 @@ public class ApiClient {
 
     public static <T> T create (Context context, Class<T> service){
         HttpLoggingInterceptor httpLoginInterceptor = new HttpLoggingInterceptor()
-                .setLevel(BuildConfig.DEBUG ? HttpLoggingInterceptor.Level.BODY : HttpLoggingInterceptor.Level.NONE ); //Esto esta bueno para ir viendo los requests
+                .setLevel(BuildConfig.DEBUGG ? HttpLoggingInterceptor.Level.BODY : HttpLoggingInterceptor.Level.NONE ); //Esto esta bueno para ir viendo los requests
         OkHttpClient okHttpClient = new OkHttpClient.Builder()
                 .addInterceptor(new AuthInterceptor(context))
                 .addInterceptor(httpLoginInterceptor).connectTimeout(CONNECT_TIMEOUT, TimeUnit.SECONDS)

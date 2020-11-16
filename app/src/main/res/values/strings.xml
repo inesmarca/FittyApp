@@ -10,8 +10,8 @@
     <string name="content_description_search">Buscador</string>
 
     <!-- Login y registro -->
-    <string name="login_bienvenida">Ingresá a tu cuenta</string>
-    <string name="signup_bienvenida">Creá tu cuenta</string>
+    <string name="login_bienvenida">Ingresa a tu cuenta</string>
+    <string name="signup_bienvenida">Crea tu cuenta</string>
     <string name="field_email">Email</string>
     <string name="field_password">Contraseña</string>
     <string name="btn_login">Ingresar</string>
@@ -28,8 +28,17 @@
     <string name="female">Femenino</string>
     <string name="male">Masculino</string>
     <string name="other">Otro</string>
-    <string name="verification_code_bienvenida">Ingrese el código de verificación que le enviamos por email</string>
+    <string name="verification_code_bienvenida">Ingresa el código de verificación que te enviamos por email</string>
+    <string name="resend_code">¿Aún no te llego el código?</string>
+
     <string name="btn_validate_code">Validar</string>
+    <string name="welcome">Bienvenido!</string>
+    <string name="field_fullname">Nombre Completo</string>
+    <string name="error">Error %1$s (%2$d)</string>
+    <string name="loading">cargando</string>
+    <string name="genderError">Elige un género</string>
+
+
     <string name="btn_signup_next">Siguiente</string>
     <string name="btn_signup_back">Volver</string>
     <string name="logo_categoria">Logo Categoria</string>
@@ -38,4 +47,8 @@
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="favorita">Favorita</string>
     <string name="tiempo">Tiempo</string>
+    <string name="btn_resend_code">REENVIAR</string>
+    <string name="resend_code_toast">Mira tu email!</string>
+    <string name="bad_code">Código incorrecto</string>
+    <string name="error_feo">Intenta de nuevo más tarde</string>
 </resources>
