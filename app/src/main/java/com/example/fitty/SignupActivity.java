@@ -45,14 +45,12 @@ public class SignupActivity extends AppCompatActivity {
 
     User userToAdd; //ViewModelear esto
     SignupActivityBinding binding;
-    private boolean firstTime = true;
 
     String[] genders;
     String gender = null;
 
 
     private TextInputLayout fullname, username, password, email;
-    private DatePicker datePicker;
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
