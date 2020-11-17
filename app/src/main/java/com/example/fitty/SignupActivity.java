@@ -4,6 +4,7 @@ import android.app.DatePickerDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -30,7 +31,9 @@ import com.google.android.material.textfield.TextInputLayout;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.Period;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
@@ -42,14 +45,14 @@ public class SignupActivity extends AppCompatActivity {
 
     User userToAdd; //ViewModelear esto
     SignupActivityBinding binding;
-    private  boolean firstTime=true;
+    private boolean firstTime = true;
 
     String[] genders;
     String gender = null;
 
 
     private TextInputLayout fullname, username, password, email;
-    private TextView count;
+    private DatePicker datePicker;
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -60,8 +63,6 @@ public class SignupActivity extends AppCompatActivity {
         username = binding.txtSignupUsername;
         password = binding.txtSignupPassword;
         email = binding.txtSignupEmail;
-        count=binding.count;
-
 
         username.getEditText().addTextChangedListener(new TextWatcher() {
             @Override
@@ -73,10 +74,10 @@ public class SignupActivity extends AppCompatActivity {
             public void onTextChanged(CharSequence s, int start, int before, int count) {
                 String val = username.getEditText().getText().toString();
                 int len = val.length();
-                binding.count.setText(String.format("%d",len));
-                if(val.length() > 30)
+                binding.count.setText(String.format("%d", len));
+                if (val.length() > 30)
                     username.setError(getString(R.string.too_long));
-                else{
+                else {
                     username.setError(null);
                     username.setErrorEnabled(false);
                 }
@@ -98,7 +99,14 @@ public class SignupActivity extends AppCompatActivity {
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-                validatePassword();
+                int len = getText(password).length();
+                if(len<8){
+                    password.setError(getString(R.string.too_short_pass));
+                }
+                else{
+                    password.setError(null);
+                    password.setErrorEnabled(false);
+                }
 
             }
 
@@ -120,13 +128,15 @@ public class SignupActivity extends AppCompatActivity {
 
 
         binding.btnSignupNext.setOnClickListener((view) -> {
-            if (!validateFullname() || !validateGender())
+            if (!validateFullname()  | !validateDate() | !validateGender())
                 return;
+            binding.signupPageCounter.setText("2/2");
             binding.linearLayoutSignupEtapa1.setVisibility(View.GONE);
             binding.linearLayoutSignupEtapa2.setVisibility(View.VISIBLE);
         });
 
         binding.btnSignupBack.setOnClickListener((view) -> {
+            binding.signupPageCounter.setText("1/2");
             binding.linearLayoutSignupEtapa2.setVisibility(View.GONE);
             binding.linearLayoutSignupEtapa1.setVisibility(View.VISIBLE);
         });
@@ -144,7 +154,7 @@ public class SignupActivity extends AppCompatActivity {
         binding.btnSignup.setOnClickListener(v -> {
             try {
                 FittyApp app = (FittyApp) getApplication();
-                if(!validateEmail() | !validatePassword() | !validateUsername())
+                if (!validateEmail() | !validatePassword() | !validateUsername() )
                     return;
                 userToAdd.setBirthdate(new SimpleDateFormat("dd/MM/yyyy").parse(getText(binding.txtBirthdate)));
                 userToAdd.setEmail(getText(binding.txtSignupEmail));
@@ -201,8 +211,9 @@ public class SignupActivity extends AppCompatActivity {
         DatePickerFragment newFragment = DatePickerFragment.newInstance(new DatePickerDialog.OnDateSetListener() {
             @Override
             public void onDateSet(DatePicker datePicker, int year, int month, int day) {
-                String selectedDate = day + "/" + (month+1) + "/" + year; // +1 because January is zero
+                String selectedDate = day + "/" + (month + 1) + "/" + year; // +1 because January is zero
                 binding.txtBirthdate.getEditText().setText(selectedDate);
+                validateDate();
 
             }
         });
@@ -210,7 +221,7 @@ public class SignupActivity extends AppCompatActivity {
 
     }
 
-    private String getText (TextInputLayout t){
+    private String getText(TextInputLayout t) {
         return t.getEditText().getText().toString();
     }
 
@@ -231,7 +242,7 @@ public class SignupActivity extends AppCompatActivity {
                     else
                         Toast.makeText(getApplicationContext(), R.string.error_username_taken, Toast.LENGTH_SHORT).show();
 
-            }
+                }
                 //binding.result.setText(message);
                 break;
         }
@@ -286,12 +297,11 @@ public class SignupActivity extends AppCompatActivity {
     private boolean validatePassword() {
 
         String val = password.getEditText().getText().toString().trim();
-        if (val.length() < 8 && !firstTime) {
+        if (val.length()<8) {
             password.setError(getString(R.string.too_short_pass));
 
             return false;
         } else {
-            firstTime=false;
             password.setError(null);
             password.setErrorEnabled(false);
             return true;
@@ -300,11 +310,29 @@ public class SignupActivity extends AppCompatActivity {
     }
 
     private boolean validateGender() {
-        if (gender == null) {
-            Toast.makeText(getApplicationContext(), R.string.genderError, Toast.LENGTH_SHORT).show();
+        if(gender==null){
+            binding.txtGender.setError(getString(R.string.field_empty_errror));
             return false;
         }
-        return true;
+        else{
+            binding.txtGender.setError(null);
+            binding.txtGender.setErrorEnabled(false);
+            return true;
+        }
     }
+    private boolean validateDate(){
+        String val = getText(binding.txtBirthdate).trim();
+        if(val.isEmpty()){
+            binding.txtBirthdate.setError(getString(R.string.field_empty_errror));
+            return false;
+        }
+        else{
+            binding.txtBirthdate.setError(null);
+            binding.txtBirthdate.setErrorEnabled(false);
+            return true;
+        }
 
+    }
 }
+
+
