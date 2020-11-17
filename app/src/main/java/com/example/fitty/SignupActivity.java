@@ -2,6 +2,7 @@ package com.example.fitty;
 
 import android.app.DatePickerDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.Editable;
@@ -17,6 +18,7 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.fitty.databinding.SignupActivityBinding;
@@ -134,42 +136,11 @@ public class SignupActivity extends AppCompatActivity {
         });
 
 
-        genders = new String[]{getString(R.string.hint_gender), getString(R.string.female), getString(R.string.male), getString(R.string.other)};
-        binding.spinnerGender.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-                //Si i == 0 entonces no selecciono un genero aun
-               /* if(i != 0) {
-                    //A completar
-                    // en genders[i] esta el sexo seleccionado
-
-
-                }*/
-                switch (i) {
-                    case (0):
-                        gender = null;
-                        //Toast.makeText(getApplicationContext(),R.string.genderError,Toast.LENGTH_SHORT).show();
-
-                        break;
-                    case (1):
-                        gender = "female";
-                        break;
-                    case (2):
-                        gender = "male";
-                        break;
-                    case (3):
-                        gender = "other";
-                        break;
-
-                }
-            }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> adapterView) {
-                Toast.makeText(getApplicationContext(), R.string.genderError, Toast.LENGTH_SHORT).show();
-
-            }
+        genders = new String[]{getString(R.string.female), getString(R.string.male), getString(R.string.other)};
+        binding.txtGender.getEditText().setOnClickListener(v -> {
+            selectGender();
         });
+
         binding.btnSignup.setOnClickListener(v -> {
             try {
                 FittyApp app = (FittyApp) getApplication();
@@ -199,11 +170,30 @@ public class SignupActivity extends AppCompatActivity {
             }
 
         });
-        ArrayAdapter gendersAdapter = new ArrayAdapter(this, R.layout.gender_spinner, genders); //android.R.layout.simple_spinner_item
-        gendersAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        binding.spinnerGender.setAdapter(gendersAdapter);
 
+    }
 
+    private void selectGender() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle(getString(R.string.hint_gender));
+        builder.setItems(genders, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                switch (which) {
+                    case (0):
+                        gender = "female";
+                        break;
+                    case (1):
+                        gender = "male";
+                        break;
+                    case (2):
+                        gender = "other";
+                        break;
+                }
+                binding.txtGender.getEditText().setText(genders[which]);
+            }
+        });
+        builder.show();
     }
 
 

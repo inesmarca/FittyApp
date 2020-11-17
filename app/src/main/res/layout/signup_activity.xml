@@ -85,12 +85,25 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"/>
                 </com.google.android.material.textfield.TextInputLayout>
-                <Spinner
-                    android:id="@+id/spinnerGender"
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/txtGender"
+                    style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox.Dense"
                     android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:layout_marginStart="10dp"
-                    android:layout_weight="0.5" />
+                    android:layout_weight="0.5"
+                    android:layout_height="wrap_content"
+                    app:boxBackgroundColor="@color/transparent"
+                    android:hint="@string/hint_gender"
+                    android:textColor="@color/black"
+                    android:textColorHint="@color/black"
+                    android:layout_marginStart="10dp">
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:inputType="text"
+                        android:focusable="false"
+                        android:textSize="18sp"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"/>
+                </com.google.android.material.textfield.TextInputLayout>
             </LinearLayout>
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/btnSignupNext"
