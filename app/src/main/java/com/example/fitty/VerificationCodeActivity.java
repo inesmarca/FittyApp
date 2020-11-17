@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.os.Bundle;
 import android.os.PersistableBundle;
 import android.text.Editable;
+import android.text.InputFilter;
 import android.text.TextWatcher;
 import android.util.Log;
 import android.view.View;
@@ -33,16 +34,21 @@ public class VerificationCodeActivity extends AppCompatActivity {
 
 
         binding.txtVerificationCode1.addTextChangedListener(new CustomTextWatcher(binding.txtVerificationCode2));
+        binding.txtVerificationCode1.setFilters(new InputFilter[] {new InputFilter.AllCaps()});
         binding.txtVerificationCode2.addTextChangedListener(new CustomTextWatcher(binding.txtVerificationCode3));
+        binding.txtVerificationCode2.setFilters(new InputFilter[] {new InputFilter.AllCaps()});
         binding.txtVerificationCode3.addTextChangedListener(new CustomTextWatcher(binding.txtVerificationCode4));
+        binding.txtVerificationCode3.setFilters(new InputFilter[] {new InputFilter.AllCaps()});
         binding.txtVerificationCode4.addTextChangedListener(new CustomTextWatcher(binding.txtVerificationCode5));
+        binding.txtVerificationCode4.setFilters(new InputFilter[] {new InputFilter.AllCaps()});
         binding.txtVerificationCode5.addTextChangedListener(new CustomTextWatcher(binding.txtVerificationCode6));
+        binding.txtVerificationCode5.setFilters(new InputFilter[] {new InputFilter.AllCaps()});
+        binding.txtVerificationCode6.setFilters(new InputFilter[] {new InputFilter.AllCaps()});
 
         binding.btnResendCode.setOnClickListener(v->{
             FittyApp fitty = (FittyApp) getApplication();
             fitty.getUserRepository().resendVerification();
             Toast.makeText(getApplicationContext(),R.string.resend_code_toast,Toast.LENGTH_SHORT).show();
-
         });
 
         binding.btnValidateCode.setOnClickListener(v->{
@@ -51,7 +57,7 @@ public class VerificationCodeActivity extends AppCompatActivity {
             System.out.println(preferences.getEmail());
             fitty.getUserRepository().verify(new EmailVerification(preferences.getEmail(),generateCode())).observe(this,r->{
                 if(r.getStatus()== Status.SUCCESS){
-                    Toast.makeText(getApplicationContext(),R.string.welcome,Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getApplicationContext(),R.string.welcome,Toast.LENGTH_LONG).show();
 
                 }
                 else
@@ -83,8 +89,10 @@ public class VerificationCodeActivity extends AppCompatActivity {
         @Override
         public void afterTextChanged(Editable editable) {
             if (editable.length() == 1) {
-                nextTextInputEditText.requestFocus();
+                if(nextTextInputEditText != null)
+                    nextTextInputEditText.requestFocus();
             }
+
         }
     }
 

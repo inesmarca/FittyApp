@@ -45,7 +45,8 @@
             android:layout_marginHorizontal="5dp">
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/txtVerificationCode1"
-                android:inputType="number"
+                android:inputType="text"
+                android:digits="0123456789QWERTZUIOPASDFGHJKLYXCVBNMqwertzuiopasdfghjklyxcvbnm"
                 android:maxLength="1"
                 android:textSize="18sp"
                 android:textAlignment="center"
@@ -64,7 +65,8 @@
             android:layout_marginHorizontal="5dp">
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/txtVerificationCode2"
-                android:inputType="number"
+                android:inputType="text"
+                android:digits="0123456789QWERTZUIOPASDFGHJKLYXCVBNMqwertzuiopasdfghjklyxcvbnm"
                 android:maxLength="1"
                 android:textSize="18sp"
                 android:textAlignment="center"
@@ -83,7 +85,8 @@
             android:layout_marginHorizontal="5dp">
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/txtVerificationCode3"
-                android:inputType="number"
+                android:inputType="text"
+                android:digits="0123456789QWERTZUIOPASDFGHJKLYXCVBNMqwertzuiopasdfghjklyxcvbnm"
                 android:maxLength="1"
                 android:textSize="18sp"
                 android:textAlignment="center"
@@ -102,7 +105,8 @@
             android:layout_marginHorizontal="5dp">
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/txtVerificationCode4"
-                android:inputType="number"
+                android:inputType="text"
+                android:digits="0123456789QWERTZUIOPASDFGHJKLYXCVBNMqwertzuiopasdfghjklyxcvbnm"
                 android:maxLength="1"
                 android:textSize="18sp"
                 android:textAlignment="center"
@@ -121,7 +125,8 @@
             android:layout_marginHorizontal="5dp">
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/txtVerificationCode5"
-                android:inputType="number"
+                android:inputType="text"
+                android:digits="0123456789QWERTZUIOPASDFGHJKLYXCVBNMqwertzuiopasdfghjklyxcvbnm"
                 android:maxLength="1"
                 android:textSize="18sp"
                 android:textAlignment="center"
@@ -140,7 +145,8 @@
             android:layout_marginHorizontal="5dp">
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/txtVerificationCode6"
-                android:inputType="number"
+                android:inputType="text"
+                android:digits="0123456789QWERTZUIOPASDFGHJKLYXCVBNMqwertzuiopasdfghjklyxcvbnm"
                 android:maxLength="1"
                 android:textSize="18sp"
                 android:textAlignment="center"

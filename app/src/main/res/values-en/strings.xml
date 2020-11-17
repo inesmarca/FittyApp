@@ -53,7 +53,6 @@
     <string name="btn_resend_code">RESEND</string>
     <string name="username_error">Invalid username</string>
     <string name="password_error">Wrong password</string>
-
     <string name="error_email_taken">We are sorry, this email is taken</string>
     <string name="error_username_taken">We are sorry, this username is taken</string>
 

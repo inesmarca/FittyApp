@@ -20,7 +20,7 @@ public class ApiClient {
     private static final int CONNECT_TIMEOUT= 60;
     private static final int READ_TIMEOUT= 60;
     private static final int WRITE_TIMEOUT= 60;
-    private static final String API_URL = "http://10.0.2.2:8080/api/";
+    private static final String API_URL = "http://10.0.3.2:8080/api/";
 
     private ApiClient(){}
 

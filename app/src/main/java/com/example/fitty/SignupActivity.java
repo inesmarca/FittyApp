@@ -1,5 +1,7 @@
 package com.example.fitty;
 
+import android.app.DatePickerDialog;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.Editable;
@@ -10,6 +12,7 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.DatePicker;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -23,10 +26,15 @@ import com.example.fitty.repository.Resource;
 import com.example.fitty.repository.Status;
 import com.google.android.material.textfield.TextInputLayout;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.time.LocalDateTime;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
 
+import java.util.Locale;
 
 public class SignupActivity extends AppCompatActivity {
 
@@ -121,6 +129,11 @@ public class SignupActivity extends AppCompatActivity {
             binding.linearLayoutSignupEtapa1.setVisibility(View.VISIBLE);
         });
 
+        binding.txtBirthdate.getEditText().setOnClickListener((view) -> {
+            showDatePickerDialog();
+        });
+
+
         genders = new String[]{getString(R.string.hint_gender), getString(R.string.female), getString(R.string.male), getString(R.string.other)};
         binding.spinnerGender.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
@@ -158,28 +171,33 @@ public class SignupActivity extends AppCompatActivity {
             }
         });
         binding.btnSignup.setOnClickListener(v -> {
-            FittyApp app = (FittyApp) getApplication();
-            if(!validateEmail() | !validatePassword() | !validateUsername())
-                return;
-            userToAdd.setBirthdate(new Date(Long.parseLong(getText(binding.txtBirthdate))));
-            userToAdd.setEmail(getText(binding.txtSignupEmail));
-            userToAdd.setFullName(getText(binding.txtSignupFullName));
-            userToAdd.setPassword(getText(binding.txtSignupPassword));
-            userToAdd.setGender(gender);
-            userToAdd.setUsername(getText(binding.txtSignupUsername));
-            app.getUserRepository().addUser(userToAdd).observe(this, r -> {
-                if (r.getStatus() == Status.SUCCESS) {
-                    AppPreferences preferences = new AppPreferences(app);
-                    preferences.setEmail(r.getData().getEmail());
-                    preferences.setUsername(r.getData().getUsername());
-                    userToAdd = r.getData();
-                    Intent goToVerifyCode = new Intent(this, VerificationCodeActivity.class);
-                    startActivity(goToVerifyCode);
-                } else {
-                    defaultResourceHandler(r);
-                    //HCIear ACAAAAAAAa
-                }
-            });
+            try {
+                FittyApp app = (FittyApp) getApplication();
+                if(!validateEmail() | !validatePassword() | !validateUsername())
+                    return;
+                userToAdd.setBirthdate(new SimpleDateFormat("dd/MM/yyyy").parse(getText(binding.txtBirthdate)));
+                userToAdd.setEmail(getText(binding.txtSignupEmail));
+                userToAdd.setFullName(getText(binding.txtSignupFullName));
+                userToAdd.setPassword(getText(binding.txtSignupPassword));
+                userToAdd.setGender(gender);
+                userToAdd.setUsername(getText(binding.txtSignupUsername));
+                app.getUserRepository().addUser(userToAdd).observe(this, r -> {
+                    if (r.getStatus() == Status.SUCCESS) {
+                        AppPreferences preferences = new AppPreferences(app);
+                        preferences.setEmail(r.getData().getEmail());
+                        preferences.setUsername(r.getData().getUsername());
+                        userToAdd = r.getData();
+                        Intent goToVerifyCode = new Intent(this, VerificationCodeActivity.class);
+                        startActivity(goToVerifyCode);
+                    } else {
+                        defaultResourceHandler(r);
+                        //HCIear ACAAAAAAAa
+                    }
+                });
+            } catch (ParseException ex) {
+                Toast.makeText(getApplicationContext(), getString(R.string.error_feo), Toast.LENGTH_LONG).show(); ////Poner un error mas adecuado
+            }
+
         });
         ArrayAdapter gendersAdapter = new ArrayAdapter(this, R.layout.gender_spinner, genders); //android.R.layout.simple_spinner_item
         gendersAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
@@ -189,7 +207,20 @@ public class SignupActivity extends AppCompatActivity {
     }
 
 
-    private String getText(TextInputLayout t) {
+    private void showDatePickerDialog() {
+        DatePickerFragment newFragment = DatePickerFragment.newInstance(new DatePickerDialog.OnDateSetListener() {
+            @Override
+            public void onDateSet(DatePicker datePicker, int year, int month, int day) {
+                String selectedDate = day + "/" + (month+1) + "/" + year; // +1 because January is zero
+                binding.txtBirthdate.getEditText().setText(selectedDate);
+
+            }
+        });
+        newFragment.show(getSupportFragmentManager(), "datePicker");
+
+    }
+
+    private String getText (TextInputLayout t){
         return t.getEditText().getText().toString();
     }
 
