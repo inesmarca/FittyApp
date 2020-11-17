@@ -1,5 +1,6 @@
 package com.example.fitty.adapters;
 
+import android.annotation.SuppressLint;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,9 +20,11 @@ import java.util.List;
 public class CategoryRoutinesAdapter extends RecyclerView.Adapter<CategoryRoutinesAdapter.CategoryRoutinesViewHolder> {
 
     private List<Routine> data;
+    private OnCategoryRoutineListener mOnCategoryRoutineListener;
 
-    public CategoryRoutinesAdapter(List<Routine> data) {
+    public CategoryRoutinesAdapter(List<Routine> data, OnCategoryRoutineListener onCategoryRoutineListener) {
         this.data = data;
+        this.mOnCategoryRoutineListener = onCategoryRoutineListener;
     }
 
     @NonNull
@@ -29,9 +32,10 @@ public class CategoryRoutinesAdapter extends RecyclerView.Adapter<CategoryRoutin
     public CategoryRoutinesViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         LayoutInflater layoutInflater = LayoutInflater.from(parent.getContext());
         View view = layoutInflater.inflate(R.layout.card_item, parent, false);
-        return new CategoryRoutinesViewHolder(view);
+        return new CategoryRoutinesViewHolder(view, mOnCategoryRoutineListener);
     }
 
+    @SuppressLint("SetTextI18n")
     @Override
     public void onBindViewHolder(@NonNull CategoryRoutinesViewHolder holder, int position) {
         Routine current = data.get(position);
@@ -39,7 +43,7 @@ public class CategoryRoutinesAdapter extends RecyclerView.Adapter<CategoryRoutin
         holder.titRoutine.setText(current.getName());
         holder.category.setImageResource(current.getCategory().getIcon());
         holder.rating.setRating(current.getRating());
-        holder.durationRoutine.setText(current.getDuration());
+        holder.durationRoutine.setText(current.getDuration() + '\'');
         if (current.isFavorite()) {
             holder.favorite.setImageResource(R.drawable.ic_favorite_full);
         }
@@ -50,17 +54,16 @@ public class CategoryRoutinesAdapter extends RecyclerView.Adapter<CategoryRoutin
         return data.size();
     }
 
-    public static class CategoryRoutinesViewHolder extends RecyclerView.ViewHolder {
+    public class CategoryRoutinesViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener  {
 
         TextView titRoutine;
         RatingBar rating;
         TextView durationRoutine;
         ImageView category;
         ImageButton favorite;
+        OnCategoryRoutineListener onCategoryRoutineListener;
 
-        CategoriesAdapter.OnCategoryListener onCategoryListener;
-
-        public CategoryRoutinesViewHolder(@NonNull View itemView) {
+        public CategoryRoutinesViewHolder(@NonNull View itemView, OnCategoryRoutineListener onCategoryRoutineListener) {
             super(itemView);
 
             titRoutine = itemView.findViewById(R.id.titRoutine);
@@ -68,6 +71,18 @@ public class CategoryRoutinesAdapter extends RecyclerView.Adapter<CategoryRoutin
             durationRoutine = itemView.findViewById(R.id.durRoutine);
             category = itemView.findViewById(R.id.routineCat);
             favorite = itemView.findViewById(R.id.favorite);
+
+            this.onCategoryRoutineListener = onCategoryRoutineListener;
+            itemView.setOnClickListener(this);
         }
+
+        @Override
+        public void onClick(View v) {
+            onCategoryRoutineListener.OnCategoryRoutineClick(data.get(getAdapterPosition()));
+        }
+    }
+
+    public interface OnCategoryRoutineListener {
+        void OnCategoryRoutineClick(Routine routine);
     }
 }

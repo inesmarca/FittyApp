@@ -12,7 +12,6 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.fitty.R;
 import com.example.fitty.models.Category;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class CategoriesAdapter extends RecyclerView.Adapter<CategoriesAdapter.CategoriesViewHolder> {
@@ -60,7 +59,7 @@ public class CategoriesAdapter extends RecyclerView.Adapter<CategoriesAdapter.Ca
 
         @Override
         public void onClick(View itemView) {
-            onCategoryListener.OnCategoryClick(data.get(getAdapterPosition()).getId());
+            onCategoryListener.OnCategoryClick(data.get(getAdapterPosition()));
         }
     }
 
@@ -70,6 +69,6 @@ public class CategoriesAdapter extends RecyclerView.Adapter<CategoriesAdapter.Ca
     }
 
     public interface OnCategoryListener {
-        void OnCategoryClick(int id);
+        void OnCategoryClick(Category category);
     }
 }

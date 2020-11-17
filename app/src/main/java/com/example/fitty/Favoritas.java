@@ -1,6 +1,8 @@
 package com.example.fitty;
 
+import android.content.res.Configuration;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,6 +15,8 @@ import com.example.fitty.adapters.FavoriteAdapter;
 import com.example.fitty.models.Category;
 import com.example.fitty.models.Routine;
 
+import org.jetbrains.annotations.NotNull;
+
 import java.util.ArrayList;
 
 /**
@@ -23,6 +27,7 @@ import java.util.ArrayList;
 public class Favoritas extends Fragment {
     View rootView;
     FavoriteAdapter adapter;
+    GridLayoutManager gridLayoutManager;
 
     public Favoritas() {
         // Required empty public constructor
@@ -56,9 +61,21 @@ public class Favoritas extends Fragment {
 
         RecyclerView listView = rootView.findViewById(R.id.listFavoriteRoutine);
         adapter = new FavoriteAdapter(routines);
-        listView.setLayoutManager(new GridLayoutManager(getContext(), 2));
+        gridLayoutManager = new GridLayoutManager(getContext(), 2);
+        listView.setLayoutManager(gridLayoutManager);
         listView.setAdapter(adapter);
 
         return rootView;
+    }
+
+    public void onConfigurationChanged(@NotNull Configuration newConfig) {
+        super.onConfigurationChanged(newConfig);
+
+        RecyclerView listView = rootView.findViewById(R.id.listFavoriteRoutine);
+        if (newConfig.orientation == Configuration.ORIENTATION_LANDSCAPE) {
+            gridLayoutManager.setSpanCount(4);
+        } else {
+            gridLayoutManager.setSpanCount(2);
+        }
     }
 }

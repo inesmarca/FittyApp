@@ -22,6 +22,7 @@ public class MainActivity extends AppCompatActivity {
         NavigationUI.setupWithNavController(binding.bottomNav, navController);
         navController.addOnDestinationChangedListener((controller, destination, arguments) -> {
             toolbar.setTitle(destination.getLabel());
+            toolbar.setNavigationIcon(R.drawable.ic_account_circle);
         });
     }
 

@@ -60,4 +60,5 @@
     <string name="no_whitespaces">No puede haber espacios</string>
     <string name="wrong_email_format">Formato de email inválido</string>
     <string name="too_short_pass">Debe tener al menos 8 caracteres</string>
+    <string name="iniciar_ahora">Iniciar Ahora</string>
 </resources>

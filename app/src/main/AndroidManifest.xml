@@ -13,6 +13,7 @@
         android:usesCleartextTraffic="true"
         >
         <activity android:name=".MainActivity"
+            android:configChanges="orientation|screenSize"
             android:windowSoftInputMode="adjustPan" />
         <activity android:name=".SignupActivity" android:noHistory="true" >
             <intent-filter>

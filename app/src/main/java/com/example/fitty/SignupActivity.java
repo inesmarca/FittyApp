@@ -16,14 +16,11 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.example.fitty.api.ApiClient;
-import com.example.fitty.api.UserApiService;
 import com.example.fitty.databinding.SignupActivityBinding;
 import com.example.fitty.models.Error;
 import com.example.fitty.models.User;
 import com.example.fitty.repository.Resource;
 import com.example.fitty.repository.Status;
-import com.google.android.material.datepicker.MaterialDatePicker;
 import com.google.android.material.textfield.TextInputLayout;
 
 import java.util.Date;

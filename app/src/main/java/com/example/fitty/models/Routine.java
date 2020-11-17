@@ -3,8 +3,13 @@ package com.example.fitty.models;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
-public class Routine {
+import java.io.Serializable;
 
+public class Routine implements Serializable {
+
+    @SerializedName("id")
+    @Expose
+    private int id;
     @SerializedName("name")
     @Expose
     private String name;
@@ -60,7 +65,12 @@ public class Routine {
     }
 
     public String getDetail() {
-        return detail;
+        String[] strings = detail.split("\\|", 2);
+        return strings[1];
+    }
+
+    public int getId() {
+        return id;
     }
 
     public void setDetail(String detail) {
@@ -93,7 +103,10 @@ public class Routine {
 
     public int getRating() { return 3; }
 
-    public String getDuration() { return duration; }
+    public String getDuration() {
+        String[] strings = detail.split("\\|", 2);
+        return strings[0];
+    }
 
     public Boolean isFavorite() {
         return true;

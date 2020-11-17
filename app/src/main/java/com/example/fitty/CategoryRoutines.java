@@ -1,5 +1,6 @@
 package com.example.fitty;
 
+import android.content.res.Configuration;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -14,14 +15,14 @@ import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.fitty.adapters.CategoryRoutinesAdapter;
-import com.example.fitty.models.Category;
 import com.example.fitty.models.Error;
 import com.example.fitty.models.Routine;
-import com.google.android.material.appbar.MaterialToolbar;
 import com.example.fitty.repository.Resource;
 import com.example.fitty.repository.Status;
+import com.google.android.material.appbar.MaterialToolbar;
 
-import java.util.ArrayList;
+import org.jetbrains.annotations.NotNull;
+
 import java.util.List;
 
 /**
@@ -29,7 +30,7 @@ import java.util.List;
  * Use the {@link CategoryRoutines#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class CategoryRoutines extends Fragment implements View.OnClickListener {
+public class CategoryRoutines extends Fragment implements View.OnClickListener, CategoryRoutinesAdapter.OnCategoryRoutineListener {
 
     private int idCategory;
     private String nameCategory;
@@ -38,6 +39,7 @@ public class CategoryRoutines extends Fragment implements View.OnClickListener {
     String[] orderTypes = {"Mejor Rating", "Más Recientes", "Dificultad"};
     View rootView;
     List<Routine> routines;
+    GridLayoutManager gridLayoutManager;
 
     public CategoryRoutines() {
         // Required empty public constructor
@@ -69,26 +71,22 @@ public class CategoryRoutines extends Fragment implements View.OnClickListener {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View rootView = inflater.inflate(R.layout.fragment_category_routines, container, false);
-/*
-        routines.add(new Routine("Fuerza de Brazos", "45|Ejercicios de brazos", true, "Rookie", new Category(0, "cardio", "cardio")));
-        routines.add(new Routine("Brazos", "25|Ejercicios de brazos", true, "Rookie", new Category(0, "tren superior", "cardio")));
-        routines.add(new Routine("Relajación", "35|Ejercicios de brazos", true, "Rookie", new Category(0, "yoga", "yoga")));
-*/
-
 
         RecyclerView listView = rootView.findViewById(R.id.listCategoryRoutines);
 
         FittyApp fittyApp = (FittyApp) getActivity().getApplication();
         fittyApp.getRoutineRepository().getRoutines(null,"rookie",0,100,"averageRating","asc").observe(getActivity(),r->{
             if(r.getStatus()== Status.SUCCESS){
+                assert r.getData() != null;
                 routines = r.getData().getResults();
                 routines.removeIf(routine ->
                     routine.getCategory().getId()!=idCategory
                 );
                 Log.d("IDD", String.format("%d",idCategory));
 
-                adapter = new CategoryRoutinesAdapter(routines);
-                listView.setLayoutManager(new GridLayoutManager(getContext(), 2));
+                adapter = new CategoryRoutinesAdapter(routines, this);
+                gridLayoutManager = new GridLayoutManager(getContext(), 2);
+                listView.setLayoutManager(gridLayoutManager);
                 listView.setAdapter(adapter);
             }
             else
@@ -131,6 +129,7 @@ public class CategoryRoutines extends Fragment implements View.OnClickListener {
         toolbar.setTitle(R.string.rutinas);
         getParentFragmentManager().beginTransaction().replace(R.id.main_nav_host_fragment, new Routines()).commit();
     }
+
     private void defaultResourceHandler(Resource<?> resource) {
         switch (resource.getStatus()) {
             case LOADING:
@@ -144,4 +143,37 @@ public class CategoryRoutines extends Fragment implements View.OnClickListener {
                 break;
         }
     }
+
+    public void onConfigurationChanged(@NotNull Configuration newConfig) {
+        super.onConfigurationChanged(newConfig);
+
+        RecyclerView listView = rootView.findViewById(R.id.listCategoryRoutines);
+        if (newConfig.orientation == Configuration.ORIENTATION_LANDSCAPE) {
+            gridLayoutManager.setSpanCount(4);
+        } else {
+            gridLayoutManager.setSpanCount(2);
+        }
+    }
+
+    @Override
+    public void OnCategoryRoutineClick(Routine routine) {
+        Fragment fragment = new RoutineView();
+        Bundle bundle = new Bundle();
+        bundle.putSerializable("routine", routine);
+        fragment.setArguments(bundle);
+        getParentFragmentManager().beginTransaction().replace(R.id.main_nav_host_fragment, fragment).commit();
+    }
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
