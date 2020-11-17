@@ -54,6 +54,17 @@ public class SignupActivity extends AppCompatActivity {
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        FittyApp app = (FittyApp) getApplication();
+        AppPreferences preferences = new AppPreferences(app);
+
+        if(preferences.getAuthToken().length() > 0) {
+            //Logeado
+            Intent goToMain = new Intent(this, MainActivity.class);
+            startActivity(goToMain);
+        }
+
+
         binding = SignupActivityBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
@@ -151,7 +162,7 @@ public class SignupActivity extends AppCompatActivity {
 
         binding.btnSignup.setOnClickListener(v -> {
             try {
-                FittyApp app = (FittyApp) getApplication();
+
                 if (!validateEmail() | !validatePassword() | !validateUsername() )
                     return;
                 userToAdd.setBirthdate(new SimpleDateFormat("dd/MM/yyyy").parse(getText(binding.txtBirthdate)));
@@ -162,7 +173,6 @@ public class SignupActivity extends AppCompatActivity {
                 userToAdd.setUsername(getText(binding.txtSignupUsername));
                 app.getUserRepository().addUser(userToAdd).observe(this, r -> {
                     if (r.getStatus() == Status.SUCCESS) {
-                        AppPreferences preferences = new AppPreferences(app);
                         preferences.setEmail(r.getData().getEmail());
                         preferences.setUsername(r.getData().getUsername());
                         userToAdd = r.getData();
