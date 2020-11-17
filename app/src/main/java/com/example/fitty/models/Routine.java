@@ -4,6 +4,7 @@ import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
 import java.io.Serializable;
+import java.util.List;
 
 public class Routine implements Serializable {
 
@@ -28,6 +29,8 @@ public class Routine implements Serializable {
     @SerializedName("duration")
     @Expose
     private String duration;
+
+    private List<Cycle> cycles;
 
     /**
      * No args constructor for use in serialization
@@ -110,6 +113,10 @@ public class Routine implements Serializable {
 
     public Boolean isFavorite() {
         return true;
+    }
+
+    public void addCycle(Cycle cycle) {
+        cycles.add(cycle);
     }
 
 }

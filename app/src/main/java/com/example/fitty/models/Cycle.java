@@ -3,6 +3,8 @@ package com.example.fitty.models;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
+import java.util.List;
+
 public class Cycle {
     @SerializedName("id")
     @Expose
@@ -22,6 +24,8 @@ public class Cycle {
     @SerializedName("repetitions")
     @Expose
     private int repetitions;
+
+    private List<Exercise> exercises;
 
     public Cycle(int id, String name, String detail, String type, int order, int repetitions) {
         this.id = id;
@@ -54,5 +58,9 @@ public class Cycle {
 
     public int getRepetitions() {
         return repetitions;
+    }
+
+    public void addExercise(Exercise exercise) {
+        exercises.add(exercise);
     }
 }

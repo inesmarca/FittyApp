@@ -1,5 +1,6 @@
 package com.example.fitty.adapters;
 
+import android.annotation.SuppressLint;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -29,15 +30,16 @@ public class ExerciseAdapter extends RecyclerView.Adapter<ExerciseAdapter.Exerci
         return new ExerciseViewHolder(view);
     }
 
+    @SuppressLint("SetTextI18n")
     @Override
     public void onBindViewHolder(@NonNull ExerciseViewHolder holder, int position) {
         Exercise current = data.get(position);
 
         holder.exerciseTitle.setText(current.getName());
         if (current.getRepetitions() != 0) {
-            holder.exerciseReps.setText(String.valueOf(current.getRepetitions()));
+            holder.exerciseReps.setText("x" + String.valueOf(current.getRepetitions()));
         } else {
-            holder.exerciseReps.setText(String.valueOf(current.getDuration()));
+            holder.exerciseReps.setText(String.valueOf(current.getDuration()) + "s");
         }
     }
 
