@@ -3,9 +3,10 @@ package com.example.fitty.models;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
+import java.io.Serializable;
 import java.util.Date;
 
-public class User {
+public class User implements Serializable {
 
     @SerializedName("id")
     @Expose

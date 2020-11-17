@@ -18,9 +18,11 @@ import java.util.List;
 
 public class FavoriteAdapter extends RecyclerView.Adapter<FavoriteAdapter.FavoriteViewHolder> {
     private List<Routine> data;
+    private OnFavoriteListener mOnFavoriteListener;
 
-    public FavoriteAdapter(List<Routine> data) {
+    public FavoriteAdapter(List<Routine> data, OnFavoriteListener onFavoriteListener) {
         this.data = data;
+        this.mOnFavoriteListener = onFavoriteListener;
     }
 
     @NonNull
@@ -28,7 +30,7 @@ public class FavoriteAdapter extends RecyclerView.Adapter<FavoriteAdapter.Favori
     public FavoriteViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         LayoutInflater layoutInflater = LayoutInflater.from(parent.getContext());
         View view = layoutInflater.inflate(R.layout.card_item, parent, false);
-        return new FavoriteViewHolder(view);
+        return new FavoriteViewHolder(view, mOnFavoriteListener);
     }
 
     @Override
@@ -49,7 +51,7 @@ public class FavoriteAdapter extends RecyclerView.Adapter<FavoriteAdapter.Favori
         return data.size();
     }
 
-    public static class FavoriteViewHolder extends RecyclerView.ViewHolder {
+    public class FavoriteViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
         TextView titRoutine;
         RatingBar rating;
@@ -57,9 +59,9 @@ public class FavoriteAdapter extends RecyclerView.Adapter<FavoriteAdapter.Favori
         ImageView category;
         ImageButton favorite;
 
-        CategoriesAdapter.OnCategoryListener onCategoryListener;
+        OnFavoriteListener onFavoriteListener;
 
-        public FavoriteViewHolder(@NonNull View itemView) {
+        public FavoriteViewHolder(@NonNull View itemView, OnFavoriteListener onFavoriteListener) {
             super(itemView);
 
             titRoutine = itemView.findViewById(R.id.titRoutine);
@@ -67,6 +69,17 @@ public class FavoriteAdapter extends RecyclerView.Adapter<FavoriteAdapter.Favori
             durationRoutine = itemView.findViewById(R.id.durRoutine);
             category = itemView.findViewById(R.id.routineCat);
             favorite = itemView.findViewById(R.id.favorite);
+
+            this.onFavoriteListener = onFavoriteListener;
         }
+
+        @Override
+        public void onClick(View v) {
+            onFavoriteListener.OnFavoriteClick(data.get(getAdapterPosition()));
+        }
+    }
+
+    public interface OnFavoriteListener {
+        void OnFavoriteClick(Routine routine);
     }
 }

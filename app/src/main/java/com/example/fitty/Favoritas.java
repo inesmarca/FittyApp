@@ -12,22 +12,25 @@ import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.fitty.adapters.FavoriteAdapter;
-import com.example.fitty.models.Category;
+import com.example.fitty.models.Error;
 import com.example.fitty.models.Routine;
+import com.example.fitty.repository.Resource;
+import com.example.fitty.repository.Status;
 
 import org.jetbrains.annotations.NotNull;
 
-import java.util.ArrayList;
+import java.util.List;
 
 /**
  * A simple {@link Fragment} subclass.
  * Use the {@link Favoritas#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class Favoritas extends Fragment {
+public class Favoritas extends Fragment implements FavoriteAdapter.OnFavoriteListener {
     View rootView;
     FavoriteAdapter adapter;
     GridLayoutManager gridLayoutManager;
+    List<Routine> routines;
 
     public Favoritas() {
         // Required empty public constructor
@@ -51,31 +54,58 @@ public class Favoritas extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         rootView = inflater.inflate(R.layout.fragment_favoritas, container, false);
-
-
-        ArrayList<Routine> routines = new ArrayList<>();
-        routines.add(new Routine("Fuerza de Brazos", "45|Ejercicios de brazos", true, "Rookie", new Category(0, "cardio", "cardio")));
-        routines.add(new Routine("Brazos", "25|Ejercicios de brazos", true, "Rookie", new Category(0, "tren superior", "cardio")));
-        routines.add(new Routine("Relajación", "35|Ejercicios de brazos", true, "Rookie", new Category(0, "yoga", "yoga")));
-
-
         RecyclerView listView = rootView.findViewById(R.id.listFavoriteRoutine);
-        adapter = new FavoriteAdapter(routines);
-        gridLayoutManager = new GridLayoutManager(getContext(), 2);
-        listView.setLayoutManager(gridLayoutManager);
-        listView.setAdapter(adapter);
+
+        FittyApp fitty = (FittyApp) getActivity().getApplication();
+        fitty.getUserRepository().getUserFavourites(0,15,"name","asc").observe(getActivity(),r->{
+            if (r.getStatus() == Status.SUCCESS) {
+                routines = r.getData().getResults();
+                adapter = new FavoriteAdapter(routines, this);
+                gridLayoutManager = new GridLayoutManager(getContext(), 2);
+                orientationChange(getActivity().getResources().getConfiguration());
+                listView.setLayoutManager(gridLayoutManager);
+                listView.setAdapter(adapter);
+            } else {
+                defaultResourceHandler(r);
+            }
+        });
 
         return rootView;
     }
 
     public void onConfigurationChanged(@NotNull Configuration newConfig) {
         super.onConfigurationChanged(newConfig);
+        orientationChange(newConfig);
+    }
 
-        RecyclerView listView = rootView.findViewById(R.id.listFavoriteRoutine);
-        if (newConfig.orientation == Configuration.ORIENTATION_LANDSCAPE) {
+    public void orientationChange(Configuration configuration) {
+        if (configuration.orientation == Configuration.ORIENTATION_LANDSCAPE) {
             gridLayoutManager.setSpanCount(4);
         } else {
             gridLayoutManager.setSpanCount(2);
         }
+    }
+
+    private void defaultResourceHandler(Resource<?> resource) {
+        switch (resource.getStatus()) {
+            case LOADING:
+                Log.d("UI", getString(R.string.loading));
+
+                break;
+            case ERROR:
+                Error error = resource.getError();
+                String message = getString(R.string.error, error.getDescription(), error.getCode());
+                Log.d("UI", message);
+                break;
+        }
+    }
+
+    @Override
+    public void OnFavoriteClick(Routine routine) {
+        Fragment fragment = new RoutineView(this);
+        Bundle bundle = new Bundle();
+        bundle.putSerializable("routine", routine);
+        fragment.setArguments(bundle);
+        getParentFragmentManager().beginTransaction().replace(R.id.main_nav_host_fragment, fragment).commit();
     }
 }

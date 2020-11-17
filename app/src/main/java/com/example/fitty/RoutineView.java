@@ -1,10 +1,12 @@
 package com.example.fitty;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.TextView;
 
 import androidx.fragment.app.Fragment;
@@ -62,7 +64,7 @@ public class RoutineView extends Fragment implements View.OnClickListener {
             lastTitle = (String) toolbar.getTitle();
             toolbar.setTitle("");
             toolbar.setNavigationIcon(R.drawable.ic_baseline_arrow_back_24);
-            toolbar.setOnClickListener(this);
+            toolbar.setOnClickListener(new backButton());
         }
     }
 
@@ -93,6 +95,7 @@ public class RoutineView extends Fragment implements View.OnClickListener {
         });
 
         ((TextView) rootView.findViewById(R.id.titRoutineView)).setText(routine.getName());
+        ((Button) rootView.findViewById(R.id.buttonInitiate)).setOnClickListener(this);
 
         return rootView;
     }
@@ -111,13 +114,25 @@ public class RoutineView extends Fragment implements View.OnClickListener {
         }
     }
 
-    @Override
-    public void onClick(View v) {
-        toolbar.setTitle(lastTitle);
-        getParentFragmentManager().beginTransaction().replace(R.id.main_nav_host_fragment, lastFragment).commit();
-    }
-
     public Routine getRoutine() {
         return routine;
+    }
+
+    @Override
+    public void onClick(View v) {
+        Intent intent = new Intent(getActivity(), ExecuteActivity.class);
+        Bundle bundle = new Bundle();
+        bundle.putSerializable("routine", routine);
+        intent.putExtras(bundle);
+        startActivity(intent);
+    }
+
+    public class backButton implements View.OnClickListener {
+
+        @Override
+        public void onClick(View v) {
+            toolbar.setTitle(lastTitle);
+            getParentFragmentManager().beginTransaction().replace(R.id.main_nav_host_fragment, lastFragment).commit();
+        }
     }
 }

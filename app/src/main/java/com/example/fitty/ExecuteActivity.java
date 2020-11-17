@@ -7,6 +7,7 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.fitty.databinding.ExecuteActivityBinding;
+import com.example.fitty.models.Routine;
 
 public class ExecuteActivity extends AppCompatActivity {
 
@@ -17,6 +18,6 @@ public class ExecuteActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState, persistentState);
         binding = ExecuteActivityBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
-
+        Routine routine = (Routine) getIntent().getExtras().getSerializable("routine");
     }
 }

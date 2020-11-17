@@ -65,6 +65,7 @@ public class Routines extends Fragment implements CategoriesAdapter.OnCategoryLi
                     categories = r.getData().getResults();
                     adapter = new CategoriesAdapter(categories, this);
                     gridLayoutManager = new GridLayoutManager(getContext(), 2);
+                    orientationChange(getActivity().getResources().getConfiguration());
                     listView.setLayoutManager(gridLayoutManager);
                     listView.setAdapter(adapter);
                 } else {
@@ -103,8 +104,11 @@ public class Routines extends Fragment implements CategoriesAdapter.OnCategoryLi
     public void onConfigurationChanged(@NotNull Configuration newConfig) {
         super.onConfigurationChanged(newConfig);
 
-        RecyclerView listView = rootView.findViewById(R.id.listCategories);
-        if (newConfig.orientation == Configuration.ORIENTATION_LANDSCAPE) {
+        orientationChange(newConfig);
+    }
+
+    public void orientationChange(Configuration configuration) {
+        if (configuration.orientation == Configuration.ORIENTATION_LANDSCAPE) {
             gridLayoutManager.setSpanCount(4);
         } else {
             gridLayoutManager.setSpanCount(2);
