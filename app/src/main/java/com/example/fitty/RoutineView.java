@@ -25,6 +25,9 @@ import java.util.List;
  */
 public class RoutineView extends Fragment {
 
+   /*Para llamar a la api laburamos con los repositorios. Hagan un getApplication y casteenlo
+   a FittyApp, de ahi agarran el repo que necesiten y usan los métodos. Saludos :) */
+
     private View rootView;
     private MaterialToolbar toolbar;
     List<Cycle> cycles;

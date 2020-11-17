@@ -3,6 +3,8 @@ package com.example.fitty.models;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
+import java.util.Date;
+
 public class Rating {
 
     @SerializedName("score")
@@ -14,6 +16,13 @@ public class Rating {
     @SerializedName("routine")
     @Expose
     private Routine routine;
+    @SerializedName("date")
+    @Expose
+    private Date date;
+
+    public Date getDate() {
+        return date;
+    }
 
     public Routine getRoutine() {
         return routine;
@@ -40,6 +49,11 @@ public class Rating {
         this.score = score;
         this.review = review;
         this.routine=routine;
+    }
+    public Rating(int score, String review) {
+        super();
+        this.score = score;
+        this.review = review;
     }
 
     public int getScore() {

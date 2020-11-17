@@ -30,7 +30,23 @@ public class Routine implements Serializable {
     @Expose
     private String duration;
 
+    @SerializedName("creator")
+    @Expose
+    private User creator;
+
     private List<Cycle> cycles;
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public User getCreator() {
+        return creator;
+    }
+
+    public void setCreator(User creator) {
+        this.creator = creator;
+    }
 
     /**
      * No args constructor for use in serialization
@@ -39,14 +55,7 @@ public class Routine implements Serializable {
     public Routine() {
     }
 
-    /**
-     *
-     * @param difficulty
-     * @param name
-     * @param isPublic
-     * @param detail
-     * @param category
-     */
+
     public Routine(String name, String detail, boolean isPublic, String difficulty, Category category) {
         super();
         this.name = name;

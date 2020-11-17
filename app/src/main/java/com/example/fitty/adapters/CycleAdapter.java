@@ -18,6 +18,11 @@ import java.util.List;
 
 public class CycleAdapter extends RecyclerView.Adapter<CycleAdapter.CycleViewHolder> {
 
+       /*Para llamar a la api laburamos con los repositorios. Hagan un getApplication y casteenlo
+   a FittyApp, de ahi agarran el repo que necesiten y usan los métodos. Saludos :) */
+
+    //Como aca estas queriendo hacerlo desde un adapter, para el getApplication vas a tener q hacer cositas
+
     private List<Cycle> data;
     View view;
     List<Exercise> exercises;
