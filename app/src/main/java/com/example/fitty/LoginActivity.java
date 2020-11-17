@@ -22,7 +22,7 @@ import com.google.android.material.textfield.TextInputLayout;
 public class LoginActivity extends AppCompatActivity {
 
     LoginActivityBinding binding;
-    AppPreferences preferences ;
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -53,7 +53,7 @@ public class LoginActivity extends AppCompatActivity {
                 if (t.getStatus() == Status.SUCCESS) {
                     AppPreferences preferences = new AppPreferences(app);
                     preferences.setAuthToken(t.getData().getToken());
-                    Toast.makeText(getApplicationContext(), R.string.welcome, Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getApplicationContext(), getString(R.string.welcome,email.getEditText().getText()), Toast.LENGTH_SHORT).show();
                     Intent homeIntent = new Intent(this, MainActivity.class);
                     startActivity(homeIntent);
                 } else {
@@ -74,6 +74,16 @@ public class LoginActivity extends AppCompatActivity {
                 String message = getString(R.string.error, error.getDescription(), error.getCode());
                 Log.d("UI", message);
                 //binding.result.setText(message);
+                if(error.getCode()==4) {
+                    if(!error.getDetails().get(0).equals("Password does not match"))
+                        Toast.makeText(getApplicationContext(), R.string.username_error, Toast.LENGTH_SHORT).show();
+                    else
+                        Toast.makeText(getApplicationContext(), R.string.password_error, Toast.LENGTH_SHORT).show();
+
+                }
+                else
+                    Toast.makeText(getApplicationContext(), R.string.error_feo, Toast.LENGTH_SHORT).show();
+
                 break;
         }
     }

@@ -22,7 +22,7 @@
     <string name="field_full_name">Nombre completo</string>
     <string name="field_username">Nombre de usuario</string>
     <string name="btn_signup">Registrarme</string>
-    <string name="login">Login</string>
+    <string name="login">Iniciar Sesión</string>
     <string name="field_nacimiento">Fecha de nacimiento</string>
     <string name="hint_gender">Género</string>
     <string name="female">Femenino</string>
@@ -32,7 +32,7 @@
     <string name="resend_code">¿Aún no te llego el código?</string>
 
     <string name="btn_validate_code">Validar</string>
-    <string name="welcome">Bienvenido!</string>
+    <string name="welcome">Bienvenido, %1$s!</string>
     <string name="field_fullname">Nombre Completo</string>
     <string name="error">Error %1$s (%2$d)</string>
     <string name="loading">cargando</string>
@@ -51,4 +51,13 @@
     <string name="resend_code_toast">Mira tu email!</string>
     <string name="bad_code">Código incorrecto</string>
     <string name="error_feo">Intenta de nuevo más tarde</string>
+    <string name="username_error">Usuario inválido</string>
+    <string name="password_error">Contraseña inválida</string>
+    <string name="error_email_taken">Lo sentimos, este email ya está registrado</string>
+    <string name="error_username_taken">Lo sentimos, este nombre de usuario ya está registrado</string>
+    <string name="field_empty_errror">No puede estar vacío</string>
+    <string name="too_long">Máximo 30 caracteres</string>
+    <string name="no_whitespaces">No puede haber espacios</string>
+    <string name="wrong_email_format">Formato de email inválido</string>
+    <string name="too_short_pass">Debe tener al menos 8 caracteres</string>
 </resources>

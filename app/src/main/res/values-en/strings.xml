@@ -34,12 +34,34 @@
     <string name="logo_categor_a">Logo Categoría</string>
     <string name="favorita">Favorita</string>
     <string name="tiempo">Tiempo</string>
+    <string name="login">LOGIN</string>
+
+    <string name="welcome">Welcome, %1$s!</string>
+    <string name="field_fullname">Full name</string>
+
+    <string name="genderError">Pick a gender</string>
+
     <string name="btn_signup_back">Back</string>
     <string name="error">Error %1$s (%2$d)</string>
     <string name="loading">loading</string>
     <string name="resend_code">¿You didn\'t get the code?</string>
-    <string name="btn_resend_code">RESEND</string>
+    <string name="bad_code">Wrong code</string>
+    <string name="error_feo">Try again later</string>
+    <string name="resend_code_toast">Check your email!</string>
 
+
+    <string name="btn_resend_code">RESEND</string>
+    <string name="username_error">Invalid username</string>
+    <string name="password_error">Wrong password</string>
+
+    <string name="error_email_taken">We are sorry, this email is taken</string>
+    <string name="error_username_taken">We are sorry, this username is taken</string>
+
+    <string name="field_empty_errror">Can not be blank</string>
+    <string name="too_long">Maximun 30 characters</string>
+    <string name="no_whitespaces">Can not have whitespaces</string>
+    <string name="wrong_email_format">Invalid email format</string>
+    <string name="too_short_pass">At least 8 characters</string>
 
 
 </resources>
