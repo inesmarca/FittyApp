@@ -3,11 +3,12 @@ package com.example.fitty.models;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
-public class Cycle {
+public class Cycle implements Serializable {
     @SerializedName("id")
     @Expose
     private int id;

@@ -71,6 +71,7 @@ public class FavoriteAdapter extends RecyclerView.Adapter<FavoriteAdapter.Favori
             favorite = itemView.findViewById(R.id.favorite);
 
             this.onFavoriteListener = onFavoriteListener;
+            itemView.setOnClickListener(this);
         }
 
         @Override
