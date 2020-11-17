@@ -1,6 +1,7 @@
 package com.example.fitty;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,7 +13,10 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.fitty.adapters.CycleAdapter;
 import com.example.fitty.models.Cycle;
+import com.example.fitty.models.Error;
 import com.example.fitty.models.Routine;
+import com.example.fitty.repository.Resource;
+import com.example.fitty.repository.Status;
 import com.google.android.material.appbar.MaterialToolbar;
 
 import java.util.ArrayList;
@@ -23,25 +27,27 @@ import java.util.List;
  * Use the {@link RoutineView#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class RoutineView extends Fragment {
+public class RoutineView extends Fragment implements View.OnClickListener {
 
    /*Para llamar a la api laburamos con los repositorios. Hagan un getApplication y casteenlo
    a FittyApp, de ahi agarran el repo que necesiten y usan los métodos. Saludos :) */
 
     private View rootView;
     private MaterialToolbar toolbar;
-    List<Cycle> cycles;
+    List<Cycle> cycles = new ArrayList<>();
     private CycleAdapter adapter;
     private GridLayoutManager gridLayoutManager;
     private Routine routine;
+    Fragment lastFragment;
+    private String lastTitle;
 
-    public RoutineView() {
-        // Required empty public constructor
+    public RoutineView(Fragment fragment) {
+        this.lastFragment = fragment;
     }
 
     // TODO: Rename and change types and number of parameters
-    public static RoutineView newInstance(String param1, String param2) {
-        RoutineView fragment = new RoutineView();
+    public static RoutineView newInstance(CategoryRoutines categoryRoutines) {
+        RoutineView fragment = new RoutineView(categoryRoutines);
         Bundle args = new Bundle();
         fragment.setArguments(args);
         return fragment;
@@ -53,8 +59,10 @@ public class RoutineView extends Fragment {
         if (getArguments() != null) {
             routine = (Routine) getArguments().getSerializable("routine");
             toolbar = requireActivity().findViewById(R.id.topAppBar);
+            lastTitle = (String) toolbar.getTitle();
             toolbar.setTitle("");
             toolbar.setNavigationIcon(R.drawable.ic_baseline_arrow_back_24);
+            toolbar.setOnClickListener(this);
         }
     }
 
@@ -65,17 +73,51 @@ public class RoutineView extends Fragment {
 
         RecyclerView listView = rootView.findViewById(R.id.listCycles);
 
-        cycles = new ArrayList<>();
-        cycles.add(new Cycle(0, "Calentamiento", "Calentamiento", "warmup", 1, 30));
-        cycles.add(new Cycle(1, "Ciclo 1", "Calentamiento", "warmup", 1, 30));
-        cycles.add(new Cycle(2, "Enfriamiento", "Calentamiento", "warmup", 1, 30));
+        FittyApp fittyApp = (FittyApp) getActivity().getApplication();
+        fittyApp.getCycleRepository().getRoutineCycles(routine.getId(), 0, 99, "order", "asc").observe(getActivity(),r->{
+            if(r.getStatus()== Status.SUCCESS){
+                assert r.getData() != null;
+                cycles = r.getData().getResults();
 
-        adapter = new CycleAdapter(cycles);
-        gridLayoutManager = new GridLayoutManager(getContext(), 1);
-        listView.setLayoutManager(gridLayoutManager);
-        listView.setAdapter(adapter);
+                if (cycles != null) {
+                    routine.addCycle(cycles);
+                }
+
+                adapter = new CycleAdapter(cycles, this);
+                gridLayoutManager = new GridLayoutManager(getContext(), 1);
+                listView.setLayoutManager(gridLayoutManager);
+                listView.setAdapter(adapter);
+            }
+            else
+                defaultResourceHandler(r);
+        });
+
         ((TextView) rootView.findViewById(R.id.titRoutineView)).setText(routine.getName());
 
         return rootView;
+    }
+
+    private void defaultResourceHandler(Resource<?> resource) {
+        switch (resource.getStatus()) {
+            case LOADING:
+                Log.d("UI", getString(R.string.loading));
+
+                break;
+            case ERROR:
+                Error error = resource.getError();
+                String message = getString(R.string.error, error.getDescription(), error.getCode());
+                Log.d("UI", message);
+                break;
+        }
+    }
+
+    @Override
+    public void onClick(View v) {
+        toolbar.setTitle(lastTitle);
+        getParentFragmentManager().beginTransaction().replace(R.id.main_nav_host_fragment, lastFragment).commit();
+    }
+
+    public Routine getRoutine() {
+        return routine;
     }
 }

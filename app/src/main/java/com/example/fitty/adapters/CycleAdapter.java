@@ -1,5 +1,6 @@
 package com.example.fitty.adapters;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -9,11 +10,15 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.fitty.FittyApp;
 import com.example.fitty.R;
+import com.example.fitty.RoutineView;
 import com.example.fitty.models.Cycle;
+import com.example.fitty.models.Error;
 import com.example.fitty.models.Exercise;
+import com.example.fitty.repository.Resource;
+import com.example.fitty.repository.Status;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class CycleAdapter extends RecyclerView.Adapter<CycleAdapter.CycleViewHolder> {
@@ -25,12 +30,14 @@ public class CycleAdapter extends RecyclerView.Adapter<CycleAdapter.CycleViewHol
 
     private List<Cycle> data;
     View view;
-    List<Exercise> exercises;
     ExerciseAdapter adapter;
     GridLayoutManager gridLayoutManager;
+    RoutineView routineView;
+    List<Exercise> exercises;
 
-    public CycleAdapter(List<Cycle> data) {
+    public CycleAdapter(List<Cycle> data, RoutineView routineView) {
         this.data = data;
+        this.routineView = routineView;
     }
 
     @NonNull
@@ -50,15 +57,38 @@ public class CycleAdapter extends RecyclerView.Adapter<CycleAdapter.CycleViewHol
 
         RecyclerView listView = view.findViewById(R.id.listExcercises);
 
-        exercises = new ArrayList<>();
-        exercises.add(new Exercise(0, "Jumping Jacks", "Calentamiento", "warmup", 1, 30, 1));
-        exercises.add(new Exercise(1, "Abdominales", "Calentamiento", "warmup", 1, 30, 2));
-        exercises.add(new Exercise(2, "Push Ups", "Calentamiento", "warmup", 1, 30, 3));
+        FittyApp fittyApp = (FittyApp) routineView.getActivity().getApplication();
+        fittyApp.getExerciseRepository().getRoutineCycleExercises(routineView.getRoutine().getId(), current.getId(), 0, 99, "id", "asc").observe(routineView.getActivity(),r->{
+            if(r.getStatus()== Status.SUCCESS){
+                assert r.getData() != null;
+                exercises = r.getData().getResults();
+                Log.d("CANTIDAD", String.valueOf(exercises.size()));
+                current.addExercise(exercises);
+                Log.d("CANTIDAD", String.valueOf(exercises.size()));
 
-        adapter = new ExerciseAdapter(exercises);
-        gridLayoutManager = new GridLayoutManager(view.getContext(), 1);
-        listView.setLayoutManager(gridLayoutManager);
-        listView.setAdapter(adapter);
+                adapter = new ExerciseAdapter(exercises);
+                gridLayoutManager = new GridLayoutManager(view.getContext(), 1);
+                listView.setLayoutManager(gridLayoutManager);
+                listView.setAdapter(adapter);;
+                Log.d("CANTIDAD", String.valueOf(exercises.size()));
+            }
+            else
+                defaultResourceHandler(r);
+        });
+    }
+
+    private void defaultResourceHandler(Resource<?> resource) {
+        switch (resource.getStatus()) {
+            case LOADING:
+                Log.d("UI", routineView.getActivity().getString(R.string.loading));
+
+                break;
+            case ERROR:
+                Error error = resource.getError();
+                String message = routineView.getActivity().getString(R.string.error, error.getDescription(), error.getCode());
+                Log.d("UI", message);
+                break;
+        }
     }
 
     @Override

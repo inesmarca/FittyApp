@@ -75,12 +75,12 @@ public class CategoryRoutines extends Fragment implements View.OnClickListener, 
         RecyclerView listView = rootView.findViewById(R.id.listCategoryRoutines);
 
         FittyApp fittyApp = (FittyApp) getActivity().getApplication();
-        fittyApp.getRoutineRepository().getRoutines(null,"rookie",0,100,"averageRating","asc").observe(getActivity(),r->{
+        fittyApp.getRoutineRepository().getRoutines(null,null,0,200,"averageRating","asc").observe(getActivity(),r->{
             if(r.getStatus()== Status.SUCCESS){
                 assert r.getData() != null;
                 routines = r.getData().getResults();
                 routines.removeIf(routine ->
-                    routine.getCategory().getId()!=idCategory
+                    routine.getCategory().getId() != idCategory
                 );
                 Log.d("IDD", String.format("%d",idCategory));
 
@@ -93,20 +93,11 @@ public class CategoryRoutines extends Fragment implements View.OnClickListener, 
                 defaultResourceHandler(r);
         });
 
-
- 
-
         Spinner orderSpinner = rootView.findViewById(R.id.order_spinner);
 
         orderSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-                //Si i == 0 entonces no selecciono un genero aun
-                /*if(i != 0) {
-                    //A completar
-                    // en genders[i] esta el sexo seleccionado
-                }*/
-
             }
 
             @Override
@@ -157,7 +148,7 @@ public class CategoryRoutines extends Fragment implements View.OnClickListener, 
 
     @Override
     public void OnCategoryRoutineClick(Routine routine) {
-        Fragment fragment = new RoutineView();
+        Fragment fragment = new RoutineView(this);
         Bundle bundle = new Bundle();
         bundle.putSerializable("routine", routine);
         fragment.setArguments(bundle);

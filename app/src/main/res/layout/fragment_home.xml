@@ -1,16 +1,51 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
     tools:context=".Home">
 
-    <include
-        android:id="@+id/card_1"
-        layout="@layout/card_item"
-        app:icon="@drawable/ic_cardio"
-        android:rating="3.5"   />
 
+    <TextView
+        android:id="@+id/titleRecent"
+        style="@style/TextAppearance.MaterialComponents.Headline6"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:text="Rutinas recientes"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="20dp" />
 
-</RelativeLayout>
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/listRecent"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="1" />
+
+    <androidx.appcompat.widget.AppCompatImageView
+        android:id="@+id/imageHome"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:srcCompat="@drawable/fotogym"
+        android:scaleType="fitXY"
+        android:adjustViewBounds="true"
+        android:layout_marginBottom="20dp"/>
+
+    <TextView
+        android:id="@+id/textView2"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:text="Rutinas destacadas"
+        android:layout_marginStart="20dp"
+        style="@style/TextAppearance.MaterialComponents.Headline6"
+        />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/listBest"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="1" />
+</LinearLayout>
