@@ -3,7 +3,7 @@ package com.example.fitty.models;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
-public class Excercise {
+public class Exercise {
     @SerializedName("id")
     @Expose
     private int id;
@@ -18,15 +18,15 @@ public class Excercise {
     private String type;
     @SerializedName("duration")
     @Expose
-    private String duration;
+    private int duration;
     @SerializedName("repetitions")
     @Expose
-    private String repetitions;
+    private int repetitions;
     @SerializedName("order")
     @Expose
-    private String order;
+    private int order;
 
-    public Excercise(int id, String name, String detail, String type, String duration, String repetitions, String order) {
+    public Exercise(int id, String name, String detail, String type, int duration, int repetitions, int order) {
         this.id = id;
         this.name = name;
         this.detail = detail;
@@ -52,15 +52,15 @@ public class Excercise {
         return type;
     }
 
-    public String getDuration() {
+    public int getDuration() {
         return duration;
     }
 
-    public String getRepetitions() {
+    public int getRepetitions() {
         return repetitions;
     }
 
-    public String getOrder() {
+    public int getOrder() {
         return order;
     }
 }
