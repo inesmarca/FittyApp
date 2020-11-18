@@ -29,7 +29,7 @@ import java.util.List;
  * Use the {@link RoutineView#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class RoutineView extends Fragment implements View.OnClickListener {
+public class RoutineView extends SecondaryFragment {
 
    /*Para llamar a la api laburamos con los repositorios. Hagan un getApplication y casteenlo
    a FittyApp, de ahi agarran el repo que necesiten y usan los métodos. Saludos :) */
@@ -40,11 +40,10 @@ public class RoutineView extends Fragment implements View.OnClickListener {
     private CycleAdapter adapter;
     private GridLayoutManager gridLayoutManager;
     private Routine routine;
-    Fragment lastFragment;
-    private String lastTitle;
 
-    public RoutineView(Fragment fragment) {
-        this.lastFragment = fragment;
+    public RoutineView(AllFragments fragment) {
+        super(fragment);
+        setTitle("");
     }
 
     // TODO: Rename and change types and number of parameters
@@ -60,11 +59,6 @@ public class RoutineView extends Fragment implements View.OnClickListener {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
             routine = (Routine) getArguments().getSerializable("routine");
-            toolbar = requireActivity().findViewById(R.id.topAppBar);
-            lastTitle = (String) toolbar.getTitle();
-            toolbar.setTitle("");
-            toolbar.setNavigationIcon(R.drawable.ic_baseline_arrow_back_24);
-            toolbar.setOnClickListener(new backButton());
         }
     }
 
@@ -95,7 +89,8 @@ public class RoutineView extends Fragment implements View.OnClickListener {
         });
 
         ((TextView) rootView.findViewById(R.id.titRoutineView)).setText(routine.getName());
-        ((Button) rootView.findViewById(R.id.buttonInitiate)).setOnClickListener(this);
+        ((Button) rootView.findViewById(R.id.buttonInitiate)).setOnClickListener(new buttonClick());
+        setTopBar();
 
         return rootView;
     }
@@ -118,21 +113,14 @@ public class RoutineView extends Fragment implements View.OnClickListener {
         return routine;
     }
 
-    @Override
-    public void onClick(View v) {
-        Intent intent = new Intent(getActivity(), ExecuteActivity.class);
-        Bundle bundle = new Bundle();
-        bundle.putSerializable("routine", routine);
-        intent.putExtras(bundle);
-        startActivity(intent);
-    }
-
-    public class backButton implements View.OnClickListener {
-
+    public class buttonClick implements View.OnClickListener {
         @Override
         public void onClick(View v) {
-            toolbar.setTitle(lastTitle);
-            getParentFragmentManager().beginTransaction().replace(R.id.main_nav_host_fragment, lastFragment).commit();
+            Intent intent = new Intent(getActivity(), ExecuteActivity.class);
+            Bundle bundle = new Bundle();
+            bundle.putSerializable("routine", routine);
+            intent.putExtras(bundle);
+            startActivity(intent);
         }
     }
 }

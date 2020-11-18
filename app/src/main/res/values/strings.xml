@@ -62,4 +62,7 @@
     <string name="too_short_pass">Debe tener al menos 8 caracteres</string>
     <string name="iniciar_ahora">Iniciar Ahora</string>
     <string name="hint_order">Ordenar</string>
+    <string name="nombre_y_apellido">Nombre y Apellido</string>
+    <string name="fecha_de_nacimiento">Fecha de Nacimiento</string>
+    <string name="profile">Perfil</string>
 </resources>

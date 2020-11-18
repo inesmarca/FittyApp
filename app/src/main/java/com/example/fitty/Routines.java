@@ -26,16 +26,12 @@ import java.util.List;
  * Use the {@link Routines#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class Routines extends Fragment implements CategoriesAdapter.OnCategoryListener {
+public class Routines extends MainFragment implements CategoriesAdapter.OnCategoryListener {
 
     CategoriesAdapter adapter;
     List<Category> categories;
     View rootView;
     GridLayoutManager gridLayoutManager;
-
-    public Routines() {
-        // Required empty public constructor
-    }
 
     // TODO: Rename and change types and number of parameters
     public static Routines newInstance(String param1, String param2) {
@@ -58,31 +54,32 @@ public class Routines extends Fragment implements CategoriesAdapter.OnCategoryLi
 
         RecyclerView listView = rootView.findViewById(R.id.listCategories);
 
-        if(categories==null){
-            FittyApp fitty = (FittyApp) getActivity().getApplication();
-            fitty.getCategoryRepository().getCategories(0,15,"name","asc").observe(getActivity(),r->{
-                if (r.getStatus() == Status.SUCCESS) {
-                    categories = r.getData().getResults();
-                    adapter = new CategoriesAdapter(categories, this);
-                    gridLayoutManager = new GridLayoutManager(getContext(), 2);
-                    orientationChange(getActivity().getResources().getConfiguration());
-                    listView.setLayoutManager(gridLayoutManager);
-                    listView.setAdapter(adapter);
-                } else {
-                    defaultResourceHandler(r);
-                }
-            });
-        }
+
+        FittyApp fitty = (FittyApp) getActivity().getApplication();
+        fitty.getCategoryRepository().getCategories(0,15,"name","asc").observe(getActivity(),r->{
+            if (r.getStatus() == Status.SUCCESS) {
+                categories = r.getData().getResults();
+                adapter = new CategoriesAdapter(categories, this);
+                gridLayoutManager = new GridLayoutManager(getContext(), 2);
+                orientationChange(gridLayoutManager, getActivity().getResources().getConfiguration());
+                listView.setLayoutManager(gridLayoutManager);
+                listView.setAdapter(adapter);
+            } else {
+                defaultResourceHandler(r);
+            }
+        });
+
+        setTitle(getContext().getString(R.string.rutinas));
+        setTopBar();
 
         return rootView;
     }
 
     @Override
     public void OnCategoryClick(Category category) {
-        Fragment fragment = new CategoryRoutines();
+        Fragment fragment = new CategoryRoutines(this, category.getName());
         Bundle bundle = new Bundle();
         bundle.putInt("idCategory", category.getId());
-        bundle.putString("titCategory", category.getName());
         fragment.setArguments(bundle);
         getParentFragmentManager().beginTransaction().replace(R.id.main_nav_host_fragment, fragment).commit();
     }
@@ -103,15 +100,6 @@ public class Routines extends Fragment implements CategoriesAdapter.OnCategoryLi
 
     public void onConfigurationChanged(@NotNull Configuration newConfig) {
         super.onConfigurationChanged(newConfig);
-
-        orientationChange(newConfig);
-    }
-
-    public void orientationChange(Configuration configuration) {
-        if (configuration.orientation == Configuration.ORIENTATION_LANDSCAPE) {
-            gridLayoutManager.setSpanCount(4);
-        } else {
-            gridLayoutManager.setSpanCount(2);
-        }
+        orientationChange(gridLayoutManager, newConfig);
     }
 }

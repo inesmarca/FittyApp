@@ -6,7 +6,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -21,12 +20,7 @@ import com.example.fitty.repository.Status;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * A simple {@link Fragment} subclass.
- * Use the {@link Home#newInstance} factory method to
- * create an instance of this fragment.
- */
-public class Home extends Fragment implements BestAdapter.OnRoutineListener, RecentAdapter.OnRoutineListener {
+public class Home extends MainFragment implements BestAdapter.OnRoutineListener, RecentAdapter.OnRoutineListener {
 
     private View rootView;
     private BestAdapter bestAdapter;
@@ -34,23 +28,10 @@ public class Home extends Fragment implements BestAdapter.OnRoutineListener, Rec
     private List<Routine> listBest;
     private List<Routine> listRecent = new ArrayList<>();
 
-    public Home() {
-        // Required empty public constructor
-    }
-
-    // TODO: Rename and change types and number of parameters
-    public static Home newInstance(String param1, String param2) {
-        Home fragment = new Home();
-        Bundle args = new Bundle();
-        fragment.setArguments(args);
-        return fragment;
-    }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-        }
     }
 
     @Override
@@ -93,16 +74,10 @@ public class Home extends Fragment implements BestAdapter.OnRoutineListener, Rec
             }
         });
 
-        return rootView;
-    }
+        setTitle(getActivity().getResources().getString(R.string.home));
+        setTopBar();
 
-    @Override
-    public void OnRoutineClick(Routine routine) {
-        Fragment fragment = new RoutineView(this);
-        Bundle bundle = new Bundle();
-        bundle.putSerializable("routine", routine);
-        fragment.setArguments(bundle);
-        getParentFragmentManager().beginTransaction().replace(R.id.main_nav_host_fragment, fragment).commit();
+        return rootView;
     }
 
     private void defaultResourceHandler(Resource<?> resource) {

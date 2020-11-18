@@ -8,6 +8,7 @@
     <string name="favoritas">Favorites</string>
     <string name="search">Search</string>
     <string name="content_description_search">Search</string>
+    <string name="iniciar_ahora">Begin Now</string>
 
     <!-- Login y registro -->
     <string name="login_bienvenida">Login to your account</string>
@@ -30,10 +31,9 @@
     <string name="verification_code_bienvenida">Enter the verification code that we sent you by email</string>
     <string name="btn_validate_code">Validate</string>
     <string name="btn_signup_next">Next</string>
-    <string name="logo_categoria">Logo Categoria</string>
-    <string name="logo_categor_a">Logo Categoría</string>
-    <string name="favorita">Favorita</string>
-    <string name="tiempo">Tiempo</string>
+    <string name="logo_categoria">Category Icon</string>
+    <string name="favorita">Favorite</string>
+    <string name="tiempo">Time</string>
     <string name="login">LOGIN</string>
 
     <string name="welcome">Welcome, %1$s!</string>
@@ -61,7 +61,9 @@
     <string name="no_whitespaces">Can not have whitespaces</string>
     <string name="wrong_email_format">Invalid email format</string>
     <string name="too_short_pass">At least 8 characters</string>
-    <string name="hint_order">Ordenar</string>
-
+    <string name="hint_order">Order</string>
+    <string name="nombre_y_apellido">Full Name</string>
+    <string name="fecha_de_nacimiento">Birthday</string>
+    <string name="profile">Profile</string>
 
 </resources>

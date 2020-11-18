@@ -30,7 +30,7 @@ import java.util.List;
  * Use the {@link CategoryRoutines#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class CategoryRoutines extends Fragment implements View.OnClickListener, CategoryRoutinesAdapter.OnCategoryRoutineListener {
+public class CategoryRoutines extends SecondaryFragment implements CategoryRoutinesAdapter.OnCategoryRoutineListener {
 
     private int idCategory;
     private String nameCategory;
@@ -41,16 +41,9 @@ public class CategoryRoutines extends Fragment implements View.OnClickListener, 
     List<Routine> routines;
     GridLayoutManager gridLayoutManager;
 
-    public CategoryRoutines() {
-        // Required empty public constructor
-    }
-
-    // TODO: Rename and change types and number of parameters
-    public static CategoryRoutines newInstance(String param1, String param2) {
-        CategoryRoutines fragment = new CategoryRoutines();
-        Bundle args = new Bundle();
-        fragment.setArguments(args);
-        return fragment;
+    public CategoryRoutines(AllFragments fragment, String title) {
+        super(fragment);
+        setTitle(title);
     }
 
     @Override
@@ -59,10 +52,6 @@ public class CategoryRoutines extends Fragment implements View.OnClickListener, 
         if (getArguments() != null) {
             idCategory = getArguments().getInt("idCategory");
             nameCategory = getArguments().getString("titCategory");
-            toolbar = requireActivity().findViewById(R.id.topAppBar);
-            toolbar.setTitle(nameCategory);
-            toolbar.setNavigationIcon(R.drawable.ic_baseline_arrow_back_24);
-            toolbar.setOnClickListener(this);
         }
     }
 
@@ -70,7 +59,7 @@ public class CategoryRoutines extends Fragment implements View.OnClickListener, 
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View rootView = inflater.inflate(R.layout.fragment_category_routines, container, false);
+        rootView = inflater.inflate(R.layout.fragment_category_routines, container, false);
 
         RecyclerView listView = rootView.findViewById(R.id.listCategoryRoutines);
 
@@ -86,6 +75,7 @@ public class CategoryRoutines extends Fragment implements View.OnClickListener, 
 
                 adapter = new CategoryRoutinesAdapter(routines, this);
                 gridLayoutManager = new GridLayoutManager(getContext(), 2);
+                orientationChange(gridLayoutManager, getActivity().getResources().getConfiguration());
                 listView.setLayoutManager(gridLayoutManager);
                 listView.setAdapter(adapter);
             }
@@ -110,15 +100,9 @@ public class CategoryRoutines extends Fragment implements View.OnClickListener, 
         gendersAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         orderSpinner.setAdapter(gendersAdapter);
 
-        return rootView;
-    }
+        setTopBar();
 
-    @Override
-    public void onClick(View v) {
-        toolbar.setNavigationIcon(R.drawable.ic_account_circle);
-        toolbar.setOnClickListener(null);
-        toolbar.setTitle(R.string.rutinas);
-        getParentFragmentManager().beginTransaction().replace(R.id.main_nav_host_fragment, new Routines()).commit();
+        return rootView;
     }
 
     private void defaultResourceHandler(Resource<?> resource) {
@@ -137,13 +121,7 @@ public class CategoryRoutines extends Fragment implements View.OnClickListener, 
 
     public void onConfigurationChanged(@NotNull Configuration newConfig) {
         super.onConfigurationChanged(newConfig);
-
-        RecyclerView listView = rootView.findViewById(R.id.listCategoryRoutines);
-        if (newConfig.orientation == Configuration.ORIENTATION_LANDSCAPE) {
-            gridLayoutManager.setSpanCount(4);
-        } else {
-            gridLayoutManager.setSpanCount(2);
-        }
+        orientationChange(gridLayoutManager, newConfig);
     }
 
     @Override

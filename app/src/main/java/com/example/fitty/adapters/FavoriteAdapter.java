@@ -76,11 +76,11 @@ public class FavoriteAdapter extends RecyclerView.Adapter<FavoriteAdapter.Favori
 
         @Override
         public void onClick(View v) {
-            onFavoriteListener.OnFavoriteClick(data.get(getAdapterPosition()));
+            onFavoriteListener.OnRoutineClick(data.get(getAdapterPosition()));
         }
     }
 
     public interface OnFavoriteListener {
-        void OnFavoriteClick(Routine routine);
+        void OnRoutineClick(Routine routine);
     }
 }
