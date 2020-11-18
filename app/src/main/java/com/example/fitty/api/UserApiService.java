@@ -2,15 +2,14 @@ package com.example.fitty.api;
 
 import androidx.lifecycle.LiveData;
 
-import com.example.fitty.models.EmailVerification;
-import com.example.fitty.models.PagedList;
-import com.example.fitty.models.Routine;
-import com.example.fitty.models.RoutineExecution;
-import com.example.fitty.models.Token;
-import com.example.fitty.models.User;
-import com.example.fitty.models.UserCredentials;
+import com.example.fitty.api.models.EmailVerification;
+import com.example.fitty.api.models.PagedList;
+import com.example.fitty.api.models.Routine;
+import com.example.fitty.api.models.RoutineExecution;
+import com.example.fitty.api.models.Token;
+import com.example.fitty.api.models.User;
+import com.example.fitty.api.models.UserCredentials;
 
-import retrofit2.Call;
 import retrofit2.http.Body;
 import retrofit2.http.DELETE;
 import retrofit2.http.GET;

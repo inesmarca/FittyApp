@@ -2,8 +2,8 @@ package com.example.fitty.api;
 
 import androidx.lifecycle.LiveData;
 
-import com.example.fitty.models.PagedList;
-import com.example.fitty.models.Rating;
+import com.example.fitty.api.models.PagedList;
+import com.example.fitty.api.models.Rating;
 
 import retrofit2.http.Body;
 import retrofit2.http.GET;

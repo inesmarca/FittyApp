@@ -1,28 +1,52 @@
 package com.example.fitty.repository;
 
 import android.content.Context;
-import android.content.pm.SharedLibraryInfo;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.lifecycle.LiveData;
 
 import com.example.fitty.api.ApiClient;
 import com.example.fitty.api.ApiResponse;
 import com.example.fitty.api.RatingsApiService;
-import com.example.fitty.models.Cycle;
-import com.example.fitty.models.PagedList;
-import com.example.fitty.models.Rating;
+import com.example.fitty.api.UserApiService;
+import com.example.fitty.api.models.PagedList;
+import com.example.fitty.api.models.Rating;
+import com.example.fitty.dbRoom.DB;
 
 public class RatingsRepository {
-    private final RatingsApiService apiService;
-
-    public RatingsRepository(Context context){
-        apiService = ApiClient.create(context,RatingsApiService.class);
+    private  RatingsApiService apiService;
+    private DB database;
+    private AppExecutors executors;
+    public RatingsRepository(AppExecutors executors, RatingsApiService service, DB database) {
+        this.executors = executors;
+        this.apiService = service;
+        this.database = database;
     }
-
     public LiveData<Resource<Rating>> rate (int routineId, Rating rating){
-        return new NetworkBoundResource<Rating,Rating>()
+        return new NetworkBoundResource<Rating,Void>(executors,null,null)
         {
+            @Override
+            protected void saveCallResult(@NonNull Void entity) {
+
+            }
+
+            @Override
+            protected boolean shouldFetch(@Nullable Void entity) {
+                return true;
+            }
+
+            @Override
+            protected boolean shouldPersist(@Nullable Rating model) {
+                return false;
+            }
+
+            @NonNull
+            @Override
+            protected LiveData<Void> loadFromDb() {
+                return EmptyLiveData.create();
+            }
+
             @NonNull
             @Override
             protected LiveData<ApiResponse<Rating>> createCall() {
@@ -31,12 +55,34 @@ public class RatingsRepository {
         }.asLiveData();
     }
     public LiveData<Resource<PagedList<Rating>>> getRoutineRatings (int routineId, int page,int size,String orderBy,String direction){
-        return new NetworkBoundResource<PagedList<Rating>,PagedList<Rating>>()
+        return new NetworkBoundResource<PagedList<Rating>,Void>(executors,null,null)
         {
+
+            @Override
+            protected void saveCallResult(@NonNull Void entity) {
+
+            }
+
+            @Override
+            protected boolean shouldFetch(@Nullable Void entity) {
+                return true;
+            }
+
+            @Override
+            protected boolean shouldPersist(@Nullable PagedList<Rating> model) {
+                return false;
+            }
+
+            @NonNull
+            @Override
+            protected LiveData<Void> loadFromDb() {
+                return EmptyLiveData.create();
+            }
+
             @NonNull
             @Override
             protected LiveData<ApiResponse<PagedList<Rating>>> createCall() {
-                return apiService.getRoutineRatings(routineId,page,size,orderBy,direction);
+                return apiService.getRoutineRatings(routineId, page, size, orderBy, direction);
             }
         }.asLiveData();
     }

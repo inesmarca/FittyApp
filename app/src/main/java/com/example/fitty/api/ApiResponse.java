@@ -1,6 +1,6 @@
 package com.example.fitty.api;
 
-import com.example.fitty.models.Error;
+import com.example.fitty.api.models.Error;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 

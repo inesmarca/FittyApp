@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:paddingTop="20dp"
     android:orientation="vertical"
-    tools:context=".UserProfile">
+    tools:context=".ui.UserProfile">
 
     <RelativeLayout
         android:layout_width="match_parent"

@@ -10,7 +10,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.fitty.R;
-import com.example.fitty.models.Category;
+import com.example.fitty.api.models.Category;
 
 import java.util.List;
 

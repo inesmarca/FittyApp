@@ -3,11 +3,10 @@ package com.example.fitty.api;
 import android.content.Context;
 
 import com.example.fitty.BuildConfig;
-import com.example.fitty.models.DateFormatter;
+import com.example.fitty.api.models.DateFormatter;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
-import java.sql.Time;
 import java.util.Date;
 import java.util.concurrent.TimeUnit;
 

@@ -3,7 +3,8 @@ package com.example.fitty.repository;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
-import com.example.fitty.models.Error;
+
+import com.example.fitty.api.models.Error;
 
 import static com.example.fitty.repository.Status.ERROR;
 import static com.example.fitty.repository.Status.LOADING;
@@ -43,11 +44,10 @@ public class Resource<T> {
     }
 
     public static <T> Resource<T> error(Error error, @Nullable T data) {
-        return new Resource<>(ERROR, data, error);
+        return new Resource<T>(ERROR, data, error);
     }
 
     public static <T> Resource<T> loading(@Nullable T data) {
         return new Resource<>(LOADING, data, null);
     }
 }
-

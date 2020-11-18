@@ -13,7 +13,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.fitty.R;
-import com.example.fitty.models.Routine;
+import com.example.fitty.api.models.Routine;
 
 import java.util.List;
 

@@ -12,12 +12,13 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.fitty.FittyApp;
 import com.example.fitty.R;
-import com.example.fitty.RoutineView;
-import com.example.fitty.models.Cycle;
-import com.example.fitty.models.Error;
-import com.example.fitty.models.Exercise;
+
+import com.example.fitty.api.models.Cycle;
+import com.example.fitty.api.models.Error;
+import com.example.fitty.api.models.Exercise;
 import com.example.fitty.repository.Resource;
 import com.example.fitty.repository.Status;
+import com.example.fitty.ui.RoutineView;
 
 import java.util.List;
 

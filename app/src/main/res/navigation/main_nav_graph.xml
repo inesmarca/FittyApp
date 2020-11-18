@@ -11,28 +11,28 @@
     <fragment
         android:id="@+id/home"
         android:label="@string/home"
-        android:name="com.example.fitty.Home"
+        android:name="com.example.fitty.ui.Home"
         tools:layout="@layout/fragment_home">
     </fragment>
 
     <fragment
         android:label="@string/favoritas"
         android:id="@+id/favorites"
-        android:name="com.example.fitty.Favoritas"
+        android:name="com.example.fitty.ui.Favoritas"
         tools:layout="@layout/fragment_favoritas">
     </fragment>
 
     <fragment
         android:label="@string/progreso"
         android:id="@+id/progress"
-        android:name="com.example.fitty.Progress"
+        android:name="com.example.fitty.ui.Progress"
         tools:layout="@layout/fragment_progress">
     </fragment>
 
     <fragment
         android:label="@string/rutinas"
         android:id="@+id/rutines"
-        android:name="com.example.fitty.Routines"
+        android:name="com.example.fitty.ui.Routines"
         tools:layout="@layout/fragment_routines">
         <action
             android:id="@+id/category_routines"
@@ -40,7 +40,7 @@
     </fragment>
     <fragment
         android:id="@+id/categoryRoutines"
-        android:name="com.example.fitty.CategoryRoutines"
+        android:name="com.example.fitty.ui.CategoryRoutines"
         android:label="fragment_category_routines"
         tools:layout="@layout/fragment_category_routines" />
 

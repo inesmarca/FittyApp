@@ -1,5 +1,7 @@
 package com.example.fitty.adapters;
 
+import android.app.Activity;
+import android.app.Application;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,8 +13,10 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.fitty.FittyApp;
 import com.example.fitty.R;
-import com.example.fitty.models.Routine;
+import com.example.fitty.api.models.Category;
+import com.example.fitty.api.models.Routine;
 
 import java.util.List;
 
@@ -20,9 +24,11 @@ public class BestAdapter extends RecyclerView.Adapter<BestAdapter.BestViewHolder
 
     private List<Routine> data;
     private OnRoutineListener mOnRoutineListener;
+    private Application application;
 
-    public BestAdapter(List<Routine> data, OnRoutineListener onRoutineListener) {
+    public BestAdapter(List<Routine> data, OnRoutineListener onRoutineListener, Application application) {
         this.data = data;
+        this.application = application;
         this.mOnRoutineListener = onRoutineListener;
     }
 
@@ -37,7 +43,7 @@ public class BestAdapter extends RecyclerView.Adapter<BestAdapter.BestViewHolder
     @Override
     public void onBindViewHolder(@NonNull BestViewHolder holder, int position) {
         Routine current = data.get(position);
-
+        FittyApp fittyApp = (FittyApp) application;
         holder.titRoutine.setText(current.getName());
         holder.category.setImageResource(current.getCategory().getIcon());
         holder.rating.setRating(current.getRating());

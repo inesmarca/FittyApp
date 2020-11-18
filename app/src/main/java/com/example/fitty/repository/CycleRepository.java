@@ -3,24 +3,70 @@ package com.example.fitty.repository;
 import android.content.Context;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.lifecycle.LiveData;
 
 import com.example.fitty.api.ApiClient;
 import com.example.fitty.api.ApiResponse;
 import com.example.fitty.api.CycleApiService;
-import com.example.fitty.models.Cycle;
-import com.example.fitty.models.PagedList;
+import com.example.fitty.api.UserApiService;
+import com.example.fitty.api.models.Cycle;
+import com.example.fitty.api.models.PagedList;
+import com.example.fitty.dbRoom.DB;
+import com.example.fitty.dbRoom.entitys.CycleEntity;
+
+import java.util.List;
+import java.util.concurrent.TimeUnit;
+import java.util.stream.Collectors;
+
+import static java.util.stream.Collectors.toList;
 
 public class CycleRepository {
-    private final CycleApiService apiService;
+    private  CycleApiService apiService;
+    private DB database;
+    private AppExecutors executors;
 
-    public CycleRepository(Context context){
-        this.apiService = ApiClient.create(context,CycleApiService.class);
+    private RateLimiter<String> rateLimit = new RateLimiter<>(10, TimeUnit.MINUTES);
+    private static final String RATE_LIMITER_ALL_KEY = "@@all@@";
+    public CycleRepository(AppExecutors executors, CycleApiService service, DB database) {
+        this.executors = executors;
+        this.apiService = service;
+        this.database = database;
     }
 
     public LiveData<Resource<PagedList<Cycle>>> getRoutineCycles (int routineId,int page,int size,String orderBy,String direction){
-        return new NetworkBoundResource<PagedList<Cycle>, PagedList<Cycle>>()
+        return new NetworkBoundResource<PagedList<Cycle>, List<CycleEntity>>(executors,
+                entities -> new PagedList<>(0,orderBy,direction,
+                        entities.stream().map(entity->
+                                new Cycle(entity.id,entity.name,entity.detail,entity.type,entity.order,entity.repetitions))
+                        .collect(toList()),size,page,false),
+                domain -> domain.getResults().stream().map(cycle ->
+                        new CycleEntity(cycle.getId(),cycle.getName(),cycle.getDetail(),cycle.getType(),cycle.getOrder(),cycle.getRepetitions()))
+                        .collect(toList())
+                )
         {
+            @Override
+            protected void saveCallResult(@NonNull List<CycleEntity> entities) {
+                database.cycleDao().deleteAll();
+                database.cycleDao().insert(entities);
+            }
+
+            @Override
+            protected boolean shouldFetch(@Nullable List<CycleEntity> entities) {
+                return ((entities == null) || (entities.size() == 0) || rateLimit.shouldFetch(RATE_LIMITER_ALL_KEY));
+            }
+
+            @Override
+            protected boolean shouldPersist(@Nullable PagedList<Cycle> model) {
+                return true;
+            }
+
+            @NonNull
+            @Override
+            protected LiveData<List<CycleEntity>> loadFromDb() {
+                return database.cycleDao().findAll();
+            }
+
             @NonNull
             @Override
             protected LiveData<ApiResponse<PagedList<Cycle>>> createCall() {
@@ -29,8 +75,35 @@ public class CycleRepository {
         }.asLiveData();
     }
     public LiveData<Resource<Cycle>> getRoutineCycle(int routineId,int cycleId){
-        return new NetworkBoundResource<Cycle,Cycle>()
+        return new NetworkBoundResource<Cycle,CycleEntity>(executors,
+                entity -> new Cycle(entity.id,entity.name,entity.detail,entity.type,entity.order,entity.repetitions),
+
+                domain -> new CycleEntity(domain.getId(),domain.getName(),domain.getDetail(),domain.getType(),domain.getOrder(),domain.getRepetitions())
+
+                )
         {
+            @Override
+            protected void saveCallResult(@NonNull CycleEntity entity) {
+                database.cycleDao().insert(entity);
+
+            }
+
+            @Override
+            protected boolean shouldFetch(@Nullable CycleEntity entity) {
+                return (entity == null);
+            }
+
+            @Override
+            protected boolean shouldPersist(@Nullable Cycle model) {
+                return true;
+            }
+
+            @NonNull
+            @Override
+            protected LiveData<CycleEntity> loadFromDb() {
+                return database.cycleDao().findById(cycleId);
+            }
+
             @NonNull
             @Override
             protected LiveData<ApiResponse<Cycle>> createCall() {
