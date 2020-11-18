@@ -19,6 +19,7 @@ import com.example.fitty.api.ApiResponse;
 import com.example.fitty.api.RoutineApiService;
 import com.example.fitty.api.UserApiService;
 import com.example.fitty.api.models.Category;
+import com.example.fitty.api.models.Error;
 import com.example.fitty.api.models.PagedList;
 import com.example.fitty.api.models.Routine;
 import com.example.fitty.api.models.RoutineExecution;
@@ -38,13 +39,17 @@ public class RoutineRepository {
     private RoutineApiService apiService;
     private AppExecutors executors;
     private DB database;
+    private  Category category;
+    private  Category _category;
+    private CategoryRepository categoryRepository;
     private RateLimiter<String> rateLimit = new RateLimiter<>(10, TimeUnit.MINUTES);
     private static final String RATE_LIMITER_ALL_KEY = "@@all@@";
 
-    public RoutineRepository(AppExecutors executors, RoutineApiService service, DB database) {
+    public RoutineRepository(AppExecutors executors, RoutineApiService service, DB database, CategoryRepository categoryRepository) {
         this.executors = executors;
         this.apiService = service;
         this.database = database;
+        this.categoryRepository  = categoryRepository;
     }
     /*
     private Routine entityToDomain (RoutineEntity entity){
@@ -69,7 +74,16 @@ public class RoutineRepository {
 
                                             });*/
                                             System.out.println("ESTOY ACA");
-                                            return new Routine(entity.name, entity.detail, entity.difficulty,entity.categoryId, entity.creatorId);
+                                            categoryRepository.getCategory(entity.categoryId).observe(activity,v->{
+                                                if(v.getStatus()==Status.SUCCESS){
+                                                    category=v.getData();
+
+                                                }
+                                                else
+                                                    defaultResourceHandler(v);
+
+                                            });
+                                            return new Routine(entity.name, entity.detail, entity.difficulty,category, entity.creatorId);
 
                                         }
 
@@ -173,9 +187,18 @@ public class RoutineRepository {
             }
         }.asLiveData();
     }
-    public LiveData<Resource<Routine>> getRoutine(int routineId) {
-        return new NetworkBoundResource<Routine, RoutineEntity>(executors, entity ->
-                new Routine(entity.name,entity.detail,entity.difficulty,entity.categoryId,entity.creatorId),
+    public LiveData<Resource<Routine>> getRoutine(MainActivity activity, int routineId) {
+        return new NetworkBoundResource<Routine, RoutineEntity>(executors, entity -> {
+            categoryRepository.getCategory(entity.categoryId).observe(activity,v->{
+                if(v.getStatus()==Status.SUCCESS){
+                    _category = v.getData();
+                }
+                else
+                    defaultResourceHandler(v);
+            });
+            return new Routine(entity.name, entity.detail, entity.difficulty,_category, entity.creatorId);
+
+        },
                 routine ->
                 new RoutineEntity(routine.getId(),routine.getDetail(),routine.getAverageRating(),routine.getName(),routine.getCreator().getId(),routine.getCategory().getId(),routine.getDifficulty())) {
 
@@ -208,5 +231,19 @@ public class RoutineRepository {
         }.asLiveData();
     }    private Category parseCategory(CategoryEntity categoryEntity){
         return new Category(categoryEntity.id,categoryEntity.name,categoryEntity.detail);
+    }
+
+    private void defaultResourceHandler(Resource<?> resource) {
+        switch (resource.getStatus()) {
+            case LOADING:
+                Log.d("UI", "CARGANDO");
+
+                break;
+            case ERROR:
+                Error error = resource.getError();
+                String message =  error.getDescription() + error.getCode();
+                Log.d("UI", message);
+                break;
+        }
     }
 }

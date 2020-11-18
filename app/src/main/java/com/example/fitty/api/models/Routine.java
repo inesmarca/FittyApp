@@ -184,4 +184,9 @@ public class Routine implements Serializable {
         cycles.add(cycle);
     }
 
+    public void addCycle(List<Cycle> _cycles) {
+        cycles.addAll(_cycles);
+    }
+
+
 }

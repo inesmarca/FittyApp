@@ -75,7 +75,7 @@ public class FittyApp extends Application {
 
         userRepository = new UserRepository(appExecutors,userService,database);
         categoryRepository=new CategoryRepository(appExecutors,categoryApiService,database);
-        routineRepository = new RoutineRepository(appExecutors,routineApiService,database);
+        routineRepository = new RoutineRepository(appExecutors,routineApiService,database,categoryRepository);
         videosRepository = new VideosRepository(appExecutors,videoApiService,database);
         exerciseRepository = new ExerciseRepository(appExecutors,exerciseApiService,database);
         cycleRepository = new CycleRepository(appExecutors,cycleApiService,database);

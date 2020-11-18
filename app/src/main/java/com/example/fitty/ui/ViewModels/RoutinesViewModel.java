@@ -1,5 +1,6 @@
 package com.example.fitty.ui.ViewModels;
 
+import android.app.Activity;
 import android.app.Application;
 
 import androidx.lifecycle.LiveData;
@@ -29,8 +30,9 @@ public class RoutinesViewModel extends RepoViewModel<RoutineRepository> {
     private final List<Routine> allRoutines = new ArrayList<>();
     private final MediatorLiveData<Resource<List<Routine>>> routines = new MediatorLiveData<>();
     private final LiveData<Resource<Routine>> routine;
+    private  MainActivity activity;
 
-    public RoutinesViewModel(RoutineRepository repository) {
+    public RoutinesViewModel(RoutineRepository repository, MainActivity activity) {
         super(repository);
 
         MutableLiveData<Integer> routineId1 = new MutableLiveData<>();
@@ -38,7 +40,7 @@ public class RoutinesViewModel extends RepoViewModel<RoutineRepository> {
             if (routineId == null) {
                 return EmptyLiveData.create();
             } else {
-                return repository.getRoutine(routineId);
+                return repository.getRoutine(activity,routineId);
             }
         });
 

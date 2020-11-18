@@ -26,7 +26,7 @@ public class BestAdapter extends RecyclerView.Adapter<BestAdapter.BestViewHolder
     private OnRoutineListener mOnRoutineListener;
     private Application application;
 
-    public BestAdapter(List<Routine> data, OnRoutineListener onRoutineListener, Application application) {
+    public BestAdapter(List<Routine> data, OnRoutineListener onRoutineListener) {
         this.data = data;
         this.application = application;
         this.mOnRoutineListener = onRoutineListener;

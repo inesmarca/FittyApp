@@ -12,9 +12,11 @@ import com.example.fitty.api.CategoryApiService;
 import com.example.fitty.api.models.Category;
 import com.example.fitty.api.models.Cycle;
 import com.example.fitty.api.models.PagedList;
+import com.example.fitty.api.models.Routine;
 import com.example.fitty.dbRoom.DB;
 import com.example.fitty.dbRoom.entitys.CategoryEntity;
 import com.example.fitty.dbRoom.entitys.CycleEntity;
+import com.example.fitty.dbRoom.entitys.RoutineEntity;
 
 import java.util.List;
 import java.util.concurrent.TimeUnit;
@@ -28,11 +30,13 @@ public class CategoryRepository {
     private CategoryApiService service;
     private DB database;
     private RateLimiter<String> rateLimit = new RateLimiter<>(10, TimeUnit.MINUTES);
+
     public CategoryRepository(AppExecutors executors, CategoryApiService service, DB database) {
         this.service = service;
         this.database=database;
         this.executors=executors;
     }
+
 
     public LiveData<Resource<PagedList<Category>>> getCategories(int page,int size,String orderBy,String direction) {
         return new NetworkBoundResource<PagedList<Category>, List<CategoryEntity>>(executors,
@@ -75,6 +79,40 @@ public class CategoryRepository {
             @Override
             protected LiveData<ApiResponse<PagedList<Category>>> createCall() {
                 return service.getCategories(page, size, orderBy, direction);
+            }
+        }.asLiveData();
+    }
+    public LiveData<Resource<Category>> getCategory(int categoryId){
+        return new NetworkBoundResource<Category, CategoryEntity>(executors, entity ->
+                new Category(entity.id,entity.name,entity.detail),
+                category ->
+                        new CategoryEntity(category.getId(),category.getName(),category.getDetail())) {
+
+            @Override
+            protected void saveCallResult(@NonNull CategoryEntity entity) {
+                database.categoryDao().insert(entity);
+            }
+
+            @Override
+            protected boolean shouldFetch(@Nullable CategoryEntity entity) {
+                return (entity == null);
+            }
+
+            @Override
+            protected boolean shouldPersist(@Nullable Category model) {
+                return true;
+            }
+
+            @NonNull
+            @Override
+            protected LiveData<CategoryEntity> loadFromDb() {
+                return database.categoryDao().findById(categoryId);
+            }
+
+            @NonNull
+            @Override
+            protected LiveData<ApiResponse<Category>> createCall() {
+                return service.getCategory(categoryId);
             }
         }.asLiveData();
     }
