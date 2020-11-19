@@ -58,7 +58,8 @@ public class SignupActivity extends AppCompatActivity {
         FittyApp app = (FittyApp) getApplication();
         AppPreferences preferences = new AppPreferences(app);
 
-        if(preferences.getAuthToken().length() > 0) {
+
+        if(preferences.getAuthToken() != null && preferences.getAuthToken().length() > 0) {
             //Logeado
             Intent goToMain = new Intent(this, MainActivity.class);
             startActivity(goToMain);

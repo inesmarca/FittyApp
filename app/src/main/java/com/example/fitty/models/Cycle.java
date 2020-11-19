@@ -74,6 +74,10 @@ public class Cycle implements Serializable {
         exercises.addAll(listExercises);
     }
 
+    public List<Exercise> getExercises() {
+        return this.exercises;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;

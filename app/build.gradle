@@ -38,6 +38,8 @@ android {
 }
 
 dependencies {
+    implementation fileTree(dir: 'libs', include: ['*.jar'])
+
     def lifecycle_version = "2.2.0"
 
     def ok_http ="4.9.0"

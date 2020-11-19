@@ -66,4 +66,14 @@
     <string name="fecha_de_nacimiento">Birthday</string>
     <string name="profile">Profile</string>
 
+    <!-- Ejecucion de una rutina -->
+    <string name="preparate">Get ready</string>
+    <string name="comenzando">Starting in %1$d</string>
+    <string name="cancel_execution">Are you sure you want to cancel the execution?</string>
+    <string name="yes">Yes</string>
+    <string name="no">No</string>
+    <string name="titulo_ejecucion_terminada">Congratulations! You finished the routine.</string>
+    <string name="mensaje_ejecucion_terminada">It took you %1$d minutes and %2$d seconds.</string>
+    <string name="ok">Ok</string>
+
 </resources>

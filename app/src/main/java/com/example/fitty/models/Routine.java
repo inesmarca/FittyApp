@@ -133,4 +133,6 @@ public class Routine implements Serializable {
         cycles.addAll(listCycles);
     }
 
+    public List<Cycle> getCycles() { return this.cycles; }
+
 }

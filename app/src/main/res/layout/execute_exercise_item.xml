@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    android:id="@+id/linearLayoutExecuteExercise"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="horizontal"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:gravity="center_vertical">
+    <TextView
+        android:layout_marginVertical="30dp"
+        android:layout_width="0dp"
+        android:layout_weight="0.2"
+        android:layout_height="wrap_content"
+        android:textAlignment="center"
+        android:text="0:30"
+        android:textColor="@color/black"
+        android:textSize="17sp"
+        android:textStyle="bold"
+        android:id="@+id/viewExecuteExerciseCant"/>
+    <TextView
+        android:layout_width="0dp"
+        android:layout_weight="0.8"
+        android:layout_height="wrap_content"
+        android:textAlignment="textStart"
+        android:layout_marginEnd="15dp"
+        android:text="Sentadillas profundas"
+        android:textColor="@color/black"
+        android:textSize="17sp"
+        android:textStyle="bold"
+        android:id="@+id/viewExecuteExerciseName"/>
+
+    <ImageButton
+        android:id="@+id/radioExerciseFinished"
+        android:visibility="gone"
+        android:background="@color/transparent"
+        android:tint="@color/gray"
+        android:layout_width="0dp"
+        android:layout_weight="0.2"
+        android:layout_height="wrap_content"/>
+
+</LinearLayout>

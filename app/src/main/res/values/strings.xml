@@ -65,4 +65,15 @@
     <string name="nombre_y_apellido">Nombre y Apellido</string>
     <string name="fecha_de_nacimiento">Fecha de Nacimiento</string>
     <string name="profile">Perfil</string>
+
+    <!-- Ejecucion de una rutina -->
+    <string name="preparate">Prepárate</string>
+    <string name="comenzando">Comenzando en %1$d</string>
+    <string name="cancel_execution">¿Seguro desea cancelar la ejecución?</string>
+    <string name="yes">Si</string>
+    <string name="no">No</string>
+    <string name="titulo_ejecucion_terminada">Felicitaciones! Terminaste la rutina.</string>
+    <string name="mensaje_ejecucion_terminada">Te tomó %1$d minutos y %2$d segundos.</string>
+    <string name="ok">Ok</string>
+>>>>>>> Stashed changes
 </resources>
