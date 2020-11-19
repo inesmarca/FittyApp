@@ -6,6 +6,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -16,6 +17,7 @@ import com.example.fitty.models.Routine;
 import com.example.fitty.models.RoutineExecution;
 import com.example.fitty.repository.Resource;
 import com.example.fitty.repository.Status;
+import com.google.android.material.appbar.MaterialToolbar;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -38,6 +40,7 @@ public class Home extends MainFragment implements BestAdapter.OnRoutineListener,
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         rootView = inflater.inflate(R.layout.fragment_home, container, false);
+
         FittyApp fitty = (FittyApp) getActivity().getApplication();
 
         RecyclerView recentRecyler = rootView.findViewById(R.id.listRecent);
@@ -77,6 +80,14 @@ public class Home extends MainFragment implements BestAdapter.OnRoutineListener,
         setTitle(getActivity().getResources().getString(R.string.home));
         setTopBar();
 
+        MaterialToolbar toolbar = requireActivity().findViewById(R.id.topAppBar);
+        toolbar.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Navigation.findNavController(rootView).navigate(R.id.action_home_to_userProfile);
+            }
+        });
+
         return rootView;
     }
 
@@ -92,5 +103,12 @@ public class Home extends MainFragment implements BestAdapter.OnRoutineListener,
                 Log.d("UI", message);
                 break;
         }
+    }
+
+    @Override
+    public void OnRoutineClick(Routine routine) {
+        Bundle bundle = new Bundle();
+        bundle.putSerializable("routine", routine);
+        Navigation.findNavController(rootView).navigate(R.id.action_home_to_routineView, bundle);
     }
 }

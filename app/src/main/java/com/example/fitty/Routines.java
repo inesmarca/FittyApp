@@ -8,6 +8,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import androidx.fragment.app.Fragment;
+import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -16,6 +17,7 @@ import com.example.fitty.models.Category;
 import com.example.fitty.models.Error;
 import com.example.fitty.repository.Resource;
 import com.example.fitty.repository.Status;
+import com.google.android.material.appbar.MaterialToolbar;
 
 import org.jetbrains.annotations.NotNull;
 
@@ -72,16 +74,22 @@ public class Routines extends MainFragment implements CategoriesAdapter.OnCatego
         setTitle(getContext().getString(R.string.rutinas));
         setTopBar();
 
+        MaterialToolbar toolbar = requireActivity().findViewById(R.id.topAppBar);
+        toolbar.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Navigation.findNavController(rootView).navigate(R.id.action_rutines_to_userProfile);
+            }
+        });
+
         return rootView;
     }
 
     @Override
     public void OnCategoryClick(Category category) {
-        Fragment fragment = new CategoryRoutines(this, category.getName());
         Bundle bundle = new Bundle();
-        bundle.putInt("idCategory", category.getId());
-        fragment.setArguments(bundle);
-        getParentFragmentManager().beginTransaction().replace(R.id.main_nav_host_fragment, fragment).commit();
+        bundle.putSerializable("category", category);
+        Navigation.findNavController(rootView).navigate(R.id.category_routines, bundle);
     }
 
     private void defaultResourceHandler(Resource<?> resource) {

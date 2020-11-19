@@ -7,6 +7,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -15,6 +16,7 @@ import com.example.fitty.models.Error;
 import com.example.fitty.models.Routine;
 import com.example.fitty.repository.Resource;
 import com.example.fitty.repository.Status;
+import com.google.android.material.appbar.MaterialToolbar;
 
 import org.jetbrains.annotations.NotNull;
 
@@ -53,6 +55,14 @@ public class Favoritas extends MainFragment implements FavoriteAdapter.OnFavorit
         setTitle(getContext().getString(R.string.favoritas));
         setTopBar();
 
+        MaterialToolbar toolbar = requireActivity().findViewById(R.id.topAppBar);
+        toolbar.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Navigation.findNavController(rootView).navigate(R.id.action_favorites_to_userProfile);
+            }
+        });
+
         return rootView;
     }
 
@@ -73,5 +83,12 @@ public class Favoritas extends MainFragment implements FavoriteAdapter.OnFavorit
                 Log.d("UI", message);
                 break;
         }
+    }
+
+    @Override
+    public void OnRoutineClick(Routine routine) {
+        Bundle bundle = new Bundle();
+        bundle.putSerializable("routine", routine);
+        Navigation.findNavController(rootView).navigate(R.id.action_favorites_to_routineView, bundle);
     }
 }

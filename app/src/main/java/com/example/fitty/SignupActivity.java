@@ -1,23 +1,16 @@
 package com.example.fitty;
 
 import android.app.DatePickerDialog;
-import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
 import android.view.View;
-import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
-import android.widget.EditText;
-import android.widget.TextView;
 import android.widget.DatePicker;
 import android.widget.Toast;
 
-import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
@@ -31,15 +24,6 @@ import com.google.android.material.textfield.TextInputLayout;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.time.Period;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.List;
-
-
-import java.util.Locale;
 
 public class SignupActivity extends AppCompatActivity {
 
@@ -57,14 +41,6 @@ public class SignupActivity extends AppCompatActivity {
 
         FittyApp app = (FittyApp) getApplication();
         AppPreferences preferences = new AppPreferences(app);
-
-
-        if(preferences.getAuthToken() != null && preferences.getAuthToken().length() > 0) {
-            //Logeado
-            Intent goToMain = new Intent(this, MainActivity.class);
-            startActivity(goToMain);
-        }
-
 
         binding = SignupActivityBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());

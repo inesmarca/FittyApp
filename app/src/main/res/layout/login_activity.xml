@@ -37,7 +37,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/viewLoginBienvenida"
-        android:hint="@string/field_email"
+        android:hint="@string/field_username"
         android:textColor="@color/black"
         android:textColorHint="@color/black" >
         <com.google.android.material.textfield.TextInputEditText

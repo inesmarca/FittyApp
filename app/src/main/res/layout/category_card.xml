@@ -30,7 +30,7 @@
                     android:layout_marginVertical="10dp"
                     android:scaleType="centerCrop"
                     app:srcCompat="@drawable/ic_cardio"
-                    android:contentDescription="@string/logo_categor_a" />
+                    android:contentDescription="@string/logo_categoria" />
 
             </RelativeLayout>
 

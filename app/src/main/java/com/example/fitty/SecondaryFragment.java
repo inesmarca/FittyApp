@@ -2,6 +2,8 @@ package com.example.fitty;
 
 import android.view.View;
 
+import androidx.navigation.Navigation;
+
 import com.google.android.material.appbar.MaterialToolbar;
 
 public class SecondaryFragment extends AllFragments implements View.OnClickListener {
@@ -9,22 +11,15 @@ public class SecondaryFragment extends AllFragments implements View.OnClickListe
     MaterialToolbar toolbar;
     AllFragments lastFragment;
 
-    public SecondaryFragment(AllFragments fragment) {
-        lastFragment = fragment;
-    }
-
-    @Override
-    public void onClick(View v) {
-        toolbar.setNavigationIcon(R.drawable.ic_account_circle);
-        toolbar.setOnClickListener(null);
-        toolbar.setTitle(lastFragment.getTitFragment());
-        getParentFragmentManager().beginTransaction().replace(R.id.main_nav_host_fragment, lastFragment).commit();
-    }
-
     public void setTopBar() {
         toolbar = requireActivity().findViewById(R.id.topAppBar);
         toolbar.setTitle(titFragment);
         toolbar.setNavigationIcon(R.drawable.ic_baseline_arrow_back_24);
         toolbar.setOnClickListener(this);
+    }
+
+    @Override
+    public void onClick(View v) {
+        Navigation.findNavController(requireView()).navigateUp();
     }
 }

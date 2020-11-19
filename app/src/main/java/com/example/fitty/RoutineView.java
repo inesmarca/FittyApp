@@ -1,5 +1,6 @@
 package com.example.fitty;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -10,6 +11,7 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import androidx.fragment.app.Fragment;
+import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -41,14 +43,9 @@ public class RoutineView extends SecondaryFragment {
     private GridLayoutManager gridLayoutManager;
     private Routine routine;
 
-    public RoutineView(AllFragments fragment) {
-        super(fragment);
-        setTitle("");
-    }
-
     // TODO: Rename and change types and number of parameters
     public static RoutineView newInstance(CategoryRoutines categoryRoutines) {
-        RoutineView fragment = new RoutineView(categoryRoutines);
+        RoutineView fragment = new RoutineView();
         Bundle args = new Bundle();
         fragment.setArguments(args);
         return fragment;
@@ -62,6 +59,7 @@ public class RoutineView extends SecondaryFragment {
         }
     }
 
+    @SuppressLint("RestrictedApi")
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -91,6 +89,37 @@ public class RoutineView extends SecondaryFragment {
         ((TextView) rootView.findViewById(R.id.titRoutineView)).setText(routine.getName());
         ((Button) rootView.findViewById(R.id.buttonInitiate)).setOnClickListener(new buttonClick());
         setTopBar();
+        toolbar = getActivity().findViewById(R.id.topAppBar);
+        getActivity().getMenuInflater().inflate(R.menu.top_bar, toolbar.getMenu());
+
+
+        toolbar.findViewById(R.id.share).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Log.d("SHARE", "CLICKED");
+                Intent sendIntent = new Intent();
+                sendIntent.setAction(Intent.ACTION_SEND);
+                sendIntent.putExtra(Intent.EXTRA_TEXT, "http://www.fitty.com/id/" + routine.getId());
+                sendIntent.setType("text/plain");
+                Intent shareIntent = Intent.createChooser(sendIntent, null);
+                startActivity(shareIntent);
+            }
+        });
+
+        toolbar.findViewById(R.id.like).setOnClickListener(new View.OnClickListener() {
+            @SuppressLint("UseCompatLoadingForDrawables")
+            @Override
+            public void onClick(View v) {
+                Log.d("LIKE", "CLICKED");
+                FittyApp fitty = (FittyApp) getActivity().getApplication();
+                if (!routine.isFavorite()) {
+                    fitty.getUserRepository().favRoutine(routine.getId()).observe(getActivity(),r-> toolbar.getMenu().getItem(1).setIcon(R.drawable.ic_favorite_full));
+                } else {
+                    fitty.getUserRepository().unfavRoutine(routine.getId()).observe(getActivity(),r-> toolbar.getMenu().getItem(1).setIcon(R.drawable.ic_favorite_border_black));
+                }
+
+            }
+        });
 
         return rootView;
     }
@@ -122,5 +151,10 @@ public class RoutineView extends SecondaryFragment {
             intent.putExtras(bundle);
             startActivity(intent);
         }
+    }
+
+    public void onClick(View v) {
+        toolbar.getMenu().clear();
+        Navigation.findNavController(rootView).navigateUp();
     }
 }

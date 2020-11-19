@@ -6,42 +6,80 @@
     app:startDestination="@id/home"
     android:id="@+id/main_nav_graph.xml">
 
-
-
     <fragment
         android:id="@+id/home"
-        android:label="@string/home"
         android:name="com.example.fitty.Home"
+        android:label="@string/home"
         tools:layout="@layout/fragment_home">
+        <action
+            android:id="@+id/action_home_to_routineView"
+            app:destination="@id/routineView" />
+        <action
+            android:id="@+id/action_home_to_userProfile"
+            app:destination="@id/userProfile" />
+        <action
+            android:id="@+id/action_home_self"
+            app:destination="@id/home" />
     </fragment>
 
     <fragment
-        android:label="@string/favoritas"
         android:id="@+id/favorites"
         android:name="com.example.fitty.Favoritas"
+        android:label="@string/favoritas"
         tools:layout="@layout/fragment_favoritas">
+        <action
+            android:id="@+id/action_favorites_to_routineView"
+            app:destination="@id/routineView" />
+        <action
+            android:id="@+id/action_favorites_to_userProfile"
+            app:destination="@id/userProfile" />
     </fragment>
 
     <fragment
-        android:label="@string/progreso"
         android:id="@+id/progress"
         android:name="com.example.fitty.Progress"
+        android:label="@string/progreso"
         tools:layout="@layout/fragment_progress">
+        <action
+            android:id="@+id/action_progress_to_userProfile"
+            app:destination="@id/userProfile" />
     </fragment>
 
     <fragment
-        android:label="@string/rutinas"
         android:id="@+id/rutines"
         android:name="com.example.fitty.Routines"
+        android:label="@string/rutinas"
         tools:layout="@layout/fragment_routines">
         <action
             android:id="@+id/category_routines"
             app:destination="@id/categoryRoutines" />
+        <action
+            android:id="@+id/action_rutines_to_userProfile"
+            app:destination="@id/userProfile" />
     </fragment>
     <fragment
         android:id="@+id/categoryRoutines"
         android:name="com.example.fitty.CategoryRoutines"
-        android:label="fragment_category_routines"
-        tools:layout="@layout/fragment_category_routines" />
+        tools:layout="@layout/fragment_category_routines">
+        <action
+            android:id="@+id/action_categoryRoutines_to_routineView"
+            app:destination="@id/routineView" />
+        <argument
+            android:name="category"
+            app:argType="com.example.fitty.models.Category" />
+    </fragment>
+    <fragment
+        android:id="@+id/routineView"
+        android:name="com.example.fitty.RoutineView"
+        tools:layout="@layout/fragment_routine_view" >
+        <argument
+            android:name="routine"
+            app:argType="com.example.fitty.models.Routine" />
+    </fragment>
+    <fragment
+        android:id="@+id/userProfile"
+        android:name="com.example.fitty.UserProfile"
+        android:label="@string/profile"
+        tools:layout="@layout/fragment_user_profile" />
 
 </navigation>

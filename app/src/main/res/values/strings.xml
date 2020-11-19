@@ -42,9 +42,7 @@
     <string name="btn_signup_next">Siguiente</string>
     <string name="btn_signup_back">Volver</string>
     <string name="logo_categoria">Logo Categoria</string>
-    <string name="logo_categor_a">Logo Categoría</string>
     <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="favorita">Favorita</string>
     <string name="tiempo">Tiempo</string>
     <string name="btn_resend_code">REENVIAR</string>
@@ -75,5 +73,6 @@
     <string name="titulo_ejecucion_terminada">Felicitaciones! Terminaste la rutina.</string>
     <string name="mensaje_ejecucion_terminada">Te tomó %1$d minutos y %2$d segundos.</string>
     <string name="ok">Ok</string>
->>>>>>> Stashed changes
+    <string name="view_routine">Ver Rutina</string>
+    <string name="signOut">Cerrar Sesión</string>
 </resources>

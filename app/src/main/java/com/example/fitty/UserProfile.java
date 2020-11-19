@@ -1,6 +1,7 @@
 package com.example.fitty;
 
 import android.annotation.SuppressLint;
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -8,12 +9,12 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.ahmadrosid.svgloader.SvgLoader;
 import com.example.fitty.models.Error;
 import com.example.fitty.models.User;
 import com.example.fitty.repository.Resource;
 import com.example.fitty.repository.Status;
 import com.google.android.material.textfield.TextInputEditText;
-import com.squareup.picasso.Picasso;
 
 import java.text.SimpleDateFormat;
 
@@ -23,8 +24,7 @@ public class UserProfile extends SecondaryFragment {
 
     View rootView;
 
-    public UserProfile(AllFragments lastFragment) {
-        super(lastFragment);
+    public UserProfile() {
     }
 
     @Override
@@ -57,14 +57,29 @@ public class UserProfile extends SecondaryFragment {
                 @SuppressLint("SimpleDateFormat") SimpleDateFormat simpleDateFormat = new SimpleDateFormat(pattern);
                 String date = simpleDateFormat.format(user.getBirthdate());
                 birthdate.setText(date);
-                Picasso.get().load(user.getAvatarUrl()).into(icon);
+                SvgLoader.pluck()
+                        .with(getActivity())
+                        .setPlaceHolder(R.mipmap.ic_launcher, R.mipmap.ic_launcher)
+                        .load(user.getAvatarUrl(), icon);
             } else {
                 defaultResourceHandler(r);
             }
         });
 
+        rootView.findViewById(R.id.signOut).setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View v) {
+                AppPreferences preferences = new AppPreferences(getActivity().getApplication());
+                preferences.setAuthToken(null);
+                Intent intent = new Intent(getActivity(), MainActivity.class);
+                startActivity(intent);
+            }
+        });
+
         setTitle(getContext().getString(R.string.profile));
         setTopBar();
+
         return rootView;
     }
 

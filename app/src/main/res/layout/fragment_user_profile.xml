@@ -112,6 +112,24 @@
             </com.google.android.material.textfield.TextInputLayout>
 
         </LinearLayout>
+
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <Button
+            android:id="@+id/signOut"
+            style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@android:color/holo_red_dark"
+            android:shadowColor="@android:color/holo_red_dark"
+            android:text="@string/signOut"
+            android:textColor="@android:color/holo_red_dark"
+            app:strokeColor="@android:color/holo_red_dark"
+            android:layout_centerHorizontal="true"
+            app:strokeWidth="3dp" />
     </RelativeLayout>
 
 </LinearLayout>

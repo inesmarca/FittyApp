@@ -18,7 +18,7 @@
     <string name="btn_login">Login</string>
     <string name="divider_login_text">Don\'t have an account yet?</string>
     <string name="divider_signup_text">Already have an account?</string>
-    <string name="btn_to_signup">Create cccount</string>
+    <string name="btn_to_signup">Create acount</string>
     <string name="btn_to_login">Log in</string>
     <string name="field_full_name">Full name</string>
     <string name="field_username">Username</string>
@@ -75,5 +75,7 @@
     <string name="titulo_ejecucion_terminada">Congratulations! You finished the routine.</string>
     <string name="mensaje_ejecucion_terminada">It took you %1$d minutes and %2$d seconds.</string>
     <string name="ok">Ok</string>
+    <string name="view_routine">View Routine</string>
+    <string name="signOut">Cerrar Sesión</string>
 
 </resources>

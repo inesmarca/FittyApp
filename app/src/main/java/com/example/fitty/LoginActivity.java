@@ -3,15 +3,11 @@ package com.example.fitty;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
-import android.widget.EditText;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.example.fitty.api.ApiClient;
-import com.example.fitty.api.UserApiService;
 import com.example.fitty.databinding.LoginActivityBinding;
 import com.example.fitty.models.Error;
 import com.example.fitty.models.UserCredentials;
@@ -45,17 +41,18 @@ public class LoginActivity extends AppCompatActivity {
             Intent verificationCodeIntent = new Intent(this, VerificationCodeActivity.class);
             startActivity(verificationCodeIntent);
         });
+
         binding.btnLogin.setOnClickListener(v->{
             TextInputLayout email = binding.txtLoginEmail;
             TextInputLayout pass = binding.txtLoginPassword;
             FittyApp app = (FittyApp) getApplication();
             app.getUserRepository().login(new UserCredentials(email.getEditText().getText().toString(),pass.getEditText().getText().toString())).observe(this, t->{
                 if (t.getStatus() == Status.SUCCESS) {
-                    AppPreferences preferences = new AppPreferences(app);
-                    preferences.setAuthToken(t.getData().getToken());
                     Toast.makeText(getApplicationContext(), getString(R.string.welcome,email.getEditText().getText()), Toast.LENGTH_SHORT).show();
-                    Intent homeIntent = new Intent(this, MainActivity.class);
-                    startActivity(homeIntent);
+                    Intent intent = new Intent();
+                    intent.putExtra("token", t.getData().getToken());
+                    setResult(2, intent);
+                    finish();
                 } else {
                     defaultResourceHandler(t);
                 }

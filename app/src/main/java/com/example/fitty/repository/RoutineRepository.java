@@ -11,7 +11,6 @@ import com.example.fitty.api.ApiResponse;
 import com.example.fitty.api.ExecutionsApiService;
 import com.example.fitty.api.RoutineApiService;
 import com.example.fitty.models.PagedList;
-import com.example.fitty.models.Rating;
 import com.example.fitty.models.Routine;
 import com.example.fitty.models.RoutineExecution;
 
@@ -33,6 +32,18 @@ public class RoutineRepository {
             }
         }.asLiveData();
     }
+
+    public LiveData<Resource<Routine>> getRoutineById(int routineId) {
+        return new NetworkBoundResource<Routine, Routine>()
+        {
+            @NonNull
+            @Override
+            protected LiveData<ApiResponse<Routine>> createCall() {
+                return apiService.getRoutineById(routineId);
+            }
+        }.asLiveData();
+    }
+
     public LiveData<Resource<RoutineExecution>> executeRoutine (int routineId, RoutineExecution routineExecution){
         return new NetworkBoundResource<RoutineExecution,RoutineExecution>()
         {

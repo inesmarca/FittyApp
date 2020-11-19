@@ -10,11 +10,12 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Spinner;
 
-import androidx.fragment.app.Fragment;
+import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.fitty.adapters.CategoryRoutinesAdapter;
+import com.example.fitty.models.Category;
 import com.example.fitty.models.Error;
 import com.example.fitty.models.Routine;
 import com.example.fitty.repository.Resource;
@@ -25,15 +26,9 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
 
-/**
- * A simple {@link Fragment} subclass.
- * Use the {@link CategoryRoutines#newInstance} factory method to
- * create an instance of this fragment.
- */
 public class CategoryRoutines extends SecondaryFragment implements CategoryRoutinesAdapter.OnCategoryRoutineListener {
 
-    private int idCategory;
-    private String nameCategory;
+    private Category category;
     private MaterialToolbar toolbar;
     private CategoryRoutinesAdapter adapter;
     String[] orderTypes = {"Mejor Rating", "Más Recientes", "Dificultad"};
@@ -41,17 +36,12 @@ public class CategoryRoutines extends SecondaryFragment implements CategoryRouti
     List<Routine> routines;
     GridLayoutManager gridLayoutManager;
 
-    public CategoryRoutines(AllFragments fragment, String title) {
-        super(fragment);
-        setTitle(title);
-    }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
-            idCategory = getArguments().getInt("idCategory");
-            nameCategory = getArguments().getString("titCategory");
+            category = (Category) getArguments().getSerializable("category");
         }
     }
 
@@ -69,9 +59,9 @@ public class CategoryRoutines extends SecondaryFragment implements CategoryRouti
                 assert r.getData() != null;
                 routines = r.getData().getResults();
                 routines.removeIf(routine ->
-                    routine.getCategory().getId() != idCategory
+                    routine.getCategory().getId() != category.getId()
                 );
-                Log.d("IDD", String.format("%d",idCategory));
+                Log.d("IDD", String.format("%d", category.getId()));
 
                 adapter = new CategoryRoutinesAdapter(routines, this);
                 gridLayoutManager = new GridLayoutManager(getContext(), 2);
@@ -126,11 +116,9 @@ public class CategoryRoutines extends SecondaryFragment implements CategoryRouti
 
     @Override
     public void OnCategoryRoutineClick(Routine routine) {
-        Fragment fragment = new RoutineView(this);
         Bundle bundle = new Bundle();
         bundle.putSerializable("routine", routine);
-        fragment.setArguments(bundle);
-        getParentFragmentManager().beginTransaction().replace(R.id.main_nav_host_fragment, fragment).commit();
+        Navigation.findNavController(rootView).navigate(R.id.action_categoryRoutines_to_routineView, bundle);
     }
 }
 
