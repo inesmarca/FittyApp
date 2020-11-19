@@ -106,8 +106,8 @@ public class RoutineView extends SecondaryFragment {
                 break;
             case ERROR:
                 Error error = resource.getError();
-                String message = getString(R.string.error, error.getDescription(), error.getCode());
-                Log.d("UI", message);
+         //       String message = getString(R.string.error, error.getDescription(), error.getCode());
+           //     Log.d("UI", message);
                 break;
         }
     }

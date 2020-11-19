@@ -52,19 +52,19 @@ public class Category implements Serializable {
 
     public int getIcon() {
         switch (name) {
-            case "strength":
+            case "Strength":
                 return R.drawable.ic_strength;
-            case "tren superior":
+            case "Tren Superior":
                 return R.drawable.ic_abs;
-            case "elongacion":
+            case "Elongacion":
                 return R.drawable.ic_movilidad;
-            case "resistencia":
+            case "Resistencia":
                 return R.drawable.ic_resitencia;
-            case "piernas":
+            case "Piernas":
                 return R.drawable.ic_legs;
-            case "relajacion":
+            case "Relajacion":
                 return R.drawable.ic_tulip;
-            case "yoga":
+            case "Yoga":
                 return R.drawable.ic_yoga;
             default:
                 return R.drawable.ic_cardio;

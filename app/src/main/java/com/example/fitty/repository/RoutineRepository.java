@@ -28,8 +28,10 @@ import com.example.fitty.dbRoom.entitys.CategoryEntity;
 import com.example.fitty.dbRoom.entitys.RoutineEntity;
 import com.example.fitty.ui.MainActivity;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+import java.util.concurrent.Semaphore;
 import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 
@@ -43,6 +45,7 @@ public class RoutineRepository {
     private  Category _category;
     private CategoryRepository categoryRepository;
     private RateLimiter<String> rateLimit = new RateLimiter<>(10, TimeUnit.MINUTES);
+    private Semaphore semaphore;
     private static final String RATE_LIMITER_ALL_KEY = "@@all@@";
 
     public RoutineRepository(AppExecutors executors, RoutineApiService service, DB database, CategoryRepository categoryRepository) {
@@ -50,6 +53,8 @@ public class RoutineRepository {
         this.apiService = service;
         this.database = database;
         this.categoryRepository  = categoryRepository;
+        //semaphore = new Semaphore(0);
+
     }
     /*
     private Routine entityToDomain (RoutineEntity entity){
@@ -58,6 +63,7 @@ public class RoutineRepository {
     private RoutineEntity domainToEntity(Routine routine){
         return new RoutineEntity(routine.getId(),routine.getDetail(),routine.getAverageRating(),routine.getName(),routine.getCreator().getId(),routine.getCategory().getId(),routine.getDifficulty());
     }*/
+
     public LiveData<Resource<PagedList<Routine>>> getRoutines(MainActivity activity, String search, String difficulty, int page, int size, String orderBy, String direction) {
         return new NetworkBoundResource<PagedList<Routine>,List<RoutineEntity>>(executors,
                 entities ->
@@ -77,12 +83,14 @@ public class RoutineRepository {
                                             categoryRepository.getCategory(entity.categoryId).observe(activity,v->{
                                                 if(v.getStatus()==Status.SUCCESS){
                                                     category=v.getData();
-
+                                          //          semaphore.release();
                                                 }
                                                 else
                                                     defaultResourceHandler(v);
 
                                             });
+
+
                                             return new Routine(entity.name, entity.detail, entity.difficulty,category, entity.creatorId);
 
                                         }

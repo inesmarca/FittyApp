@@ -67,6 +67,7 @@ public class Cycle implements Serializable {
         exercises.add(exercise);
     }
 
+
     public void addExercise(List<Exercise> listExercises) {
         if (exercises == null) {
             exercises = new ArrayList<>();

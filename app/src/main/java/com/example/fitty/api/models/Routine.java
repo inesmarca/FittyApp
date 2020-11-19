@@ -4,6 +4,7 @@ import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 
 public class Routine implements Serializable {
@@ -181,10 +182,14 @@ public class Routine implements Serializable {
     }
 
     public void addCycle(Cycle cycle) {
+        if(cycles==null)
+            cycles = new ArrayList<>();
         cycles.add(cycle);
     }
 
     public void addCycle(List<Cycle> _cycles) {
+        if(cycles==null)
+            cycles = new ArrayList<>();
         cycles.addAll(_cycles);
     }
 

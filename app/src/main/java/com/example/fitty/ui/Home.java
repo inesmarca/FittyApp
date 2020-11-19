@@ -61,7 +61,14 @@ public class Home extends MainFragment implements BestAdapter.OnRoutineListener,
                 defaultResourceHandler(r);
             }
         });
-
+        fitty.getCategoryRepository().getCategories(0,20,null,null).observe(getActivity(),v->{
+            if (v.getStatus() == Status.SUCCESS) {
+                Log.d("Category home",String.format("%d",v.getData().getTotalCount()));
+            } else {
+                defaultResourceHandler(v);
+            }
+                }
+        );
         RecyclerView bestRecycler = rootView.findViewById(R.id.listBest);
         fitty.getRoutineRepository().getRoutines((MainActivity) getActivity(), null,null,0,10, "averageRating", "desc").observe(getActivity(),r->{
             if (r.getStatus() == Status.SUCCESS) {

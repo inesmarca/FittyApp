@@ -30,7 +30,7 @@ import java.util.List;
 
 /**
  * A simple {@link Fragment} subclass.
- * Use the {@link CategoryRoutines#newInstance} factory method to
+ * Use the  factory method to
  * create an instance of this fragment.
  */
 public class CategoryRoutines extends SecondaryFragment implements CategoryRoutinesAdapter.OnCategoryRoutineListener {
@@ -67,12 +67,12 @@ public class CategoryRoutines extends SecondaryFragment implements CategoryRouti
         RecyclerView listView = rootView.findViewById(R.id.listCategoryRoutines);
 
         FittyApp fittyApp = (FittyApp) getActivity().getApplication();
-        fittyApp.getRoutineRepository().getRoutines((MainActivity) getActivity(),null,null,0,200,"averageRating","asc").observe(getActivity(),r->{
+        fittyApp.getRoutineRepository().getRoutines((MainActivity)getActivity(),null,null,0,200,"averageRating","asc").observe(getActivity(),r->{
             if(r.getStatus()== Status.SUCCESS){
                 assert r.getData() != null;
                 routines = r.getData().getResults();
                 routines.removeIf(routine ->
-                    routine.getCategory_id() != idCategory
+                        routine.getCategory().getId() != idCategory
                 );
                 Log.d("IDD", String.format("%d",idCategory));
 
@@ -136,10 +136,6 @@ public class CategoryRoutines extends SecondaryFragment implements CategoryRouti
         getParentFragmentManager().beginTransaction().replace(R.id.main_nav_host_fragment, fragment).commit();
     }
 }
-
-
-
-
 
 
 
