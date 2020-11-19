@@ -217,7 +217,7 @@ public class UserRepository {
 
             @Override
             protected boolean shouldFetch(@Nullable Void entity) {
-                return false;
+                return true;
             }
 
             @Override
@@ -249,7 +249,7 @@ public class UserRepository {
 
             @Override
             protected boolean shouldFetch(@Nullable Void entity) {
-                return false;
+                return true;
             }
 
             @Override
@@ -284,7 +284,7 @@ public class UserRepository {
 
             @Override
             protected boolean shouldFetch(@Nullable Void entity) {
-                return false;
+                return true;
             }
 
             @Override
@@ -315,7 +315,7 @@ public class UserRepository {
 
             @Override
             protected boolean shouldFetch(@Nullable Void entity) {
-                return false;
+                return true;
             }
 
             @Override
@@ -338,7 +338,7 @@ public class UserRepository {
 
 
     }
-    public LiveData<Resource<Void>> resendVerification() {
+    public LiveData<Resource<Void>> resendVerification(EmailVerification emailVerification) {
         return new NetworkBoundResource<Void, Void>(executors,null,null) {
             @Override
             protected void saveCallResult(@NonNull Void entity) {
@@ -347,7 +347,7 @@ public class UserRepository {
 
             @Override
             protected boolean shouldFetch(@Nullable Void entity) {
-                return false;
+                return true;
             }
 
             @Override
@@ -364,7 +364,7 @@ public class UserRepository {
             @NonNull
             @Override
             protected LiveData<ApiResponse<Void>> createCall() {
-                return apiService.resendVerification();
+                return apiService.resendVerification(emailVerification);
             }
         }.asLiveData();
     }

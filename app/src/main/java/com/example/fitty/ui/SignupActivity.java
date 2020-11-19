@@ -43,9 +43,9 @@ public class SignupActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
 
         FittyApp app = (FittyApp) getApplication();
-        AppPreferences preferences = new AppPreferences(app);
 
-        if(preferences.getAuthToken().length() > 0) {
+
+        if(app.getPreferences().getAuthToken() != null) {
             //Logeado
             Intent goToMain = new Intent(this, MainActivity.class);
             startActivity(goToMain);
@@ -160,10 +160,12 @@ public class SignupActivity extends AppCompatActivity {
                 userToAdd.setUsername(getText(binding.txtSignupUsername));
                 app.getUserRepository().addUser(userToAdd).observe(this, r -> {
                     if (r.getStatus() == Status.SUCCESS) {
-                        preferences.setEmail(r.getData().getEmail());
-                        preferences.setUsername(r.getData().getUsername());
+                        app.getPreferences().setEmail(r.getData().getEmail());
+                        app.getPreferences().setUsername(r.getData().getUsername());
                         userToAdd = r.getData();
                         Intent goToVerifyCode = new Intent(this, VerificationCodeActivity.class);
+                        String email = userToAdd.getEmail();
+                        goToVerifyCode.putExtra("USER_EMAIL",userToAdd.getEmail());
                         startActivity(goToVerifyCode);
                     } else {
                         defaultResourceHandler(r);

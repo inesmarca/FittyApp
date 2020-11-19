@@ -32,6 +32,7 @@ public class RoutinesViewModel extends RepoViewModel<RoutineRepository> {
     private final LiveData<Resource<Routine>> routine;
     private  MainActivity activity;
 
+
     public RoutinesViewModel(RoutineRepository repository, MainActivity activity) {
         super(repository);
 
