@@ -61,6 +61,7 @@ public class UserProfile extends SecondaryFragment {
                         .with(getActivity())
                         .setPlaceHolder(R.mipmap.ic_launcher, R.mipmap.ic_launcher)
                         .load(user.getAvatarUrl(), icon);
+                rootView.findViewById(R.id.progressBar).setVisibility(View.INVISIBLE);
             } else {
                 defaultResourceHandler(r);
             }

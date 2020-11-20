@@ -8,9 +8,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.RatingBar;
 import android.widget.TextView;
 
-import androidx.fragment.app.Fragment;
 import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -26,11 +26,6 @@ import com.google.android.material.appbar.MaterialToolbar;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * A simple {@link Fragment} subclass.
- * Use the {@link RoutineView#newInstance} factory method to
- * create an instance of this fragment.
- */
 public class RoutineView extends SecondaryFragment {
 
    /*Para llamar a la api laburamos con los repositorios. Hagan un getApplication y casteenlo
@@ -42,14 +37,6 @@ public class RoutineView extends SecondaryFragment {
     private CycleAdapter adapter;
     private GridLayoutManager gridLayoutManager;
     private Routine routine;
-
-    // TODO: Rename and change types and number of parameters
-    public static RoutineView newInstance(CategoryRoutines categoryRoutines) {
-        RoutineView fragment = new RoutineView();
-        Bundle args = new Bundle();
-        fragment.setArguments(args);
-        return fragment;
-    }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -66,6 +53,12 @@ public class RoutineView extends SecondaryFragment {
         rootView = inflater.inflate(R.layout.fragment_routine_view, container, false);
 
         RecyclerView listView = rootView.findViewById(R.id.listCycles);
+        ((TextView) rootView.findViewById(R.id.titRoutineView)).setText(routine.getName());
+        ((RatingBar) rootView.findViewById(R.id.ratingRoutineView)).setRating(routine.getRating());
+        ((TextView) rootView.findViewById(R.id.duration)).setText(routine.getDuration() + "'");
+        Button buttonInitiate = rootView.findViewById(R.id.buttonInitiate);
+        buttonInitiate.setEnabled(false);
+        buttonInitiate.setOnClickListener(new buttonClick());
 
         FittyApp fittyApp = (FittyApp) getActivity().getApplication();
         fittyApp.getCycleRepository().getRoutineCycles(routine.getId(), 0, 99, "order", "asc").observe(getActivity(),r->{
@@ -81,13 +74,13 @@ public class RoutineView extends SecondaryFragment {
                 gridLayoutManager = new GridLayoutManager(getContext(), 1);
                 listView.setLayoutManager(gridLayoutManager);
                 listView.setAdapter(adapter);
+
+                buttonInitiate.setEnabled(true);
             }
             else
                 defaultResourceHandler(r);
         });
 
-        ((TextView) rootView.findViewById(R.id.titRoutineView)).setText(routine.getName());
-        ((Button) rootView.findViewById(R.id.buttonInitiate)).setOnClickListener(new buttonClick());
         setTopBar();
         toolbar = getActivity().findViewById(R.id.topAppBar);
         getActivity().getMenuInflater().inflate(R.menu.top_bar, toolbar.getMenu());
@@ -149,7 +142,7 @@ public class RoutineView extends SecondaryFragment {
             Bundle bundle = new Bundle();
             bundle.putSerializable("routine", routine);
             intent.putExtras(bundle);
-            startActivity(intent);
+            startActivityForResult(intent, 3);
         }
     }
 

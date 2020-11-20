@@ -35,6 +35,10 @@ public class Routine implements Serializable {
     @Expose
     private User creator;
 
+    @SerializedName("averageRating")
+    @Expose
+    private int averageRating;
+
     private List<Cycle> cycles = new ArrayList<>();
 
     public void setId(int id) {
@@ -114,7 +118,7 @@ public class Routine implements Serializable {
         this.category = category;
     }
 
-    public int getRating() { return 3; }
+    public int getRating() { return averageRating; }
 
     public String getDuration() {
         String[] strings = detail.split("\\|", 2);

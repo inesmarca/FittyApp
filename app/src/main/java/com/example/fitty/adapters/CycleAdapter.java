@@ -71,6 +71,7 @@ public class CycleAdapter extends RecyclerView.Adapter<CycleAdapter.CycleViewHol
                 listView.setLayoutManager(gridLayoutManager);
                 listView.setAdapter(adapter);;
                 Log.d("CANTIDAD", String.valueOf(exercises.size()));
+
             }
             else
                 defaultResourceHandler(r);
