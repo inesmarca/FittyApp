@@ -1,6 +1,7 @@
 package com.example.fitty;
 
 import android.annotation.SuppressLint;
+import android.app.Dialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -8,9 +9,11 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.RatingBar;
 import android.widget.TextView;
 
+import androidx.annotation.Nullable;
 import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -18,7 +21,9 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.fitty.adapters.CycleAdapter;
 import com.example.fitty.models.Cycle;
 import com.example.fitty.models.Error;
+import com.example.fitty.models.Rating;
 import com.example.fitty.models.Routine;
+import com.example.fitty.models.RoutineExecution;
 import com.example.fitty.repository.Resource;
 import com.example.fitty.repository.Status;
 import com.google.android.material.appbar.MaterialToolbar;
@@ -37,6 +42,7 @@ public class RoutineView extends SecondaryFragment {
     private CycleAdapter adapter;
     private GridLayoutManager gridLayoutManager;
     private Routine routine;
+    FittyApp fittyApp;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -60,7 +66,7 @@ public class RoutineView extends SecondaryFragment {
         buttonInitiate.setEnabled(false);
         buttonInitiate.setOnClickListener(new buttonClick());
 
-        FittyApp fittyApp = (FittyApp) getActivity().getApplication();
+        fittyApp = (FittyApp) getActivity().getApplication();
         fittyApp.getCycleRepository().getRoutineCycles(routine.getId(), 0, 99, "order", "asc").observe(getActivity(),r->{
             if(r.getStatus()== Status.SUCCESS){
                 assert r.getData() != null;
@@ -91,13 +97,12 @@ public class RoutineView extends SecondaryFragment {
         toolbar.findViewById(R.id.share).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Log.d("SHARE", "CLICKED");
                 Intent sendIntent = new Intent();
                 sendIntent.setAction(Intent.ACTION_SEND);
                 sendIntent.putExtra(Intent.EXTRA_TEXT, "http://www.fitty.com/id/" + routine.getId());
                 sendIntent.setType("text/plain");
                 Intent shareIntent = Intent.createChooser(sendIntent, null);
-                startActivity(shareIntent);
+                startActivityForResult(shareIntent, 3);
             }
         });
 
@@ -105,7 +110,6 @@ public class RoutineView extends SecondaryFragment {
             @SuppressLint("UseCompatLoadingForDrawables")
             @Override
             public void onClick(View v) {
-                Log.d("LIKE", "CLICKED");
                 FittyApp fitty = (FittyApp) getActivity().getApplication();
                 if (!routine.isFavorite()) {
                     fitty.getUserRepository().favRoutine(routine.getId()).observe(getActivity(),r-> toolbar.getMenu().getItem(1).setIcon(R.drawable.ic_favorite_full));
@@ -153,5 +157,54 @@ public class RoutineView extends SecondaryFragment {
     public void onClick(View v) {
         toolbar.getMenu().clear();
         Navigation.findNavController(rootView).navigateUp();
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == 3) {
+            Boolean executed = data.getBooleanExtra("status", false);
+            if (executed) {
+                fittyApp.getRoutineRepository().executeRoutine(getRoutine().getId(), new RoutineExecution(Integer.valueOf(routine.getDuration()), false)).observe(getActivity(), r -> {
+                    if(r.getStatus()== Status.SUCCESS){
+                        assert r.getData() != null;
+                    }
+                    else
+                        defaultResourceHandler(r);
+                });
+                showRatingPopUp();
+            }
+        }
+    }
+
+    private void showRatingPopUp() {
+
+        Dialog myPopUp = new Dialog(getContext());
+        myPopUp.setContentView(R.layout.popup_rate_it);
+        myPopUp.show();
+        Button rateUp = myPopUp.findViewById(R.id.buttonRate);
+        ImageButton close = myPopUp.findViewById(R.id.closePopUp);
+        RatingBar ratingBar = myPopUp.findViewById(R.id.ratingBar);
+        rateUp.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Float rating = ratingBar.getRating();
+                fittyApp.getRatingsRepository().rate(routine.getId(), new Rating(Math.round(rating), "")).observe(getActivity(), r -> {
+                    if(r.getStatus()== Status.SUCCESS){
+                        assert r.getData() != null;
+                    }
+                    else
+                        defaultResourceHandler(r);
+                });
+                myPopUp.hide();
+            }
+        });
+
+        close.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                myPopUp.hide();
+            }
+        });
     }
 }

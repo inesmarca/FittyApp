@@ -58,8 +58,6 @@ public class UserRepository {
         }.asLiveData();
     }
 
-
-
     public LiveData<Resource<PagedList<RoutineExecution>>> getUserExecutions(int page, int size, String orderBy, String direction) {
         return new NetworkBoundResource<PagedList<RoutineExecution>,PagedList<RoutineExecution>>()
         {
@@ -70,6 +68,7 @@ public class UserRepository {
             }
         }.asLiveData();
     }
+
     public LiveData<Resource<PagedList<Routine>>> getUserFavourites(int page, int size, String orderBy, String direction) {
         return new NetworkBoundResource<PagedList<Routine>,PagedList<Routine>>()
         {

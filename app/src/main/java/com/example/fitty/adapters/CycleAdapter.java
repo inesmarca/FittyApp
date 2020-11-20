@@ -62,16 +62,12 @@ public class CycleAdapter extends RecyclerView.Adapter<CycleAdapter.CycleViewHol
             if(r.getStatus()== Status.SUCCESS){
                 assert r.getData() != null;
                 exercises = r.getData().getResults();
-                Log.d("CANTIDAD", String.valueOf(exercises.size()));
                 current.addExercise(exercises);
-                Log.d("CANTIDAD", String.valueOf(exercises.size()));
 
                 adapter = new ExerciseAdapter(exercises, current, routineView);
                 gridLayoutManager = new GridLayoutManager(view.getContext(), 1);
                 listView.setLayoutManager(gridLayoutManager);
                 listView.setAdapter(adapter);;
-                Log.d("CANTIDAD", String.valueOf(exercises.size()));
-
             }
             else
                 defaultResourceHandler(r);

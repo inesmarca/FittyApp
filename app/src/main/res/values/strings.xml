@@ -75,4 +75,6 @@
     <string name="ok">Ok</string>
     <string name="view_routine">Ver Rutina</string>
     <string name="signOut">Cerrar Sesión</string>
+    <string name="rating_popup_title">¿Que te pareció la rutina?</string>
+    <string name="puntuar">Puntuar</string>
 </resources>
