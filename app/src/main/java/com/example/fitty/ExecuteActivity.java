@@ -1,6 +1,7 @@
 package com.example.fitty;
 
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -52,7 +53,8 @@ public class ExecuteActivity extends AppCompatActivity/* implements YouTubePlaye
 
     Timer timerContarAtrasEjercicio;
 
-    private int secondsRemaining;
+    private int secondsRemaining, totalTimeCurrentExercise;
+
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -175,12 +177,17 @@ public class ExecuteActivity extends AppCompatActivity/* implements YouTubePlaye
         builder.setTitle(R.string.titulo_ejecucion_terminada);
         builder.setMessage(getString(R.string.mensaje_ejecucion_terminada, elapsedTime.getMinute(), elapsedTime.getSecond()));
         builder.setPositiveButton(R.string.ok, (dialogInterface, i) -> {
-            super.onBackPressed();
+            cerrarActivity(true);
         });
 
         alertBackPressed = builder.create();
         alertBackPressed.show();
+    }
 
+    private void cerrarActivity(boolean rutinaTerminada) {
+        Intent intent = new Intent().putExtra("status", rutinaTerminada);
+        setResult(3, intent);
+        finish();
     }
 
     private void asignarEjecucion(int cycleIdx, int exerciseIdx) {
@@ -209,7 +216,7 @@ public class ExecuteActivity extends AppCompatActivity/* implements YouTubePlaye
 
         if(timerContarAtrasEjercicio != null) {
             timerContarAtrasEjercicio = new Timer();
-            timerContarAtrasEjercicio.schedule(new ContarAtrasEjercicio(secondsRemaining), 1000, 1000);
+            timerContarAtrasEjercicio.schedule(new ContarAtrasEjercicio(), 1000, 1000);
         }
     }
 
@@ -239,14 +246,17 @@ public class ExecuteActivity extends AppCompatActivity/* implements YouTubePlaye
     }
 
     class ContarAtrasEjercicio extends TimerTask {
-        private int totalTime;
+
         ContarAtrasEjercicio(int seconds) {
             secondsRemaining = seconds;
-            totalTime = seconds;
+            totalTimeCurrentExercise = seconds;
             activity.runOnUiThread(() -> {
                 binding.progressExecution.setProgress(0);
                 binding.progressExecution.setVisibility(View.VISIBLE);
             });
+        }
+
+        ContarAtrasEjercicio() {
         }
         public void run() {
             if(secondsRemaining == 0) {
@@ -258,7 +268,7 @@ public class ExecuteActivity extends AppCompatActivity/* implements YouTubePlaye
             } else {
                 activity.runOnUiThread(() -> {
                     binding.txtCabeceraCant.setText(String.valueOf(secondsRemaining--) + "s");
-                    binding.progressExecution.setProgress((int) (100 - (Double.valueOf(secondsRemaining)/totalTime)*100));
+                    binding.progressExecution.setProgress((int) (100 - (Double.valueOf(secondsRemaining)/totalTimeCurrentExercise)*100));
                 });
 
             }
@@ -275,7 +285,7 @@ public class ExecuteActivity extends AppCompatActivity/* implements YouTubePlaye
             public void onClick(DialogInterface dialog, int which) {
                 switch (which){
                     case DialogInterface.BUTTON_POSITIVE:
-                        ExecuteActivity.super.onBackPressed();
+                        cerrarActivity(false);
                         break;
 
                     case DialogInterface.BUTTON_NEGATIVE:
