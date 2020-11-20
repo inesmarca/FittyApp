@@ -101,4 +101,7 @@ dependencies {
     // Carga de imagenes URL
     implementation 'com.github.ar-android:AndroidSvgLoader:1.0.2'
 
+    // Graphs
+    implementation 'com.github.PhilJay:MPAndroidChart:v3.1.0'
+
 }

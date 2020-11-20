@@ -3,7 +3,7 @@ package com.example.fitty.models;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
-import java.util.Date;
+import java.sql.Timestamp;
 
 public class RoutineExecution {
 
@@ -12,7 +12,7 @@ public class RoutineExecution {
     private int id;
     @SerializedName("date")
     @Expose
-    private Date date;
+    private Timestamp date;
     @SerializedName("duration")
     @Expose
     private int duration;
@@ -28,7 +28,7 @@ public class RoutineExecution {
     }
 
 
-    public RoutineExecution(int id, Date date, int duration, boolean wasModified, Routine routine) {
+    public RoutineExecution(int id, Timestamp date, int duration, boolean wasModified, Routine routine) {
         super();
         this.id = id;
         this.date = date;
@@ -45,11 +45,11 @@ public class RoutineExecution {
         this.id = id;
     }
 
-    public Date getDate() {
+    public Timestamp getDate() {
         return date;
     }
 
-    public void setDate(Date date) {
+    public void setDate(Timestamp date) {
         this.date = date;
     }
 

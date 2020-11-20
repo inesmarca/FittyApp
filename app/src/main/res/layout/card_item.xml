@@ -101,15 +101,6 @@
                         android:textAppearance="?attr/textAppearanceBody1" />
                 </LinearLayout>
 
-                <ImageButton
-                    android:id="@+id/favorite"
-                    android:layout_width="wrap_content"
-                    android:layout_height="31dp"
-                    android:layout_alignParentEnd="true"
-                    app:backgroundTint="@color/white"
-                    app:srcCompat="@drawable/ic_favorite_border_black"
-                    android:contentDescription="@string/favorita" />
-
             </RelativeLayout>
 
         </LinearLayout>

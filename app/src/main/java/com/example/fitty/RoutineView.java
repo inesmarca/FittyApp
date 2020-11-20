@@ -74,7 +74,6 @@ public class RoutineView extends SecondaryFragment {
                 gridLayoutManager = new GridLayoutManager(getContext(), 1);
                 listView.setLayoutManager(gridLayoutManager);
                 listView.setAdapter(adapter);
-
                 buttonInitiate.setEnabled(true);
             }
             else
@@ -84,6 +83,9 @@ public class RoutineView extends SecondaryFragment {
         setTopBar();
         toolbar = getActivity().findViewById(R.id.topAppBar);
         getActivity().getMenuInflater().inflate(R.menu.top_bar, toolbar.getMenu());
+        if (routine.isFavorite()) {
+            toolbar.getMenu().getItem(1).setIcon(R.drawable.ic_favorite_full);
+        }
 
 
         toolbar.findViewById(R.id.share).setOnClickListener(new View.OnClickListener() {
@@ -107,8 +109,10 @@ public class RoutineView extends SecondaryFragment {
                 FittyApp fitty = (FittyApp) getActivity().getApplication();
                 if (!routine.isFavorite()) {
                     fitty.getUserRepository().favRoutine(routine.getId()).observe(getActivity(),r-> toolbar.getMenu().getItem(1).setIcon(R.drawable.ic_favorite_full));
+                    routine.setFavorite(true);
                 } else {
                     fitty.getUserRepository().unfavRoutine(routine.getId()).observe(getActivity(),r-> toolbar.getMenu().getItem(1).setIcon(R.drawable.ic_favorite_border_black));
+                    routine.setFavorite(false);
                 }
 
             }

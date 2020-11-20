@@ -41,6 +41,8 @@ public class Routine implements Serializable {
 
     private List<Cycle> cycles = new ArrayList<>();
 
+    private Boolean favorite = false;
+
     public void setId(int id) {
         this.id = id;
     }
@@ -126,7 +128,12 @@ public class Routine implements Serializable {
     }
 
     public Boolean isFavorite() {
-        return true;
+        if (favorite == null) favorite = false;
+        return favorite;
+    }
+
+    public void setFavorite(Boolean favorite) {
+        this.favorite = favorite;
     }
 
     public void addCycle(Cycle cycle) {

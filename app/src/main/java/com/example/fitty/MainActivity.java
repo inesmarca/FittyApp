@@ -31,6 +31,7 @@ public class MainActivity extends AppCompatActivity {
         navController =  Navigation.findNavController(this, R.id.main_nav_host_fragment);
         NavigationUI.setupWithNavController(binding.bottomNav, navController);
         navController.addOnDestinationChangedListener((controller, destination, arguments) -> {
+            toolbar.getMenu().clear();
             toolbar.setTitle(destination.getLabel());
             toolbar.setNavigationIcon(R.drawable.ic_account_circle);
         });

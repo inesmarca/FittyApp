@@ -28,6 +28,8 @@ public class Exercise implements Serializable {
     @Expose
     private int order;
 
+    private Video urlVideo;
+
     public Exercise(int id, String name, String detail, String type, int duration, int repetitions, int order) {
         this.id = id;
         this.name = name;
@@ -64,5 +66,13 @@ public class Exercise implements Serializable {
 
     public int getOrder() {
         return order;
+    }
+
+    public Video getUrlVideo() {
+        return urlVideo;
+    }
+
+    public void setUrlVideo(Video urlVideo) {
+        this.urlVideo = urlVideo;
     }
 }

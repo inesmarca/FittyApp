@@ -3,7 +3,6 @@ package com.example.fitty.adapters;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.RatingBar;
 import android.widget.TextView;
@@ -42,9 +41,6 @@ public class BestAdapter extends RecyclerView.Adapter<BestAdapter.BestViewHolder
         holder.category.setImageResource(current.getCategory().getIcon());
         holder.rating.setRating(current.getRating());
         holder.durationRoutine.setText(current.getDuration() + '\'');
-        if (current.isFavorite()) {
-            holder.favorite.setImageResource(R.drawable.ic_favorite_full);
-        }
     }
 
     @Override
@@ -58,7 +54,6 @@ public class BestAdapter extends RecyclerView.Adapter<BestAdapter.BestViewHolder
         RatingBar rating;
         TextView durationRoutine;
         ImageView category;
-        ImageButton favorite;
 
         public BestViewHolder(@NonNull View itemView, OnRoutineListener onRoutineListener) {
             super(itemView);
@@ -66,7 +61,6 @@ public class BestAdapter extends RecyclerView.Adapter<BestAdapter.BestViewHolder
             rating = itemView.findViewById(R.id.ratingRoutine);
             durationRoutine = itemView.findViewById(R.id.durRoutine);
             category = itemView.findViewById(R.id.routineCat);
-            favorite = itemView.findViewById(R.id.favorite);
 
             this.onRoutineListener = onRoutineListener;
             itemView.setOnClickListener(this);

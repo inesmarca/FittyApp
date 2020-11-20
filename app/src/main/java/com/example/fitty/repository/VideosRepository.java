@@ -7,10 +7,8 @@ import androidx.lifecycle.LiveData;
 
 import com.example.fitty.api.ApiClient;
 import com.example.fitty.api.ApiResponse;
-import com.example.fitty.api.RatingsApiService;
 import com.example.fitty.api.VideoApiService;
 import com.example.fitty.models.PagedList;
-import com.example.fitty.models.Rating;
 import com.example.fitty.models.Video;
 
 public class VideosRepository {
@@ -20,7 +18,7 @@ public class VideosRepository {
         apiService = ApiClient.create(context,VideoApiService.class);
     }
 
-    public LiveData<Resource<Video>> getRoutineCycleExerciseVideo (int routineId, int cycleId, int exerciseId,int videoId){
+    public LiveData<Resource<Video>> getRoutineCycleExerciseVideoById (int routineId, int cycleId, int exerciseId,int videoId){
         return new NetworkBoundResource<Video,Video>()
         {
             @NonNull
@@ -30,7 +28,7 @@ public class VideosRepository {
             }
         }.asLiveData();
     }
-    public LiveData<Resource<PagedList<Video>>> getRoutineRatings (int routineId,int cycleId, int exerciseId , int page, int size, String orderBy, String direction){
+    public LiveData<Resource<PagedList<Video>>> getRoutineCycleExerciseVideo (int routineId,int cycleId, int exerciseId , int page, int size, String orderBy, String direction){
         return new NetworkBoundResource<PagedList<Video>,PagedList<Video>>()
         {
             @NonNull

@@ -47,15 +47,16 @@ public class Home extends MainFragment implements BestAdapter.OnRoutineListener,
         fitty.getUserRepository().getUserExecutions(0,10,"date","desc").observe(getActivity(),r->{
             if (r.getStatus() == Status.SUCCESS) {
                 if (r.getData().getResults().isEmpty()) {
-                    rootView.findViewById(R.id.titleRecent).setVisibility(View.GONE);
+                    rootView.findViewById(R.id.imageHome).setVisibility(View.VISIBLE);
                 } else {
-                    rootView.findViewById(R.id.imageHome).setVisibility(View.GONE);
+                    rootView.findViewById(R.id.recentView).setVisibility(View.VISIBLE);
                     for (RoutineExecution routineExecution : r.getData().getResults()) {
                         listRecent.add(routineExecution.getRoutine());
                     }
                     recentAdapter = new RecentAdapter(listRecent, this);
                     LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false);
                     recentRecyler.setLayoutManager(linearLayoutManager);
+                    rootView.findViewById(R.id.progressBar2).setVisibility(View.GONE);
                     recentRecyler.setAdapter(recentAdapter);
                 }
             } else {
@@ -71,6 +72,7 @@ public class Home extends MainFragment implements BestAdapter.OnRoutineListener,
                 bestAdapter = new BestAdapter(listBest, this);
                 LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false);
                 bestRecycler.setLayoutManager(linearLayoutManager);
+                rootView.findViewById(R.id.progressBar3).setVisibility(View.GONE);
                 bestRecycler.setAdapter(bestAdapter);
             } else {
                 defaultResourceHandler(r);

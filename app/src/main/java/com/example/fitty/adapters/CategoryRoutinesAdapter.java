@@ -4,7 +4,6 @@ import android.annotation.SuppressLint;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.RatingBar;
 import android.widget.TextView;
@@ -44,9 +43,6 @@ public class CategoryRoutinesAdapter extends RecyclerView.Adapter<CategoryRoutin
         holder.category.setImageResource(current.getCategory().getIcon());
         holder.rating.setRating(current.getRating());
         holder.durationRoutine.setText(current.getDuration() + '\'');
-        if (current.isFavorite()) {
-            holder.favorite.setImageResource(R.drawable.ic_favorite_full);
-        }
     }
 
     @Override
@@ -60,7 +56,6 @@ public class CategoryRoutinesAdapter extends RecyclerView.Adapter<CategoryRoutin
         RatingBar rating;
         TextView durationRoutine;
         ImageView category;
-        ImageButton favorite;
         OnCategoryRoutineListener onCategoryRoutineListener;
 
         public CategoryRoutinesViewHolder(@NonNull View itemView, OnCategoryRoutineListener onCategoryRoutineListener) {
@@ -70,7 +65,6 @@ public class CategoryRoutinesAdapter extends RecyclerView.Adapter<CategoryRoutin
             rating = itemView.findViewById(R.id.ratingRoutine);
             durationRoutine = itemView.findViewById(R.id.durRoutine);
             category = itemView.findViewById(R.id.routineCat);
-            favorite = itemView.findViewById(R.id.favorite);
 
             this.onCategoryRoutineListener = onCategoryRoutineListener;
             itemView.setOnClickListener(this);
