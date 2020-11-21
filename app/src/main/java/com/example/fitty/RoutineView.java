@@ -163,7 +163,7 @@ public class RoutineView extends SecondaryFragment {
     @Override
     public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == 3) {
+        if (requestCode == 5) {
             Boolean executed = data.getBooleanExtra("status", false);
             if (executed) {
                 fittyApp.getRoutineRepository().executeRoutine(getRoutine().getId(), new RoutineExecution(Integer.valueOf(routine.getDuration()), false)).observe(getActivity(), r -> {

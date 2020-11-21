@@ -3,14 +3,11 @@ package com.example.fitty;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
 import com.example.fitty.adapters.ExecuteCycleAdapter;
@@ -22,17 +19,12 @@ import com.google.android.youtube.player.YouTubeBaseActivity;
 import com.google.android.youtube.player.YouTubeInitializationResult;
 import com.google.android.youtube.player.YouTubePlayer;
 import com.google.android.youtube.player.YouTubePlayerFragment;
-import com.google.android.youtube.player.YouTubePlayerView;
 
 import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
-import java.util.concurrent.Executors;
-import java.util.concurrent.FutureTask;
-import java.util.concurrent.ScheduledExecutorService;
-import java.util.concurrent.TimeUnit;
 
 public class ExecuteActivity extends YouTubeBaseActivity {
 
@@ -297,7 +289,7 @@ public class ExecuteActivity extends YouTubeBaseActivity {
 
     private void cerrarActivity(boolean rutinaTerminada) {
         Intent intent = new Intent().putExtra("status", rutinaTerminada);
-        setResult(3, intent);
+        setResult(5, intent);
         finish();
     }
 
