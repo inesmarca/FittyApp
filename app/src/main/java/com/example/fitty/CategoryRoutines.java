@@ -81,6 +81,8 @@ public class CategoryRoutines extends SecondaryFragment implements CategoryRouti
         });
 
         setTopBar();
+        MaterialToolbar toolbar = requireActivity().findViewById(R.id.topAppBar);
+        toolbar.setTitle(category.getName());
 
         return rootView;
     }
