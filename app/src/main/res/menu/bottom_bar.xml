@@ -6,11 +6,6 @@
         android:icon="@drawable/ic_home" />
 
     <item
-        android:id="@+id/progress"
-        android:title="@string/progreso"
-        android:icon="@drawable/ic_bar_chart" />
-
-    <item
         android:id="@+id/rutines"
         android:title="@string/rutinas"
         android:icon="@drawable/ic_logo" />

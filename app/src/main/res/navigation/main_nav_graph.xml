@@ -34,17 +34,6 @@
             android:id="@+id/action_favorites_to_userProfile"
             app:destination="@id/userProfile" />
     </fragment>
-
-    <fragment
-        android:id="@+id/progress"
-        android:name="com.example.fitty.Progress"
-        android:label="@string/progreso"
-        tools:layout="@layout/fragment_progress">
-        <action
-            android:id="@+id/action_progress_to_userProfile"
-            app:destination="@id/userProfile" />
-    </fragment>
-
     <fragment
         android:id="@+id/rutines"
         android:name="com.example.fitty.Routines"
@@ -56,6 +45,9 @@
         <action
             android:id="@+id/action_rutines_to_userProfile"
             app:destination="@id/userProfile" />
+        <action
+            android:id="@+id/action_rutines_to_routineView"
+            app:destination="@id/routineView" />
     </fragment>
     <fragment
         android:id="@+id/categoryRoutines"

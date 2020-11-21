@@ -25,7 +25,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="Rutinas recientes"
+                android:text="@string/rutinas_recientes"
                 android:layout_marginStart="20dp"
                 android:layout_marginTop="20dp" />
 
@@ -65,40 +65,47 @@
             android:visibility="gone"
             android:layout_marginBottom="20dp"/>
 
-        <TextView
-            android:id="@+id/textView2"
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="Rutinas destacadas"
-            android:layout_marginStart="20dp"
-            style="@style/TextAppearance.MaterialComponents.Headline6"
-            />
-
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:id="@+id/progressBar3">
-            <ProgressBar
-                style="?android:attr/progressBarStyle"
-                android:layout_width="wrap_content"
+            android:orientation="vertical">
+            <TextView
+                android:id="@+id/textDestacadas"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:indeterminate="true"
-                android:indeterminateTintMode="src_atop"
-                android:indeterminateTint="@color/blue_1"
-                android:layout_marginBottom="20dp"
-                android:layout_alignParentBottom="true"
-                android:layout_centerHorizontal="true"
+                android:layout_weight="1"
+                android:text="@string/rutinas_destacadas"
+                android:layout_marginStart="20dp"
+                android:visibility="gone"
+                style="@style/TextAppearance.MaterialComponents.Headline6"
                 />
-        </RelativeLayout>
 
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/listBest"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_weight="1" >
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/progressBar3">
+                <ProgressBar
+                    style="?android:attr/progressBarStyle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:indeterminate="true"
+                    android:indeterminateTintMode="src_atop"
+                    android:indeterminateTint="@color/blue_1"
+                    android:layout_marginBottom="20dp"
+                    android:layout_alignParentBottom="true"
+                    android:layout_centerHorizontal="true"
+                    />
+            </RelativeLayout>
 
-        </androidx.recyclerview.widget.RecyclerView>
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/listBest"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1" >
+
+            </androidx.recyclerview.widget.RecyclerView>
+
+        </LinearLayout>
 
     </LinearLayout>
 </ScrollView>

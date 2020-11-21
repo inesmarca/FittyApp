@@ -73,6 +73,7 @@ public class Home extends MainFragment implements BestAdapter.OnRoutineListener,
                 LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false);
                 bestRecycler.setLayoutManager(linearLayoutManager);
                 rootView.findViewById(R.id.progressBar3).setVisibility(View.GONE);
+                rootView.findViewById(R.id.textDestacadas).setVisibility(View.VISIBLE);
                 bestRecycler.setAdapter(bestAdapter);
             } else {
                 defaultResourceHandler(r);

@@ -34,16 +34,6 @@ public class LoginActivity extends AppCompatActivity {
             startActivity(signupIntent);
         });
 
-        binding.btnHack.setOnClickListener((view) -> {
-            Intent homeIntent = new Intent(this, MainActivity.class);
-            startActivity(homeIntent);
-        });
-
-        binding.btnHack2.setOnClickListener((view) -> {
-            Intent verificationCodeIntent = new Intent(this, VerificationCodeActivity.class);
-            startActivity(verificationCodeIntent);
-        });
-
         binding.btnLogin.setOnClickListener(v->{
             TextInputLayout email = binding.txtLoginEmail;
             TextInputLayout pass = binding.txtLoginPassword;

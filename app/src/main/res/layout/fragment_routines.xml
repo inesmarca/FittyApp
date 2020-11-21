@@ -8,42 +8,33 @@
     android:layout_marginHorizontal="20dp"
     tools:context=".Routines">
 
-    <RelativeLayout
+    <SearchView
+        android:id="@+id/search"
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="10dp"
-        android:layout_marginHorizontal="10dp"
-        android:layout_marginTop="20dp">
-
-        <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/textField"
-            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="@string/search"
-            app:boxBackgroundColor="@color/gray_2"
-            app:startIconTint="@color/blue_1"
-            app:startIconDrawable="@drawable/ic_search">
-
-            <com.google.android.material.textfield.TextInputEditText
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:inputType="textNoSuggestions"
-                android:singleLine="true"/>
-
-        </com.google.android.material.textfield.TextInputLayout>
-    </RelativeLayout>
-
+        android:layout_marginTop="20dp"
+        android:background="@color/gray_2"
+        android:backgroundTint="@color/gray_2" />
 
     <RelativeLayout
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content">
+
+        <ListView
+            android:id="@+id/searchList"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/gray_2"
+            android:backgroundTint="@color/gray_2"
+            android:foregroundTint="@color/gray_2"
+            android:visibility="gone" />
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/listCategories"
+            android:layout_marginTop="20dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" />
-
     </RelativeLayout>
 
 

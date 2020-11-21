@@ -1,11 +1,18 @@
 package com.example.fitty;
 
+import android.content.Context;
 import android.content.res.Configuration;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.InputMethodManager;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
+import android.widget.ListAdapter;
+import android.widget.ListView;
+import android.widget.SearchView;
 
 import androidx.fragment.app.Fragment;
 import androidx.navigation.Navigation;
@@ -15,12 +22,14 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.fitty.adapters.CategoriesAdapter;
 import com.example.fitty.models.Category;
 import com.example.fitty.models.Error;
+import com.example.fitty.models.Routine;
 import com.example.fitty.repository.Resource;
 import com.example.fitty.repository.Status;
 import com.google.android.material.appbar.MaterialToolbar;
 
 import org.jetbrains.annotations.NotNull;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -34,6 +43,10 @@ public class Routines extends MainFragment implements CategoriesAdapter.OnCatego
     List<Category> categories;
     View rootView;
     GridLayoutManager gridLayoutManager;
+    SearchView searchView;
+    ListView searchList;
+    ListAdapter searchAdapter;
+    List<Routine> searchResults = new ArrayList<>();
 
     // TODO: Rename and change types and number of parameters
     public static Routines newInstance(String param1, String param2) {
@@ -79,6 +92,87 @@ public class Routines extends MainFragment implements CategoriesAdapter.OnCatego
             @Override
             public void onClick(View v) {
                 Navigation.findNavController(rootView).navigate(R.id.action_rutines_to_userProfile);
+            }
+        });
+
+        searchView = rootView.findViewById(R.id.search);
+        searchList = rootView.findViewById(R.id.searchList);
+        searchAdapter = new ArrayAdapter<>(getContext(), android.R.layout.simple_list_item_1, searchResults);
+        searchList.setAdapter(searchAdapter);
+
+        searchView.setOnClickListener(v -> {
+            searchList.setVisibility(View.VISIBLE);
+            searchList.bringToFront();
+        });
+
+        searchView.setOnCloseListener(new SearchView.OnCloseListener() {
+            @Override
+            public boolean onClose() {
+                searchList.setVisibility(View.GONE);
+                return false;
+            }
+        });
+
+        searchView.setOnFocusChangeListener(new View.OnFocusChangeListener(){
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+                searchList.setVisibility(View.GONE);
+            }
+        });
+
+        searchView.setOnContextClickListener(new View.OnContextClickListener() {
+            @Override
+            public boolean onContextClick(View v) {
+                searchList.setVisibility(View.GONE);
+                return false;
+            }
+        });
+
+        searchList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                Bundle bundle = new Bundle();
+                bundle.putSerializable("routine", searchResults.get(position));
+                InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
+                imm.hideSoftInputFromWindow(rootView.getWindowToken(), 0);
+                searchList.setVisibility(View.GONE);
+                Navigation.findNavController(rootView).navigate(R.id.routineView, bundle);
+            }
+        });
+
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                searchList.setVisibility(View.VISIBLE);
+                searchList.bringToFront();
+                fitty.getRoutineRepository().getRoutines(query,null,0,10, null, null).observe(getActivity(),r->{
+                    if (r.getStatus() == Status.SUCCESS) {
+                        searchResults.clear();
+                        searchResults = r.getData().getResults();
+                        searchAdapter = new ArrayAdapter<>(getContext(), android.R.layout.simple_list_item_1, searchResults);
+                        searchList.setAdapter(searchAdapter);
+                    } else {
+                        defaultResourceHandler(r);
+                    }
+                });
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                searchList.setVisibility(View.VISIBLE);
+                searchList.bringToFront();
+                fitty.getRoutineRepository().getRoutines(newText,null,0,10, null, null).observe(getActivity(),r->{
+                    if (r.getStatus() == Status.SUCCESS) {
+                        searchResults.clear();
+                        searchResults = r.getData().getResults();
+                        searchAdapter = new ArrayAdapter<>(getContext(), android.R.layout.simple_list_item_1, searchResults);
+                        searchList.setAdapter(searchAdapter);
+                    } else {
+                        defaultResourceHandler(r);
+                    }
+                });
+                return false;
             }
         });
 

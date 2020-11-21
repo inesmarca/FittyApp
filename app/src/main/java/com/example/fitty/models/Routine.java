@@ -146,4 +146,8 @@ public class Routine implements Serializable {
 
     public List<Cycle> getCycles() { return this.cycles; }
 
+    @Override
+    public String toString() {
+        return name;
+    }
 }
