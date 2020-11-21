@@ -144,6 +144,12 @@ public class Routine implements Serializable {
         cycles.addAll(listCycles);
     }
 
+    public void clearCycle() {
+        if (cycles != null) {
+            cycles.clear();
+        }
+    }
+
     public List<Cycle> getCycles() { return this.cycles; }
 
     @Override

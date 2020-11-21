@@ -74,6 +74,7 @@ public class RoutineView extends SecondaryFragment {
                 cycles = r.getData().getResults();
 
                 if (cycles != null) {
+                    routine.clearCycle();
                     routine.addCycle(cycles);
                 }
 

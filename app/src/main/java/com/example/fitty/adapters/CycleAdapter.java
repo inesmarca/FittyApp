@@ -62,6 +62,7 @@ public class CycleAdapter extends RecyclerView.Adapter<CycleAdapter.CycleViewHol
             if(r.getStatus()== Status.SUCCESS){
                 assert r.getData() != null;
                 exercises = r.getData().getResults();
+                current.clearExercise();
                 current.addExercise(exercises);
 
                 adapter = new ExerciseAdapter(exercises, current, routineView);

@@ -74,6 +74,12 @@ public class Cycle implements Serializable {
         exercises.addAll(listExercises);
     }
 
+    public void clearExercise() {
+        if (exercises != null) {
+            exercises.clear();
+        }
+    }
+
     public List<Exercise> getExercises() {
         return this.exercises;
     }
