@@ -43,6 +43,7 @@ public class RoutineView extends SecondaryFragment {
     private GridLayoutManager gridLayoutManager;
     private Routine routine;
     FittyApp fittyApp;
+    public Button buttonInitiate;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -62,7 +63,7 @@ public class RoutineView extends SecondaryFragment {
         ((TextView) rootView.findViewById(R.id.titRoutineView)).setText(routine.getName());
         ((RatingBar) rootView.findViewById(R.id.ratingRoutineView)).setRating(routine.getRating());
         ((TextView) rootView.findViewById(R.id.duration)).setText(routine.getDuration() + "'");
-        Button buttonInitiate = rootView.findViewById(R.id.buttonInitiate);
+        buttonInitiate = rootView.findViewById(R.id.buttonInitiate);
         buttonInitiate.setEnabled(false);
         buttonInitiate.setOnClickListener(new buttonClick());
 
@@ -80,7 +81,7 @@ public class RoutineView extends SecondaryFragment {
                 gridLayoutManager = new GridLayoutManager(getContext(), 1);
                 listView.setLayoutManager(gridLayoutManager);
                 listView.setAdapter(adapter);
-                buttonInitiate.setEnabled(true);
+                //buttonInitiate.setEnabled(true);
             }
             else
                 defaultResourceHandler(r);
