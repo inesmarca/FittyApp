@@ -306,6 +306,11 @@ public class ExecuteActivity extends YouTubeBaseActivity {
         if(!modoSimple) {
             binding.txtCabeceraNombre.setText(exercise.getName());
             binding.txtCabeceraNombreVideo.setText(exercise.getName());
+        } else {
+            binding.txtCabeceraNombre.setVisibility(View.INVISIBLE);
+            binding.txtCabeceraNombreVideo.setVisibility(View.GONE);
+            binding.txtCabeceraCant.setVisibility(View.INVISIBLE);
+            binding.txtCabeceraCantVideo.setVisibility(View.GONE);
         }
         binding.txtVistaSimpleNombreAhora.setText(exercise.getName());
 
