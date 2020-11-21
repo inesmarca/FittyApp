@@ -38,12 +38,12 @@ public class SignupActivity extends AppCompatActivity {
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
         FittyApp app = (FittyApp) getApplication();
         AppPreferences preferences = new AppPreferences(app);
 
         binding = SignupActivityBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
+        binding.progressBar2.setVisibility(View.GONE);
 
         fullname = binding.txtSignupFullName;
         username = binding.txtSignupUsername;
@@ -138,10 +138,15 @@ public class SignupActivity extends AppCompatActivity {
         });
 
         binding.btnSignup.setOnClickListener(v -> {
+            binding.progressBar2.setVisibility(View.VISIBLE);
+
             try {
 
-                if (!validateEmail() | !validatePassword() | !validateUsername() )
+                if (!validateEmail() | !validatePassword() | !validateUsername() ) {
+                    binding.progressBar2.setVisibility(View.GONE);
+
                     return;
+                }
                 userToAdd.setBirthdate(new SimpleDateFormat("dd/MM/yyyy").parse(getText(binding.txtBirthdate)));
                 userToAdd.setEmail(getText(binding.txtSignupEmail));
                 userToAdd.setFullName(getText(binding.txtSignupFullName));
@@ -153,11 +158,12 @@ public class SignupActivity extends AppCompatActivity {
                         preferences.setEmail(r.getData().getEmail());
                         preferences.setUsername(r.getData().getUsername());
                         userToAdd = r.getData();
+                        binding.progressBar2.setVisibility(View.GONE);
+
                         Intent goToVerifyCode = new Intent(this, VerificationCodeActivity.class);
                         startActivity(goToVerifyCode);
                     } else {
                         defaultResourceHandler(r);
-                        //HCIear ACAAAAAAAa
                     }
                 });
             } catch (ParseException ex) {
@@ -214,6 +220,8 @@ public class SignupActivity extends AppCompatActivity {
         switch (resource.getStatus()) {
             case LOADING:
                 Log.d("UI", getString(R.string.loading));
+                binding.progressBar2.setVisibility(View.VISIBLE);
+
 
                 break;
             case ERROR:

@@ -3,6 +3,7 @@ package com.example.fitty;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
 import android.widget.Toast;
 
 import androidx.annotation.Nullable;
@@ -24,6 +25,7 @@ public class LoginActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         binding = LoginActivityBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
+        binding.progressBar2.setVisibility(View.GONE);
 
         binding.dividerLogin.txtDividerText.setText(getString(R.string.divider_login_text));
 
@@ -48,10 +50,13 @@ public class LoginActivity extends AppCompatActivity {
             FittyApp app = (FittyApp) getApplication();
             app.getUserRepository().login(new UserCredentials(email.getEditText().getText().toString(),pass.getEditText().getText().toString())).observe(this, t->{
                 if (t.getStatus() == Status.SUCCESS) {
+                    binding.progressBar2.setVisibility(View.VISIBLE);
                     Toast.makeText(getApplicationContext(), getString(R.string.welcome,email.getEditText().getText()), Toast.LENGTH_SHORT).show();
                     Intent intent = new Intent();
                     intent.putExtra("token", t.getData().getToken());
                     setResult(2, intent);
+                    binding.progressBar2.setVisibility(View.GONE);
+
                     finish();
                 } else {
                     defaultResourceHandler(t);
@@ -64,7 +69,7 @@ public class LoginActivity extends AppCompatActivity {
         switch (resource.getStatus()) {
             case LOADING:
                 Log.d("UI", getString(R.string.loading));
-
+                binding.progressBar2.setVisibility(View.VISIBLE);
                 break;
             case ERROR:
                 Error error = resource.getError();
