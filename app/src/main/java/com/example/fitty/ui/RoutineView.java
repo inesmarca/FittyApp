@@ -76,7 +76,7 @@ public class RoutineView extends SecondaryFragment {
         fittyApp.getCycleRepository().getRoutineCycles(routine.getId(), 0, 99, "order", "asc").observe(getActivity(),r->{
             if(r.getStatus()== Status.SUCCESS){
                 assert r.getData() != null;
-                cycles = r.getData().getResults();
+                cycles = r.getData();
 
                 if (cycles != null) {
                     routine.addCycle(cycles);

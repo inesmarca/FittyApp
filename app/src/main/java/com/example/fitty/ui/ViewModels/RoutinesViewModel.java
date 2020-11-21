@@ -28,8 +28,8 @@ public class RoutinesViewModel extends RepoViewModel<RoutineRepository> {
 
     private int local_page = 0;
     private boolean isLastPage = false;
-    private final PagedList<Routine> allRoutines = new PagedList<>();
-    private final MediatorLiveData<Resource<PagedList<Routine>>> routines = new MediatorLiveData<>();
+    private final List<Routine> allRoutines = new ArrayList<>();
+    private final MediatorLiveData<Resource<List<Routine>>> routines = new MediatorLiveData<>();
     private final LiveData<Resource<Routine>> routine;
 
 
@@ -47,7 +47,7 @@ public class RoutinesViewModel extends RepoViewModel<RoutineRepository> {
 
     }
 
-    public LiveData<Resource<PagedList<Routine>>> getRoutines( String search, String diff, int page, int size, String orderBy, String dir) {
+    public LiveData<Resource<List<Routine>>> getRoutines( String search, String diff, int page, int size, String orderBy, String dir) {
         getMoreRoutines( search, diff, page, size, orderBy, dir);
         return routines;
     }
@@ -62,11 +62,13 @@ public class RoutinesViewModel extends RepoViewModel<RoutineRepository> {
                 if(page == null) {
                  //Puede pedirme algo especifico, em ese caso no entraria a este if
                     local_page++;
-                    isLastPage = resource.getData().isIsLastPage();
+                    isLastPage =
+                    isLastPage = ((resource.getData().size() == 0) || (resource.getData().size() < PAGE_SIZE));
 
                 }
 
-                allRoutines.addAll(resource.getData().getResults());
+                assert resource.getData() != null;
+                allRoutines.addAll(resource.getData());
                 routines.setValue(Resource.success(allRoutines));
             } else if (resource.getStatus() == Status.LOADING) {
 

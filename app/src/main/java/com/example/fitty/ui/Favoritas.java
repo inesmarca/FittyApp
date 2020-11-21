@@ -42,7 +42,7 @@ public class Favoritas extends MainFragment implements FavoriteAdapter.OnFavorit
         FittyApp fitty = (FittyApp) getActivity().getApplication();
         fitty.getUserRepository().getUserFavourites(0,15,"name","asc").observe(getActivity(),r->{
             if (r.getStatus() == Status.SUCCESS) {
-                routines = r.getData().getResults();
+                routines = r.getData();
                 adapter = new FavoriteAdapter(routines, this);
                 gridLayoutManager = new GridLayoutManager(getContext(), 2);
                 orientationChange(gridLayoutManager, getActivity().getResources().getConfiguration());

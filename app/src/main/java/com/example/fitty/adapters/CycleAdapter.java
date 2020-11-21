@@ -62,7 +62,7 @@ public class CycleAdapter extends RecyclerView.Adapter<CycleAdapter.CycleViewHol
         fittyApp.getExerciseRepository().getRoutineCycleExercises(routineView.getRoutine().getId(), current.getId(), 0, 99, "id", "asc").observe(routineView.getActivity(),r->{
             if(r.getStatus()== Status.SUCCESS){
                 assert r.getData() != null;
-                exercises = r.getData().getResults();
+                exercises = r.getData();
                 Log.d("CANTIDAD", String.valueOf(exercises.size()));
                 current.addExercise(exercises);
                 Log.d("CANTIDAD", String.valueOf(exercises.size()));

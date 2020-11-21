@@ -60,7 +60,7 @@ public class Routines extends MainFragment implements CategoriesAdapter.OnCatego
         FittyApp fitty = (FittyApp) getActivity().getApplication();
         fitty.getCategoryRepository().getCategories(0,15,"name","asc").observe(getActivity(),r->{
             if (r.getStatus() == Status.SUCCESS) {
-                categories = r.getData().getResults();
+                categories = r.getData();
                 adapter = new CategoriesAdapter(categories, this);
                 gridLayoutManager = new GridLayoutManager(getContext(), 2);
                 orientationChange(gridLayoutManager, getActivity().getResources().getConfiguration());

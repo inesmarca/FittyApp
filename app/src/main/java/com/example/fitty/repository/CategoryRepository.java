@@ -1,22 +1,15 @@
 package com.example.fitty.repository;
 
-import android.content.Context;
-
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.lifecycle.LiveData;
 
-import com.example.fitty.api.ApiClient;
 import com.example.fitty.api.ApiResponse;
 import com.example.fitty.api.CategoryApiService;
 import com.example.fitty.api.models.Category;
-import com.example.fitty.api.models.Cycle;
 import com.example.fitty.api.models.PagedList;
-import com.example.fitty.api.models.Routine;
 import com.example.fitty.dbRoom.DB;
 import com.example.fitty.dbRoom.entitys.CategoryEntity;
-import com.example.fitty.dbRoom.entitys.CycleEntity;
-import com.example.fitty.dbRoom.entitys.RoutineEntity;
 
 import java.util.List;
 import java.util.concurrent.TimeUnit;
@@ -38,15 +31,16 @@ public class CategoryRepository {
     }
 
 
-    public LiveData<Resource<PagedList<Category>>> getCategories(int page,int size,String orderBy,String direction) {
-        return new NetworkBoundResource<PagedList<Category>, List<CategoryEntity>>(executors,
-                entities -> new PagedList<>(0,orderBy,direction,
-                        entities.stream().map(entity->
+    public LiveData<Resource<List<Category>>> getCategories(int page, int size, String orderBy, String direction) {
+        // dominio (view) - entidad(bd) - modelo (api). En la practica, dominio y model son lo mismo
+        return new NetworkBoundResource<List<Category>, List<CategoryEntity>,PagedList<Category>>(executors,
+                entities -> entities.stream().map(entity->
                                 new Category(entity.id,entity.name,entity.detail))
-                        .collect(toList()), page,size,false),
+                        .collect(toList()),
                 domain -> domain.getResults().stream().map(category ->
                         new CategoryEntity(category.getId(),category.getName(),category.getDetail()))
-                        .collect(toList())
+                        .collect(toList()),
+                model-> model.getResults()
         )
         {
 
@@ -83,10 +77,15 @@ public class CategoryRepository {
         }.asLiveData();
     }
     public LiveData<Resource<Category>> getCategory(int categoryId){
-        return new NetworkBoundResource<Category, CategoryEntity>(executors, entity ->
+        // dominio (view) - entidad(bd) - modelo (api). En la practica, dominio y model son lo mismo
+
+        return new NetworkBoundResource<Category, CategoryEntity,Category>(executors, entity ->
                 new Category(entity.id,entity.name,entity.detail),
                 category ->
-                        new CategoryEntity(category.getId(),category.getName(),category.getDetail())) {
+                        new CategoryEntity(category.getId(),category.getName(),category.getDetail()),
+                category -> category)
+
+        {
 
             @Override
             protected void saveCallResult(@NonNull CategoryEntity entity) {

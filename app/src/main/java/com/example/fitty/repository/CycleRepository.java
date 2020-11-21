@@ -10,6 +10,7 @@ import com.example.fitty.api.ApiClient;
 import com.example.fitty.api.ApiResponse;
 import com.example.fitty.api.CycleApiService;
 import com.example.fitty.api.UserApiService;
+import com.example.fitty.api.models.Category;
 import com.example.fitty.api.models.Cycle;
 import com.example.fitty.api.models.PagedList;
 import com.example.fitty.dbRoom.DB;
@@ -34,16 +35,17 @@ public class CycleRepository {
         this.database = database;
     }
 
-    public LiveData<Resource<PagedList<Cycle>>> getRoutineCycles (int routineId,int page,int size,String orderBy,String direction){
-        return new NetworkBoundResource<PagedList<Cycle>, List<CycleEntity>>(executors,
-                entities -> new PagedList<>(0,orderBy,direction,
-                        entities.stream().map(entity->
-                                new Cycle(entity.id,entity.name,entity.detail,entity.type,entity.order,entity.repetitions))
-                        .collect(toList()),size,page,false),
+    public LiveData<Resource<List<Cycle>>> getRoutineCycles (int routineId,int page,int size,String orderBy,String direction){
+        return new NetworkBoundResource<List<Cycle>, List<CycleEntity>, PagedList<Cycle>>(executors,
+
+                entities -> entities.stream().map(entity -> new Cycle(entity.id,entity.name,entity.detail,entity.type,entity.order,entity.repetitions))
+                .collect(toList()),
                 domain -> domain.getResults().stream().map(cycle ->
                         new CycleEntity(cycle.getId(),cycle.getName(),cycle.getDetail(),cycle.getType(),cycle.getOrder(),cycle.getRepetitions()))
                         .collect(toList())
-                )
+                ,
+                PagedList::getResults)
+
         {
             @Override
             protected void saveCallResult(@NonNull List<CycleEntity> entities) {
@@ -75,10 +77,12 @@ public class CycleRepository {
         }.asLiveData();
     }
     public LiveData<Resource<Cycle>> getRoutineCycle(int routineId,int cycleId){
-        return new NetworkBoundResource<Cycle,CycleEntity>(executors,
+        return new NetworkBoundResource<Cycle,CycleEntity,Cycle>(executors,
                 entity -> new Cycle(entity.id,entity.name,entity.detail,entity.type,entity.order,entity.repetitions),
 
-                domain -> new CycleEntity(domain.getId(),domain.getName(),domain.getDetail(),domain.getType(),domain.getOrder(),domain.getRepetitions())
+                domain -> new CycleEntity(domain.getId(),domain.getName(),domain.getDetail(),domain.getType(),domain.getOrder(),domain.getRepetitions()),
+
+                model -> model
 
                 )
         {

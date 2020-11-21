@@ -91,8 +91,9 @@ public class Routine implements Serializable {
         return category_id;
     }
 
-    public Routine(String name, String detail, String difficulty, Category category, int creator) {
+    public Routine(Integer id,String name, String detail, String difficulty, Category category, int creator) {
         super();
+        this.id = id;
         this.name = name;
         this.difficulty = difficulty;
         this.category = category;

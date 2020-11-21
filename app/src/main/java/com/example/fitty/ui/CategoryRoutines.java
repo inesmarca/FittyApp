@@ -85,7 +85,7 @@ public class CategoryRoutines extends SecondaryFragment implements CategoryRouti
         routinesViewModel.getRoutines(null,null,0,200,"averageRating","asc").observe(getActivity(),r->{
             if(r.getStatus()== Status.SUCCESS){
                 assert r.getData() != null;
-                routines = r.getData().getResults();
+                routines = r.getData();
                 routines.removeIf(routine ->
                         routine.getCategory().getId() != idCategory
                 );

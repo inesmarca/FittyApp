@@ -14,6 +14,8 @@ import com.example.fitty.api.models.PagedList;
 import com.example.fitty.api.models.Rating;
 import com.example.fitty.dbRoom.DB;
 
+import java.util.List;
+
 public class RatingsRepository {
     private  RatingsApiService apiService;
     private DB database;
@@ -24,7 +26,7 @@ public class RatingsRepository {
         this.database = database;
     }
     public LiveData<Resource<Rating>> rate (int routineId, Rating rating){
-        return new NetworkBoundResource<Rating,Void>(executors,null,null)
+        return new NetworkBoundResource<Rating,Void,Rating>(executors,v->null,v->null,v->v)
         {
             @Override
             protected void saveCallResult(@NonNull Void entity) {
@@ -54,8 +56,8 @@ public class RatingsRepository {
             }
         }.asLiveData();
     }
-    public LiveData<Resource<PagedList<Rating>>> getRoutineRatings (int routineId, int page,int size,String orderBy,String direction){
-        return new NetworkBoundResource<PagedList<Rating>,Void>(executors,null,null)
+    public LiveData<Resource<List<Rating>>> getRoutineRatings (int routineId, int page,int size,String orderBy,String direction){
+        return new NetworkBoundResource<List<Rating>,Void,PagedList<Rating>>(executors,null,null, PagedList::getResults)
         {
 
             @Override

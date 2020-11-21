@@ -14,6 +14,8 @@ import com.example.fitty.api.models.PagedList;
 import com.example.fitty.api.models.Video;
 import com.example.fitty.dbRoom.DB;
 
+import java.util.List;
+
 public class VideosRepository {
     private  AppExecutors executors;
     private  VideoApiService service;
@@ -25,7 +27,7 @@ public class VideosRepository {
     }
 
     public LiveData<Resource<Video>> getRoutineCycleExerciseVideo (int routineId, int cycleId, int exerciseId,int videoId){
-        return new NetworkBoundResource<Video,Void>(executors,null,null)
+        return new NetworkBoundResource<Video,Void,Video>(executors,v->null,v->null,a->a)
         {
             @Override
             protected void saveCallResult(@NonNull Void entity) {
@@ -56,8 +58,8 @@ public class VideosRepository {
             }
         }.asLiveData();
     }
-    public LiveData<Resource<PagedList<Video>>> getRoutineCycleExerciseVideos (int routineId,int cycleId, int exerciseId , int page, int size, String orderBy, String direction){
-        return new NetworkBoundResource<PagedList<Video>,Void>(executors,null,null){
+    public LiveData<Resource<List<Video>>> getRoutineCycleExerciseVideos (int routineId, int cycleId, int exerciseId , int page, int size, String orderBy, String direction){
+        return new NetworkBoundResource<List<Video>,Void,PagedList<Video>>(executors,v->null,v->null, PagedList::getResults){
 
             @Override
             protected void saveCallResult(@NonNull Void entity) {

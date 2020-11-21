@@ -16,6 +16,7 @@ import com.example.fitty.api.models.User;
 import com.example.fitty.api.models.UserCredentials;
 import com.example.fitty.dbRoom.entitys.UserEntity;
 
+import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 public class UserRepository {
@@ -46,7 +47,7 @@ public class UserRepository {
 
 
     public LiveData<Resource<Token>> login(UserCredentials credentials) {
-        return new NetworkBoundResource<Token, Void>(executors,null,null)
+        return new NetworkBoundResource<Token, Void,Token>(executors,v->null,v->null,v->v)
         {
             @Override
             protected void saveCallResult(@NonNull Void entity) {
@@ -79,8 +80,8 @@ public class UserRepository {
 
 
     public LiveData<Resource<Void>> logout() {
-        return new NetworkBoundResource<Void, Void>
-                (executors, null, null) {
+        return new NetworkBoundResource<Void, Void,Void>
+                (executors, v->null, v->null,v->null) {
 
             @Override
             protected void saveCallResult(@NonNull Void entity) {
@@ -111,7 +112,13 @@ public class UserRepository {
     }
 
     public LiveData<Resource<User>> getCurrentUser() {
-        return new NetworkBoundResource<User, UserEntity>(executors,null,null)
+        return new NetworkBoundResource<User, UserEntity, User>(executors,
+                userEntity -> new User (userEntity.id,userEntity.username,userEntity.fullName,userEntity.gender,userEntity.birthdate,userEntity.email,null,null,null,null,false,true),
+
+                model -> new UserEntity(model.getId(),model.getUsername(),model.getFullName(),model.getGender(),model.getBirthdate(),model.getEmail()),
+
+                model -> model
+                )
         {
             @Override
             protected void saveCallResult(@NonNull UserEntity entity) {
@@ -144,8 +151,8 @@ public class UserRepository {
 
 
 
-    public LiveData<Resource<PagedList<RoutineExecution>>> getUserExecutions(int page, int size, String orderBy, String direction) {
-        return new NetworkBoundResource<PagedList<RoutineExecution>,Void>(executors,null,null)
+    public LiveData<Resource<List<RoutineExecution>>> getUserExecutions(int page, int size, String orderBy, String direction) {
+        return new NetworkBoundResource<List<RoutineExecution>,Void, PagedList<RoutineExecution>>(executors,v->null,v->null,PagedList::getResults)
         {
             @Override
             protected void saveCallResult(@NonNull Void entity) {
@@ -175,8 +182,8 @@ public class UserRepository {
             }
         }.asLiveData();
     }
-    public LiveData<Resource<PagedList<Routine>>> getUserFavourites(int page, int size, String orderBy, String direction) {
-        return new NetworkBoundResource<PagedList<Routine>,Void>(executors,null,null)
+    public LiveData<Resource<List<Routine>>> getUserFavourites(int page, int size, String orderBy, String direction) {
+        return new NetworkBoundResource<List<Routine>,Void,PagedList<Routine>>(executors,v->null,v->null,PagedList::getResults)
         {
             @Override
             protected void saveCallResult(@NonNull Void entity) {
@@ -208,7 +215,7 @@ public class UserRepository {
     }
 
     public LiveData<Resource<Void>> favRoutine(int routineId) {
-        return new NetworkBoundResource<Void,Void>(executors,null,null)
+        return new NetworkBoundResource<Void,Void,Void>(executors,v->null,v->null,v->null)
         {
             @Override
             protected void saveCallResult(@NonNull Void entity) {
@@ -240,7 +247,7 @@ public class UserRepository {
     }
 
     public LiveData<Resource<Void>> unfavRoutine(int routineId) {
-        return new NetworkBoundResource<Void,Void>(executors,null ,null)
+        return new NetworkBoundResource<Void,Void,Void>(executors,v->null ,b->null,v->null)
         {
             @Override
             protected void saveCallResult(@NonNull Void entity) {
@@ -275,7 +282,7 @@ public class UserRepository {
 
 
     public LiveData<Resource<User>> addUser(User user) {
-        return new NetworkBoundResource<User,Void>(executors,null,null)
+        return new NetworkBoundResource<User,Void,User>(executors,v->null,v->null,v->v)
         {
             @Override
             protected void saveCallResult(@NonNull Void entity) {
@@ -306,7 +313,7 @@ public class UserRepository {
         }.asLiveData();
     }
     public LiveData<Resource<Void>> verify(EmailVerification emailVerification) {
-        return new NetworkBoundResource<Void, Void>(executors,null,null)
+        return new NetworkBoundResource<Void, Void,Void>(executors,v->null,v->null, hola->null)
         {
             @Override
             protected void saveCallResult(@NonNull Void entity) {
@@ -339,7 +346,7 @@ public class UserRepository {
 
     }
     public LiveData<Resource<Void>> resendVerification(EmailVerification emailVerification) {
-        return new NetworkBoundResource<Void, Void>(executors,null,null) {
+        return new NetworkBoundResource<Void, Void,Void>(executors,v->null,v->null,v->null) {
             @Override
             protected void saveCallResult(@NonNull Void entity) {
 

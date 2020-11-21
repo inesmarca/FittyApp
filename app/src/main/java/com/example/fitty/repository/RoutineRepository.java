@@ -64,21 +64,16 @@ public class RoutineRepository {
         return new RoutineEntity(routine.getId(),routine.getDetail(),routine.getAverageRating(),routine.getName(),routine.getCreator().getId(),routine.getCategory().getId(),routine.getDifficulty());
     }*/
 
-    public LiveData<Resource<PagedList<Routine>>> getRoutines(String search, String difficulty, int page, int size, String orderBy, String direction) {
-        return new NetworkBoundResource<PagedList<Routine>,List<RoutineEntity>>(executors,
-                entities ->
+    public LiveData<Resource<List<Routine>>> getRoutines(String search, String difficulty, int page, int size, String orderBy, String direction) {
+        return new NetworkBoundResource<List<Routine>, List<RoutineEntity>, PagedList<Routine>>(executors,
+                entities -> entities.stream().map(entity -> new Routine(entity.id, entity.name, entity.detail, entity.difficulty, new Category(entity.category_id, entity.category_name, entity.category_detail), entity.creatorId)).collect(toList()),
 
-                        new PagedList<>(0, orderBy, direction,
-                                entities.stream().map(
-                                        entity -> new Routine(entity.name, entity.detail, entity.difficulty,new Category(entity.category_id,entity.category_name,entity.category_detail), entity.creatorId)
-
-                                ).collect(toList())
-                                , size, page, false),
                 domain ->
-                        domain.getResults().stream().map(routine-> new RoutineEntity(routine.getId(),routine.getDetail(),routine.getAverageRating(),routine.getName(),routine.getCreator().getId(),routine.getDifficulty(),routine.getCategory().getId() ,routine.getCategory().getName(),routine.getCategory().getDetail()))
-                                .collect(toList())) {
+                        domain.getResults().stream().map(routine -> new RoutineEntity(routine.getId(), routine.getDetail(), routine.getAverageRating(), routine.getName(), routine.getCreator().getId(), routine.getDifficulty(), routine.getCategory().getId(), routine.getCategory().getName(), routine.getCategory().getDetail()))
+                                .collect(toList()),
 
-
+                PagedList::getResults
+        ) {
             @Override
             protected void saveCallResult(@NonNull List<RoutineEntity> entity) {
                 database.routineDao().deleteAll();
@@ -109,18 +104,21 @@ public class RoutineRepository {
 
             }
         }.asLiveData();
+
+
     }
     public LiveData<Resource<RoutineExecution>> executeRoutine (int routineId, RoutineExecution routineExecution){
-        return new NetworkBoundResource<RoutineExecution,RoutineExecution>(executors,null,null)
+        return new NetworkBoundResource<RoutineExecution,Void,RoutineExecution>(executors,v->null,v->null,v->v)
         {
+
             @Override
-            protected void saveCallResult(@NonNull RoutineExecution entity) {
+            protected void saveCallResult(@NonNull Void entity) {
 
             }
 
             @Override
-            protected boolean shouldFetch(@Nullable RoutineExecution entity) {
-                return false;
+            protected boolean shouldFetch(@Nullable Void entity) {
+                return true;
             }
 
             @Override
@@ -130,19 +128,19 @@ public class RoutineRepository {
 
             @NonNull
             @Override
-            protected LiveData<RoutineExecution> loadFromDb() {
+            protected LiveData<Void> loadFromDb() {
                 return EmptyLiveData.create();
             }
 
             @NonNull
             @Override
             protected LiveData<ApiResponse<RoutineExecution>> createCall() {
-                return apiService.execute(routineId,routineExecution);
+                return apiService.execute(routineId, routineExecution);
             }
         }.asLiveData();
     }
-    public LiveData<Resource<PagedList<RoutineExecution>>> getRoutineExecutions (int routineId, int page, int size, String orderBy, String dir){
-        return new NetworkBoundResource<PagedList<RoutineExecution>,Void>(executors,null,null)
+    public LiveData<Resource<List<RoutineExecution>>> getRoutineExecutions (int routineId, int page, int size, String orderBy, String dir){
+        return new NetworkBoundResource<List<RoutineExecution>,Void,PagedList<RoutineExecution>>(executors,v->null,v->null, PagedList::getResults)
         {
             @Override
             protected void saveCallResult(@NonNull Void entity) {
@@ -173,12 +171,12 @@ public class RoutineRepository {
         }.asLiveData();
     }
     public LiveData<Resource<Routine>> getRoutine(int routineId) {
-        return new NetworkBoundResource<Routine, RoutineEntity>(executors, entity -> {
-            return new Routine(entity.name, entity.detail, entity.difficulty,_category, entity.creatorId);
-
-        },
+        return new NetworkBoundResource<Routine, RoutineEntity,Routine>(executors,
+                entity -> new Routine(entity.id,entity.name, entity.detail, entity.difficulty,new Category(entity.category_id,entity.category_name,entity.category_detail), entity.creatorId),
                 routine ->
-                new RoutineEntity(routine.getId(),routine.getDetail(),routine.getAverageRating(),routine.getName(),routine.getCreator().getId(),routine.getDifficulty(),routine.getCategory().getId(),routine.getCategory().getName(),routine.getCategory().getDetail())) {
+                new RoutineEntity(routine.getId(),routine.getDetail(),routine.getAverageRating(),routine.getName(),routine.getCreator().getId(),routine.getDifficulty(),routine.getCategory().getId(),routine.getCategory().getName(),routine.getCategory().getDetail()),
+                model -> model
+                ) {
 
             @Override
             protected void saveCallResult(@NonNull RoutineEntity entity) {
@@ -207,21 +205,7 @@ public class RoutineRepository {
                 return apiService.getRoutine(routineId);
             }
         }.asLiveData();
-    }    private Category parseCategory(CategoryEntity categoryEntity){
-        return new Category(categoryEntity.id,categoryEntity.name,categoryEntity.detail);
     }
 
-    private void defaultResourceHandler(Resource<?> resource) {
-        switch (resource.getStatus()) {
-            case LOADING:
-                Log.d("UI", "CARGANDO");
 
-                break;
-            case ERROR:
-                Error error = resource.getError();
-                String message =  error.getDescription() + error.getCode();
-                Log.d("UI", message);
-                break;
-        }
-    }
 }

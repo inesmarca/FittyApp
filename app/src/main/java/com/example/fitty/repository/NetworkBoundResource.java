@@ -14,21 +14,20 @@ import com.example.fitty.api.ApiResponse;
 import java.util.function.Function;
 
 
-public abstract class NetworkBoundResource<DomainType, EntityType> {
+public abstract class NetworkBoundResource<DomainType, EntityType, ModelType> {
     private final AppExecutors appExecutors;
     private final Function<EntityType, DomainType> mapEntityToDomain;
-    private final Function<DomainType, EntityType> mapDomainToEntity;
-
-
+    private final Function<ModelType, EntityType> mapModelToEntity;
+    private final Function<ModelType, DomainType> mapModelToDomain;
 
     private final MediatorLiveData<Resource<DomainType>> result = new MediatorLiveData<>();
 
     @MainThread
-    public NetworkBoundResource(AppExecutors appExecutors, Function<EntityType, DomainType> mapEntityToDomain, Function<DomainType, EntityType> mapDomainToEntity) {
+    public NetworkBoundResource(AppExecutors appExecutors, Function<EntityType, DomainType> mapEntityToDomain, Function<ModelType, EntityType> mapModelToEntity, Function<ModelType, DomainType> mapModelToDomain) {
         this.appExecutors = appExecutors;
         this.mapEntityToDomain = mapEntityToDomain;
-        this.mapDomainToEntity = mapDomainToEntity;
-
+        this.mapModelToEntity = mapModelToEntity;
+        this.mapModelToDomain = mapModelToDomain;
 
         result.setValue(Resource.loading(null));
         LiveData<EntityType> dbSource = loadFromDb();
@@ -53,7 +52,7 @@ public abstract class NetworkBoundResource<DomainType, EntityType> {
     }
 
     private void fetchFromNetwork(final LiveData<EntityType> dbSource) {
-        LiveData<ApiResponse<DomainType>> apiResponse = createCall();
+        LiveData<ApiResponse<ModelType>> apiResponse = createCall();
         // we re-attach dbSource as a new source, it will dispatch its latest value quickly
         result.addSource(dbSource,
                 newData -> {
@@ -78,10 +77,10 @@ public abstract class NetworkBoundResource<DomainType, EntityType> {
                         }
                 );
             } else /*if (response.getData() != null)*/ {
-                DomainType model = processResponse(response);
+                ModelType model = processResponse(response);
                 if (shouldPersist(model)) {
                     appExecutors.diskIO().execute(() -> {
-                        EntityType entity = mapDomainToEntity.apply(model);
+                        EntityType entity = mapModelToEntity.apply(model);
                         saveCallResult(entity);
                         appExecutors.mainThread().execute(() ->
                                 // we specially request a new live data,
@@ -91,15 +90,15 @@ public abstract class NetworkBoundResource<DomainType, EntityType> {
                                         newData -> {
                                             DomainType domain = (newData != null) ?
                                                     mapEntityToDomain.apply(newData) :
-                                                    model;
+                                                    mapModelToDomain.apply(model);
                                             setValue(Resource.success(domain));
                                         })
                         );
                     });
                 } else {
                     appExecutors.mainThread().execute(() -> {
-                        setValue(Resource.success(model));
-
+                        DomainType domain = mapModelToDomain.apply(model);
+                        setValue(Resource.success(domain));
                     });
                 }
             }
@@ -114,7 +113,7 @@ public abstract class NetworkBoundResource<DomainType, EntityType> {
     }
 
     @WorkerThread
-    protected DomainType processResponse(ApiResponse<DomainType> response) {
+    protected ModelType processResponse(ApiResponse<ModelType> response) {
         return response.getData();
     }
 
@@ -125,7 +124,7 @@ public abstract class NetworkBoundResource<DomainType, EntityType> {
     protected abstract boolean shouldFetch(@Nullable EntityType entity);
 
     @MainThread
-    protected abstract boolean shouldPersist(@Nullable DomainType model);
+    protected abstract boolean shouldPersist(@Nullable ModelType model);
 
     @NonNull
     @MainThread
@@ -133,5 +132,5 @@ public abstract class NetworkBoundResource<DomainType, EntityType> {
 
     @NonNull
     @MainThread
-    protected abstract LiveData<ApiResponse<DomainType>> createCall();
+    protected abstract LiveData<ApiResponse<ModelType>> createCall();
 }

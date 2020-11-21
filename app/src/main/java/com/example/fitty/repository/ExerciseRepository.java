@@ -13,6 +13,7 @@ import com.example.fitty.api.models.Exercise;
 import com.example.fitty.api.models.PagedList;
 import com.example.fitty.dbRoom.DB;
 
+import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 public class ExerciseRepository {
@@ -27,7 +28,7 @@ public class ExerciseRepository {
     }
 
     public LiveData<Resource<Exercise>> getRoutineCycleExercise(int routineId, int cycleId, int exerciseId) {
-        return new NetworkBoundResource<Exercise, Void>(executors,null,null) {
+        return new NetworkBoundResource<Exercise, Void, Exercise>(executors,v->null,v->null,v->v) {
 
             @Override
             protected void saveCallResult(@NonNull Void entity) {
@@ -58,8 +59,8 @@ public class ExerciseRepository {
         }.asLiveData();
     }
 
-    public LiveData<Resource<PagedList<Exercise>>> getRoutineCycleExercises(int routineId, int cycleId, int page, int size, String orderBy, String direction) {
-        return new NetworkBoundResource<PagedList<Exercise>,Void>(executors,null,null) {
+    public LiveData<Resource<List<Exercise>>> getRoutineCycleExercises(int routineId, int cycleId, int page, int size, String orderBy, String direction) {
+        return new NetworkBoundResource<List<Exercise>,Void,PagedList<Exercise>>(executors,v->null,v->null,v->v.getResults()) {
 
 
             @Override
@@ -77,6 +78,7 @@ public class ExerciseRepository {
                 return false;
             }
 
+
             @NonNull
             @Override
             protected LiveData<Void> loadFromDb() {
@@ -88,6 +90,8 @@ public class ExerciseRepository {
             protected LiveData<ApiResponse<PagedList<Exercise>>> createCall() {
                 return service.getRoutineCycleExercises(routineId, cycleId, page, size, orderBy, direction);
             }
+
+
         }.asLiveData();
     }
 }

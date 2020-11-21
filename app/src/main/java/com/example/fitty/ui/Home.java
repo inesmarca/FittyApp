@@ -45,11 +45,11 @@ public class Home extends MainFragment implements BestAdapter.OnRoutineListener,
         RecyclerView recentRecyler = rootView.findViewById(R.id.listRecent);
         fitty.getUserRepository().getUserExecutions(0,10,"date","desc").observe(getActivity(),r->{
             if (r.getStatus() == Status.SUCCESS) {
-                if (r.getData().getResults().isEmpty()) {
+                if (r.getData().isEmpty()) {
                     rootView.findViewById(R.id.titleRecent).setVisibility(View.GONE);
                 } else {
                     rootView.findViewById(R.id.imageHome).setVisibility(View.GONE);
-                    for (RoutineExecution routineExecution : r.getData().getResults()) {
+                    for (RoutineExecution routineExecution : r.getData()) {
                         listRecent.add(routineExecution.getRoutine());
                     }
                     recentAdapter = new RecentAdapter(listRecent, this);
@@ -63,7 +63,7 @@ public class Home extends MainFragment implements BestAdapter.OnRoutineListener,
         });
         fitty.getCategoryRepository().getCategories(0,20,null,null).observe(getActivity(),v->{
             if (v.getStatus() == Status.SUCCESS) {
-                Log.d("Category home",String.format("%d",v.getData().getTotalCount()));
+                //Log.d("Category home",String.format("%d",v.getData().getTotalCount()));
             } else {
                 defaultResourceHandler(v);
             }
@@ -72,7 +72,7 @@ public class Home extends MainFragment implements BestAdapter.OnRoutineListener,
         RecyclerView bestRecycler = rootView.findViewById(R.id.listBest);
         fitty.getRoutineRepository().getRoutines(null,null,0,10, "averageRating", "desc").observe(getActivity(),r->{
             if (r.getStatus() == Status.SUCCESS) {
-                listBest = r.getData().getResults();
+                listBest = r.getData();
 
                 bestAdapter = new BestAdapter(listBest, this);
                 LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false);
