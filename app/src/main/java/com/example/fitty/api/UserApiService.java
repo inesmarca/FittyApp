@@ -31,7 +31,7 @@ public interface UserApiService {
     LiveData<ApiResponse<User>> signup(@Body User user);
 
     @POST("user/resend_verification")
-    LiveData<ApiResponse<Void>> resendVerification();
+    LiveData<ApiResponse<Void>> resendVerification(@Body EmailVerification emailVerification);
 
     @POST("user/verify_email")
     LiveData<ApiResponse<Void>> verifyEmail(@Body EmailVerification emailVerification);
