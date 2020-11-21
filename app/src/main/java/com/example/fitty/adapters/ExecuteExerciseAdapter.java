@@ -1,5 +1,6 @@
 package com.example.fitty.adapters;
 
+import android.content.res.Configuration;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -80,11 +81,17 @@ public class ExecuteExerciseAdapter extends RecyclerView.Adapter<ExecuteExercise
         ExcerciseWithState excerciseWithState = exercises.get(position);
         String exerciseName = excerciseWithState.exercise.getName();
         holder.viewExecuteExerciseName.setText(exerciseName);
+        int nightModeFlags = activity.getApplicationContext().getResources().getConfiguration().uiMode & Configuration.UI_MODE_NIGHT_MASK;
 
         //De acuerdo al estado cambia el fondo
         switch (excerciseWithState.state) {
             case PENDING:
-                holder.linearLayoutExecuteExercise.setBackgroundResource(R.drawable.exercise_execution_border_with_bg);
+                if(nightModeFlags == Configuration.UI_MODE_NIGHT_YES) {
+                    holder.linearLayoutExecuteExercise.setBackgroundResource(R.drawable.exercise_execution_border_low_bg);
+                } else {
+                    holder.linearLayoutExecuteExercise.setBackgroundResource(R.drawable.exercise_execution_border_with_bg);
+                }
+
                 break;
             case RUNNING:
                 holder.linearLayoutExecuteExercise.setBackgroundResource(R.drawable.exercise_execution_border_no_bg);

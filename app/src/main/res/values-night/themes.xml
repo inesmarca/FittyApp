@@ -25,6 +25,13 @@
         <item name="android:tint">@color/white</item>
     </style>
 
+    <style name="bgExerciseItemFinished">
+        <item name="android:background">@drawable/exercise_execution_border_no_bg</item>
+    </style>
+    <style name="bgExerciseItemPending">
+        <item name="android:background">@drawable/exercise_execution_border_low_bg</item>
+    </style>
+
     <style name="cards">
         <item name="android:layout_margin">15dp</item>
     </style>
