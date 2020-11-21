@@ -37,16 +37,21 @@ public class Favoritas extends MainFragment implements FavoriteAdapter.OnFavorit
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         rootView = inflater.inflate(R.layout.fragment_favoritas, container, false);
         RecyclerView listView = rootView.findViewById(R.id.listFavoriteRoutine);
-
         FittyApp fitty = (FittyApp) getActivity().getApplication();
         fitty.getUserRepository().getUserFavourites(0,15,"name","asc").observe(getActivity(),r->{
             if (r.getStatus() == Status.SUCCESS) {
-                routines = r.getData().getResults();
-                adapter = new FavoriteAdapter(routines, this);
-                gridLayoutManager = new GridLayoutManager(getContext(), 2);
-                orientationChange(gridLayoutManager, getActivity().getResources().getConfiguration());
-                listView.setLayoutManager(gridLayoutManager);
-                listView.setAdapter(adapter);
+                if (!r.getData().getResults().isEmpty()) {
+                    Log.d("ENTERED", "ENTERED");
+                    routines = r.getData().getResults();
+                    adapter = new FavoriteAdapter(routines, this);
+                    gridLayoutManager = new GridLayoutManager(getContext(), 2);
+                    orientationChange(gridLayoutManager, getActivity().getResources().getConfiguration());
+                    listView.setLayoutManager(gridLayoutManager);
+                    listView.setAdapter(adapter);
+                } else {
+                    rootView.findViewById(R.id.no_favorites).setVisibility(View.VISIBLE);
+                    rootView.findViewById(R.id.has_favorites).setVisibility(View.GONE);
+                }
             } else {
                 defaultResourceHandler(r);
             }

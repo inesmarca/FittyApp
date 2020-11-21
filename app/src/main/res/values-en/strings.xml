@@ -79,5 +79,6 @@
     <string name="signOut">Close Sesion</string>
     <string name="rating_popup_title">¿How was the routine?</string>
     <string name="puntuar">Rate It</string>
+    <string name="text_no_favorites">No has seleccionado ninguna rutina como favorita</string>
 
 </resources>
