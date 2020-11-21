@@ -44,7 +44,7 @@
     <string name="btn_signup_back">Back</string>
     <string name="error">Error %1$s (%2$d)</string>
     <string name="loading">loading</string>
-    <string name="resend_code">¿You didn\'t get the code?</string>
+    <string name="resend_code">You didn\'t get the code?</string>
     <string name="bad_code">Wrong code</string>
     <string name="error_feo">Try again later</string>
     <string name="resend_code_toast">Check your email!</string>
@@ -77,8 +77,13 @@
     <string name="ok">Ok</string>
     <string name="view_routine">View Routine</string>
     <string name="signOut">Close Sesion</string>
-    <string name="rating_popup_title">¿How was the routine?</string>
+    <string name="rating_popup_title">How was the routine?</string>
     <string name="puntuar">Rate It</string>
-    <string name="text_no_favorites">No has seleccionado ninguna rutina como favorita</string>
+    <string name="text_no_favorites">You haven\'t selected any routine as favorite</string>
+    <string name="no_has_ejecutado_ninguna_rutina">Execute a routine to view your progress</string>
+    <string name="best">Best Rating</string>
+    <string name="recent">Recent</string>
+    <string name="leastDificulty">Less Difficulty</string>
+    <string name="moreDificulty">More Difficulty</string>
 
 </resources>

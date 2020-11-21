@@ -3,19 +3,53 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".Favoritas">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    tools:context=".Favoritas"
+    android:orientation="vertical">
 
     <RelativeLayout
         android:id="@+id/has_favorites"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="20dp"
         tools:ignore="UselessParent">
 
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/listFavoriteRoutine"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="20dp"
+                android:layout_marginHorizontal="10dp"
+                android:layout_marginTop="30dp">
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/favTxtOrder"
+                    style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox.Dense"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:boxBackgroundColor="@color/transparent"
+                    android:hint="@string/hint_order"
+                    android:textColor="@color/black"
+                    android:textColorHint="@color/black"
+                    android:layout_marginStart="10dp">
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:inputType="textNoSuggestions"
+                        android:focusable="false"
+                        android:textSize="18sp"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"/>
+                </com.google.android.material.textfield.TextInputLayout>
+            </RelativeLayout>
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/listFavoriteRoutine"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+
+        </LinearLayout>
     </RelativeLayout>
 
     <RelativeLayout

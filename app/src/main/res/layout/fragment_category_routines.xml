@@ -3,17 +3,34 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
     tools:context=".CategoryRoutines">
 
-
-    <Spinner
-        android:id="@+id/order_spinner"
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_marginHorizontal="30dp"
-        android:layout_marginTop="10dp"
-        android:layout_height="0dp"
-        android:layout_weight="0.5" />
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="20dp"
+        android:layout_marginHorizontal="10dp"
+        android:layout_marginTop="30dp">
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/txtOrder"
+            style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox.Dense"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:boxBackgroundColor="@color/transparent"
+            android:hint="@string/hint_order"
+            android:textColor="@color/black"
+            android:textColorHint="@color/black"
+            android:layout_marginStart="10dp">
+            <com.google.android.material.textfield.TextInputEditText
+                android:inputType="textNoSuggestions"
+                android:focusable="false"
+                android:textSize="18sp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"/>
+        </com.google.android.material.textfield.TextInputLayout>
+    </RelativeLayout>
 
     <RelativeLayout
         android:layout_width="wrap_content"

@@ -78,4 +78,9 @@
     <string name="rating_popup_title">¿Que te pareció la rutina?</string>
     <string name="puntuar">Puntuar</string>
     <string name="text_no_favorites">No has seleccionado ninguna rutina como favorita</string>
+    <string name="no_has_ejecutado_ninguna_rutina">No has ejecutado ninguna rutina</string>
+    <string name="best">Mejor Rating</string>
+    <string name="recent">Más Recientes</string>
+    <string name="leastDificulty">Menor Dificultad</string>
+    <string name="moreDificulty">Mayor Dificultad</string>
 </resources>

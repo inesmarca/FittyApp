@@ -75,8 +75,9 @@ public class Progress extends MainFragment {
         fitty.getUserRepository().getUserExecutions(0,50,"date","desc").observe(getActivity(),r->{
             if (r.getStatus() == Status.SUCCESS) {
                 if (r.getData().getResults().isEmpty()) {
-                    // Mostrar mensaje
+                    rootView.findViewById(R.id.no_progress).setVisibility(View.VISIBLE);
                 } else {
+                    rootView.findViewById(R.id.has_progress).setVisibility(View.VISIBLE);
                     routineExecutions = r.getData().getResults();
                     for (RoutineExecution routine : routineExecutions) {
                         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyyMMdd");
