@@ -52,7 +52,7 @@ public class Category implements Serializable {
 
     public int getIcon() {
         switch (name) {
-            case "strength":
+            case "fuerza":
                 return R.drawable.ic_strength;
             case "tren superior":
                 return R.drawable.ic_abs;
