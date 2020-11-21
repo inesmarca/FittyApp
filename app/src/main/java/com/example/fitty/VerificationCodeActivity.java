@@ -47,7 +47,14 @@ public class VerificationCodeActivity extends AppCompatActivity {
 
         binding.btnResendCode.setOnClickListener(v->{
             FittyApp fitty = (FittyApp) getApplication();
-            fitty.getUserRepository().resendVerification();
+            fitty.getUserRepository().resendVerification(new EmailVerification(getIntent().getStringExtra("USER_EMAIL"),null)).observe(this,r->{
+                        if(r.getStatus()== Status.SUCCESS){
+                            Toast.makeText(getApplicationContext(), R.string.resend_code_toast,Toast.LENGTH_SHORT).show();
+
+                        }
+                        else
+                            defaultResourceHandler(r);
+                    });
             Toast.makeText(getApplicationContext(),R.string.resend_code_toast,Toast.LENGTH_SHORT).show();
         });
 

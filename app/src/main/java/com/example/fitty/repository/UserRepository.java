@@ -127,12 +127,12 @@ public class UserRepository {
 
 
     }
-    public LiveData<Resource<Void>> resendVerification() {
+    public LiveData<Resource<Void>> resendVerification(EmailVerification emailVerification) {
         return new NetworkBoundResource<Void, Void>() {
             @NonNull
             @Override
             protected LiveData<ApiResponse<Void>> createCall() {
-                return apiService.resendVerification();
+                return apiService.resendVerification(emailVerification);
             }
         }.asLiveData();
     }

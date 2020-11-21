@@ -161,6 +161,7 @@ public class SignupActivity extends AppCompatActivity {
                         binding.progressBar2.setVisibility(View.GONE);
 
                         Intent goToVerifyCode = new Intent(this, VerificationCodeActivity.class);
+                        goToVerifyCode.putExtra("USER_EMAIL",userToAdd.getEmail());
                         startActivity(goToVerifyCode);
                     } else {
                         defaultResourceHandler(r);
