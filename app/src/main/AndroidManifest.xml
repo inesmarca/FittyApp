@@ -29,10 +29,12 @@
                     android:pathPrefix="/id/" />
             </intent-filter>
         </activity>
-        <activity android:name=".SignupActivity" android:noHistory="true" >
+        <activity android:name=".SignupActivity"
+            android:configChanges="orientation|screenSize" android:noHistory="true" >
 
         </activity>
-        <activity android:name=".LoginActivity" android:noHistory="true" />
+        <activity android:name=".LoginActivity"
+            android:configChanges="orientation|screenSize" android:noHistory="true" />
         <activity android:name=".VerificationCodeActivity" android:noHistory="true" />
         <activity android:name=".ExecuteActivity"
             android:configChanges="orientation|screenSize"/>
