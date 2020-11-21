@@ -84,4 +84,6 @@
     <string name="leastDificulty">Menor Dificultad</string>
     <string name="moreDificulty">Mayor Dificultad</string>
     <string name="display_hora">%1$s:%2$s</string>
+    <string name="ahora">Ahora:</string>
+    <string name="luego">Luego:</string>
 </resources>

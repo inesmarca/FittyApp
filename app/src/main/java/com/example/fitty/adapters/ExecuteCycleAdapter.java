@@ -43,6 +43,18 @@ public class ExecuteCycleAdapter extends RecyclerView.Adapter<ExecuteCycleAdapte
         return null;
     }
 
+    public void marcarRealizado(int currentCycleIdx, int currentExerciseIdx) {
+        ExecuteExerciseAdapter adapter = adapters.get(currentCycleIdx);
+        adapter.marcarRealizado(currentExerciseIdx);
+        adapter.notifyItemChanged(currentExerciseIdx);
+    }
+
+    public Exercise getExercise(int auxCycleIdx, int auxExerciseIdx) {
+        ExecuteExerciseAdapter adapter = adapters.get(auxCycleIdx);
+        Exercise exercise = adapter.getExercise(auxExerciseIdx);
+        return exercise;
+    }
+
 
     @NonNull
     @Override

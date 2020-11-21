@@ -26,9 +26,6 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content" >
-        <!-- Este imageview esta puesto de forma temporal. En su lugar
-        deberia ir el video de youtube. Si no hay video, ahí si va una imagen
-        predefinida -->
         <LinearLayout
             android:id="@+id/fondoNegro"
             android:layout_width="match_parent"
@@ -65,6 +62,20 @@
             android:shadowRadius="2" />
 
         <ImageButton
+            android:id="@+id/btnSwitchMode"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintEnd_toStartOf="@id/btnPauseResume"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:padding="6dp"
+            android:layout_marginTop="15dp"
+            android:layout_marginEnd="15dp"
+            android:src="@drawable/ic_baseline_offline_bolt_24"
+            android:tint="@color/white"
+            android:elevation="13dp"
+            android:background="@drawable/custom_button_shadow" />
+
+        <ImageButton
             android:id="@+id/btnPauseResume"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
@@ -82,16 +93,17 @@
 
 
         <LinearLayout
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
-            android:layout_marginStart="20dp"
+            android:layout_marginHorizontal="17dp"
             android:layout_marginBottom="20dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent">
             <TextView
                 android:id="@+id/txtCabeceraCant"
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
+                android:layout_weight="0.3"
                 android:layout_height="wrap_content"
                 android:textSize="35sp"
                 android:textColor="@color/white"
@@ -102,7 +114,8 @@
                 android:shadowRadius="2"/>
             <TextView
                 android:id="@+id/txtCabeceraNombre"
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
+                android:layout_weight="0.6"
                 android:layout_height="wrap_content"
                 android:textColor="@color/white"
                 android:textStyle="bold"
@@ -113,6 +126,23 @@
                 android:shadowDx="1"
                 android:shadowDy="1"
                 android:shadowRadius="2"/>
+
+            <FrameLayout
+                android:layout_width="0dp"
+                android:layout_weight="0.1"
+                android:layout_gravity="center_vertical"
+                android:layout_height="wrap_content">
+                <ImageButton
+                    android:id="@+id/btnNext"
+                    android:visibility="gone"
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
+                    android:padding="6dp"
+                    android:src="@drawable/ic_baseline_next_plan_24"
+                    android:tint="@color/white"
+                    android:elevation="13dp"
+                    android:background="@drawable/custom_button_shadow" />
+            </FrameLayout>
 
         </LinearLayout>
 
@@ -127,38 +157,52 @@
         android:layout_height="wrap_content"
         android:orientation="horizontal"
         android:layout_marginBottom="10dp"
+        android:layout_marginHorizontal="10dp"
         android:id="@+id/linearLayoutCabeceraVideo">
         <TextView
             android:id="@+id/txtElapsedTimeVideo"
             android:textAlignment="center"
             android:layout_width="0dp"
-            android:layout_weight="0.1"
+            android:layout_weight="0.15"
             android:layout_height="wrap_content"
             android:text="0:00"
             android:textColor="@color/gray"
-            android:layout_marginStart="10dp"
             android:textSize="17sp" />
         <TextView
             android:id="@+id/txtCabeceraCantVideo"
             android:textAlignment="center"
             android:layout_width="0dp"
-            android:layout_weight="0.2"
+            android:layout_weight="0.1"
             android:layout_height="wrap_content"
-            android:textSize="22sp"
+            android:textSize="20sp"
             android:textColor="@color/gray"
             android:textStyle="bold"/>
         <TextView
             android:id="@+id/txtCabeceraNombreVideo"
+            android:paddingStart="4dp"
             android:layout_width="0dp"
-            android:layout_weight="0.6"
+            android:layout_weight="0.52"
             android:layout_height="wrap_content"
             android:textColor="@color/gray"
             android:textStyle="bold"
-            android:textSize="19sp"
+            android:textSize="18sp"
             android:layout_gravity="center_vertical" />
         <FrameLayout
             android:layout_width="0dp"
-            android:layout_weight="0.1"
+            android:layout_weight="0.11"
+            android:layout_height="wrap_content">
+            <ImageButton
+                android:id="@+id/btnSwitchModeVideo"
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:padding="6dp"
+                android:src="@drawable/ic_baseline_offline_bolt_24"
+                android:tint="@color/gray"
+                android:background="@color/transparent" />
+        </FrameLayout>
+        <FrameLayout
+            android:layout_width="0dp"
+            android:layout_weight="0.11"
             android:layout_height="wrap_content"
             android:textAlignment="center">
             <ImageButton
@@ -166,10 +210,22 @@
                 android:layout_width="24dp"
                 android:layout_height="24dp"
                 android:padding="6dp"
-                android:layout_marginEnd="10dp"
                 android:src="@drawable/ic_baseline_pause_24"
                 android:tint="@color/gray"
                 android:background="@color/transparent"/>
+        </FrameLayout>
+        <FrameLayout
+            android:layout_width="0dp"
+            android:layout_weight="0.11"
+            android:layout_height="wrap_content">
+            <ImageButton
+                android:id="@+id/btnNextVideo"
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:padding="6dp"
+                android:src="@drawable/ic_baseline_next_plan_24"
+                android:tint="@color/gray"
+                android:background="@color/transparent" />
         </FrameLayout>
     </LinearLayout>
     <!-- Fin de la cabecera -->
@@ -183,6 +239,62 @@
         android:progressTint="@color/blue_1"
         android:max="100"
         android:progress="0"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:visibility="gone"
+        android:layout_marginTop="40dp"
+        android:id="@+id/vistaSimple">
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/ahora"
+            android:textAlignment="center"
+            android:textSize="16sp"/>
+        <LinearLayout
+            android:layout_marginTop="10dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAlignment="center"
+            android:layout_marginHorizontal="10dp"
+            android:layout_gravity="center_horizontal"
+            android:orientation="horizontal">
+            <TextView
+                android:id="@+id/txtVistaSimpleCantAhora"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text=""
+                android:textAlignment="center"
+                android:textSize="25sp"
+                android:textStyle="bold"/>
+            <TextView
+                android:id="@+id/txtVistaSimpleNombreAhora"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text=""
+                android:textAlignment="center"
+                android:layout_marginStart="20dp"
+                android:textSize="23sp"
+                android:textStyle="bold"/>
+        </LinearLayout>
+        <TextView
+            android:layout_marginTop="40dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/luego"
+            android:textAlignment="center"
+            android:textSize="14sp"/>
+        <TextView
+            android:id="@+id/txtVistaSimpleNombreLuego"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:textAlignment="center"
+            android:textSize="19sp"/>
+
+    </LinearLayout>
 
 
 

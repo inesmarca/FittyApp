@@ -46,7 +46,7 @@ public class ExecuteActivity extends YouTubeBaseActivity {
 
     LocalTime elapsedTime;
     Timer timerElapsedTime;
-    public Boolean ejecutando = false;
+    public Boolean ejecutando = false, modoSimple = false, enModoVideo = false;;
 
     int currentCycleIdx, currentExerciseIdx;
 
@@ -97,13 +97,30 @@ public class ExecuteActivity extends YouTubeBaseActivity {
         binding.recyclerExecuteCycles.setLayoutManager(new LinearLayoutManager(this));
 
         binding.recyclerExecuteCycles.setAdapter(adapter);
-
         binding.btnPauseResume.setOnClickListener(btnPauseResumeListener);
         binding.btnPauseResumeVideo.setOnClickListener(btnPauseResumeListener);
+
+        binding.btnSwitchMode.setOnClickListener(btnSwitchModeListener);
+        binding.btnSwitchModeVideo.setOnClickListener(btnSwitchModeListener);
+
+        binding.btnNext.setOnClickListener(btnNextListener);
+        binding.btnNextVideo.setOnClickListener(btnNextListener);
 
 
 
         cuentaRegresiva();
+    }
+
+    View.OnClickListener btnNextListener = (view) -> {
+        if(ejecutando) {
+            marcarRealizado();
+            siguienteEjercicio();
+        }
+
+    };
+
+    private void marcarRealizado() {
+        adapter.marcarRealizado(currentCycleIdx, currentExerciseIdx);
     }
 
     View.OnClickListener btnPauseResumeListener = (view) -> {
@@ -117,6 +134,40 @@ public class ExecuteActivity extends YouTubeBaseActivity {
             resumir();
             binding.btnPauseResume.setImageResource(R.drawable.ic_baseline_pause_24);
             binding.btnPauseResumeVideo.setImageResource(R.drawable.ic_baseline_pause_24);
+        }
+    };
+
+    View.OnClickListener btnSwitchModeListener = (view) -> {
+        if(modoSimple) {
+            modoSimple = false;
+            binding.recyclerExecuteCycles.setVisibility(View.VISIBLE);
+            binding.vistaSimple.setVisibility(View.GONE);
+            if(enModoVideo) {
+                binding.txtCabeceraNombreVideo.setVisibility(View.VISIBLE);
+                binding.txtCabeceraCantVideo.setVisibility(View.VISIBLE);
+                binding.txtCabeceraNombreVideo.setText(binding.txtVistaSimpleNombreAhora.getText().toString());
+                binding.txtCabeceraCantVideo.setText(binding.txtVistaSimpleCantAhora.getText().toString());
+            } else {
+                binding.txtCabeceraCant.setVisibility(View.VISIBLE);
+                binding.txtCabeceraNombre.setVisibility(View.VISIBLE);
+                binding.txtCabeceraCant.setText(binding.txtVistaSimpleCantAhora.getText().toString());
+                binding.txtCabeceraNombre.setText(binding.txtVistaSimpleNombreAhora.getText().toString());
+            }
+
+
+        } else {
+            modoSimple = true;
+            binding.recyclerExecuteCycles.setVisibility(View.GONE);
+            binding.vistaSimple.setVisibility(View.VISIBLE);
+            if(enModoVideo) {
+                binding.txtCabeceraCantVideo.setVisibility(View.GONE);
+                binding.txtCabeceraNombreVideo.setVisibility(View.GONE);
+            } else {
+                binding.txtCabeceraCant.setVisibility(View.INVISIBLE);
+                binding.txtCabeceraNombre.setVisibility(View.INVISIBLE);
+            }
+
+
         }
     };
 
@@ -185,12 +236,49 @@ public class ExecuteActivity extends YouTubeBaseActivity {
         }
     }
 
+    public Exercise getSiguienteEjercicio() {
+        int auxCycleIdx = currentCycleIdx, auxExerciseIdx = currentExerciseIdx;
+
+        if(auxCycleIdx == -1) {
+            //Primer ejercicio
+            auxCycleIdx = 0;
+            auxExerciseIdx = 0;
+        } else {
+            auxExerciseIdx++;
+        }
+        if(auxCycleIdx < fullCycles.size()) {
+
+            if(fullCycles.get(auxCycleIdx).getExercises() != null && auxExerciseIdx < fullCycles.get(auxCycleIdx).getExercises().size()) {
+                return adapter.getExercise(auxCycleIdx, auxExerciseIdx);
+            } else {
+                auxCycleIdx++;
+                if(auxCycleIdx < fullCycles.size()) {
+                    auxExerciseIdx = 0;
+                    return adapter.getExercise(auxCycleIdx, auxExerciseIdx);
+                } else {
+                    return null;
+                }
+
+            }
+
+        } else {
+            return null;
+        }
+    }
+
     private void terminarRutina() {
         timerElapsedTime.cancel();
         binding.txtCabeceraCant.setText("");
         binding.txtCabeceraCantVideo.setText("");
         binding.txtCabeceraNombre.setText("");
         binding.txtCabeceraNombreVideo.setText("");
+        binding.btnPauseResume.setVisibility(View.GONE);
+        binding.btnPauseResumeVideo.setVisibility(View.GONE);
+        binding.btnSwitchMode.setVisibility(View.GONE);
+        binding.btnSwitchModeVideo.setVisibility(View.GONE);
+        binding.vistaSimple.setVisibility(View.GONE);
+        binding.btnNext.setVisibility(View.GONE);
+        binding.btnNextVideo.setVisibility(View.GONE);
         if(routineYouTubePlayer.isPlaying())
             routineYouTubePlayer.pause();
 
@@ -215,18 +303,42 @@ public class ExecuteActivity extends YouTubeBaseActivity {
 
     private void asignarEjecucion(int cycleIdx, int exerciseIdx) {
         Exercise exercise = adapter.asignarEjecucion(cycleIdx, exerciseIdx);
-        binding.txtCabeceraNombre.setText(exercise.getName());
-        binding.txtCabeceraNombreVideo.setText(exercise.getName());
+        if(!modoSimple) {
+            binding.txtCabeceraNombre.setText(exercise.getName());
+            binding.txtCabeceraNombreVideo.setText(exercise.getName());
+        }
+        binding.txtVistaSimpleNombreAhora.setText(exercise.getName());
+
+
+        binding.btnNext.setVisibility(View.VISIBLE);
         if(exercise.getDuration() > 0) {
-            binding.txtCabeceraCant.setText(String.valueOf(exercise.getDuration()) + "s");
-            binding.txtCabeceraCantVideo.setText(String.valueOf(exercise.getDuration()) + "s");
+            binding.btnNext.setVisibility(View.GONE);
+            binding.btnNextVideo.setVisibility(View.GONE);
+            if(!modoSimple) {
+                binding.txtCabeceraCant.setText(String.valueOf(exercise.getDuration()) + "s");
+                binding.txtCabeceraCantVideo.setText(String.valueOf(exercise.getDuration()) + "s");
+            }
+
+            binding.txtVistaSimpleCantAhora.setText(String.valueOf(exercise.getDuration()) + "s");
             //Al ser por tiempo debemos mostrar cuenta atras
             timerContarAtrasEjercicio = new Timer();
             timerContarAtrasEjercicio.schedule(new ContarAtrasEjercicio(exercise.getDuration()), 0, 1000);
         } else {
+            binding.btnNext.setVisibility(View.VISIBLE);
+            binding.btnNextVideo.setVisibility(View.VISIBLE);
             timerContarAtrasEjercicio = null;
-            binding.txtCabeceraCant.setText("x"+String.valueOf(exercise.getRepetitions()));
-            binding.txtCabeceraCantVideo.setText("x"+String.valueOf(exercise.getRepetitions()));
+            if(!modoSimple) {
+                binding.txtCabeceraCant.setText("x"+String.valueOf(exercise.getRepetitions()));
+                binding.txtCabeceraCantVideo.setText("x"+String.valueOf(exercise.getRepetitions()));
+            }
+            binding.txtVistaSimpleCantAhora.setText("x"+String.valueOf(exercise.getRepetitions()));
+        }
+
+        Exercise nextExercise = getSiguienteEjercicio();
+        if(nextExercise != null) {
+            binding.txtVistaSimpleNombreLuego.setText(nextExercise.getName());
+        } else {
+            binding.txtVistaSimpleNombreLuego.setText("Fin");
         }
 
         //Tiene video?
@@ -296,22 +408,26 @@ public class ExecuteActivity extends YouTubeBaseActivity {
     }
 
     private void iniciarModoVideo() {
+        enModoVideo = true;
         binding.youtubePlayerView.setVisibility(View.VISIBLE);
         binding.linearLayoutCabeceraVideo.setVisibility(View.VISIBLE);
         binding.imgNoVideo.setVisibility(View.GONE);
         binding.fondoNegro.setVisibility(View.GONE);
         binding.btnPauseResume.setVisibility(View.GONE);
+        binding.btnSwitchMode.setVisibility(View.GONE);
         binding.txtElapsedTime.setVisibility(View.GONE);
         binding.txtCabeceraCant.setVisibility(View.GONE);
         binding.txtCabeceraNombre.setVisibility(View.GONE);
-
+        binding.btnNext.setVisibility(View.GONE);
     }
     private void cerrarModoVideo() {
+        enModoVideo = false;
         binding.youtubePlayerView.setVisibility(View.GONE);
         binding.linearLayoutCabeceraVideo.setVisibility(View.GONE);
         binding.imgNoVideo.setVisibility(View.VISIBLE);
         binding.fondoNegro.setVisibility(View.VISIBLE);
         binding.btnPauseResume.setVisibility(View.VISIBLE);
+        binding.btnSwitchMode.setVisibility(View.VISIBLE);
         binding.txtElapsedTime.setVisibility(View.VISIBLE);
         binding.txtCabeceraCant.setVisibility(View.VISIBLE);
         binding.txtCabeceraNombre.setVisibility(View.VISIBLE);
@@ -389,12 +505,18 @@ public class ExecuteActivity extends YouTubeBaseActivity {
                 this.cancel();
                 activity.runOnUiThread(() -> {
                     binding.progressExecution.setVisibility(View.GONE);
+                    marcarRealizado();
                     siguienteEjercicio();
                 });
             } else {
                 activity.runOnUiThread(() -> {
-                    binding.txtCabeceraCant.setText(String.valueOf(secondsRemaining) + "s");
-                    binding.txtCabeceraCantVideo.setText(String.valueOf(secondsRemaining) + "s");
+                    if(modoSimple) {
+                        binding.txtVistaSimpleCantAhora.setText(String.valueOf(secondsRemaining) + "s");
+                    } else {
+                        binding.txtCabeceraCant.setText(String.valueOf(secondsRemaining) + "s");
+                        binding.txtCabeceraCantVideo.setText(String.valueOf(secondsRemaining) + "s");
+                    }
+
                     binding.progressExecution.setProgress((int) (100 - (Double.valueOf(secondsRemaining)/totalTimeCurrentExercise)*100));
                     secondsRemaining--;
                 });

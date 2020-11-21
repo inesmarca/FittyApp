@@ -53,6 +53,17 @@ public class ExecuteExerciseAdapter extends RecyclerView.Adapter<ExecuteExercise
         return null;
     }
 
+    public void marcarRealizado(int currentExerciseIdx) {
+        ExcerciseWithState excerciseWithState = exercises.get(currentExerciseIdx);
+        excerciseWithState.state = State.FINISHED;
+        exercises.set(currentExerciseIdx, excerciseWithState);
+    }
+
+    public Exercise getExercise(int auxExerciseIdx) {
+        ExcerciseWithState excerciseWithState = exercises.get(auxExerciseIdx);
+        return excerciseWithState.exercise;
+    }
+
 
     @NonNull
     @Override

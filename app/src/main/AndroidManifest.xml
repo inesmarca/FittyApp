@@ -34,7 +34,8 @@
         </activity>
         <activity android:name=".LoginActivity" android:noHistory="true" />
         <activity android:name=".VerificationCodeActivity" android:noHistory="true" />
-        <activity android:name=".ExecuteActivity" />
+        <activity android:name=".ExecuteActivity"
+            android:configChanges="orientation|screenSize"/>
         <meta-data
             android:name="preloaded_fonts"
             android:resource="@array/preloaded_fonts" />
