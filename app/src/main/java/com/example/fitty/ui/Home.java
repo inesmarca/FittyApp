@@ -70,7 +70,7 @@ public class Home extends MainFragment implements BestAdapter.OnRoutineListener,
                 }
         );
         RecyclerView bestRecycler = rootView.findViewById(R.id.listBest);
-        fitty.getRoutineRepository().getRoutines((MainActivity) getActivity(), null,null,0,10, "averageRating", "desc").observe(getActivity(),r->{
+        fitty.getRoutineRepository().getRoutines(null,null,0,10, "averageRating", "desc").observe(getActivity(),r->{
             if (r.getStatus() == Status.SUCCESS) {
                 listBest = r.getData().getResults();
 

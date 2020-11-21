@@ -11,6 +11,7 @@ import android.widget.ArrayAdapter;
 import android.widget.Spinner;
 
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -20,13 +21,18 @@ import com.example.fitty.adapters.CategoryRoutinesAdapter;
 
 import com.example.fitty.api.models.Error;
 import com.example.fitty.api.models.Routine;
+import com.example.fitty.repository.RepoViewModel;
+import com.example.fitty.repository.RepoViewModelFactory;
 import com.example.fitty.repository.Resource;
+import com.example.fitty.repository.RoutineRepository;
 import com.example.fitty.repository.Status;
+import com.example.fitty.ui.ViewModels.RoutinesViewModel;
 import com.google.android.material.appbar.MaterialToolbar;
 
 import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
+import java.util.Objects;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -43,7 +49,7 @@ public class CategoryRoutines extends SecondaryFragment implements CategoryRouti
     View rootView;
     List<Routine> routines;
     GridLayoutManager gridLayoutManager;
-
+    private RoutinesViewModel routinesViewModel;
     public CategoryRoutines(AllFragments fragment, String title) {
         super(fragment);
         setTitle(title);
@@ -56,6 +62,11 @@ public class CategoryRoutines extends SecondaryFragment implements CategoryRouti
             idCategory = getArguments().getInt("idCategory");
             nameCategory = getArguments().getString("titCategory");
         }
+        FittyApp fittyApp = (FittyApp) getActivity().getApplication();
+
+        RepoViewModelFactory viewModelFactory = new RepoViewModelFactory<>(RoutineRepository.class, fittyApp.getRoutineRepository());
+        routinesViewModel = new ViewModelProvider(this, viewModelFactory).get(RoutinesViewModel.class);
+
     }
 
     @Override
@@ -64,17 +75,21 @@ public class CategoryRoutines extends SecondaryFragment implements CategoryRouti
         // Inflate the layout for this fragment
         rootView = inflater.inflate(R.layout.fragment_category_routines, container, false);
 
+
         RecyclerView listView = rootView.findViewById(R.id.listCategoryRoutines);
 
-        FittyApp fittyApp = (FittyApp) getActivity().getApplication();
-        fittyApp.getRoutineRepository().getRoutines((MainActivity)getActivity(),null,null,0,200,"averageRating","asc").observe(getActivity(),r->{
+
+
+
+
+        routinesViewModel.getRoutines(null,null,0,200,"averageRating","asc").observe(getActivity(),r->{
             if(r.getStatus()== Status.SUCCESS){
                 assert r.getData() != null;
                 routines = r.getData().getResults();
                 routines.removeIf(routine ->
                         routine.getCategory().getId() != idCategory
                 );
-                Log.d("IDD", String.format("%d",idCategory));
+                Log.d("ID", String.format("%d",idCategory));
 
                 adapter = new CategoryRoutinesAdapter(routines, this);
                 gridLayoutManager = new GridLayoutManager(getContext(), 2);

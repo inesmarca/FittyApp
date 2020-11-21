@@ -1,5 +1,6 @@
 package com.example.fitty.api.models;
 
+import java.util.ArrayList;
 import java.util.List;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
@@ -29,6 +30,7 @@ public class PagedList<T> {
     private boolean isLastPage;
 
     public PagedList() {
+        this.results  = new ArrayList<>();
     }
 
 
@@ -53,6 +55,9 @@ public class PagedList<T> {
 
     public String getOrderBy() {
         return orderBy;
+    }
+    public void addAll(List<T> list){
+        this.results.addAll(list);
     }
 
     public void setOrderBy(String orderBy) {

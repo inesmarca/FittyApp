@@ -64,41 +64,18 @@ public class RoutineRepository {
         return new RoutineEntity(routine.getId(),routine.getDetail(),routine.getAverageRating(),routine.getName(),routine.getCreator().getId(),routine.getCategory().getId(),routine.getDifficulty());
     }*/
 
-    public LiveData<Resource<PagedList<Routine>>> getRoutines(MainActivity activity, String search, String difficulty, int page, int size, String orderBy, String direction) {
+    public LiveData<Resource<PagedList<Routine>>> getRoutines(String search, String difficulty, int page, int size, String orderBy, String direction) {
         return new NetworkBoundResource<PagedList<Routine>,List<RoutineEntity>>(executors,
                 entities ->
 
                         new PagedList<>(0, orderBy, direction,
                                 entities.stream().map(
-                                        entity -> {
-                                            //SINCRONIZAR PARA PODER ENVIAR OBJETO CATEGORY EN VEZ DE ID
-                                  /*          LiveData<CategoryEntity> hola = database.categoryDao().findById(entity.categoryId);
-
-                                            hola.observe(activity,categoryEntity -> {
-                                                   Category category = parseCategory(categoryEntity);
-                                                    System.out.println(category.getName());
-
-                                            });*/
-                                            System.out.println("ESTOY ACA");
-                                            categoryRepository.getCategory(entity.categoryId).observe(activity,v->{
-                                                if(v.getStatus()==Status.SUCCESS){
-                                                    category=v.getData();
-                                          //          semaphore.release();
-                                                }
-                                                else
-                                                    defaultResourceHandler(v);
-
-                                            });
-
-
-                                            return new Routine(entity.name, entity.detail, entity.difficulty,category, entity.creatorId);
-
-                                        }
+                                        entity -> new Routine(entity.name, entity.detail, entity.difficulty,new Category(entity.category_id,entity.category_name,entity.category_detail), entity.creatorId)
 
                                 ).collect(toList())
                                 , size, page, false),
                 domain ->
-                        domain.getResults().stream().map(routine-> new RoutineEntity(routine.getId(),routine.getDetail(),routine.getAverageRating(),routine.getName(),routine.getCreator().getId(),routine.getCategory().getId(),routine.getDifficulty()))
+                        domain.getResults().stream().map(routine-> new RoutineEntity(routine.getId(),routine.getDetail(),routine.getAverageRating(),routine.getName(),routine.getCreator().getId(),routine.getDifficulty(),routine.getCategory().getId() ,routine.getCategory().getName(),routine.getCategory().getDetail()))
                                 .collect(toList())) {
 
 
@@ -110,7 +87,7 @@ public class RoutineRepository {
 
             @Override
             protected boolean shouldFetch(@Nullable List<RoutineEntity> entities) {
-                return ((entities == null) || (entities.size() == 0) || rateLimit.shouldFetch(RATE_LIMITER_ALL_KEY));
+                return ((entities == null) || (entities.size() < size) || rateLimit.shouldFetch(RATE_LIMITER_ALL_KEY));
             }
 
             @Override
@@ -195,20 +172,13 @@ public class RoutineRepository {
             }
         }.asLiveData();
     }
-    public LiveData<Resource<Routine>> getRoutine(MainActivity activity, int routineId) {
+    public LiveData<Resource<Routine>> getRoutine(int routineId) {
         return new NetworkBoundResource<Routine, RoutineEntity>(executors, entity -> {
-            categoryRepository.getCategory(entity.categoryId).observe(activity,v->{
-                if(v.getStatus()==Status.SUCCESS){
-                    _category = v.getData();
-                }
-                else
-                    defaultResourceHandler(v);
-            });
             return new Routine(entity.name, entity.detail, entity.difficulty,_category, entity.creatorId);
 
         },
                 routine ->
-                new RoutineEntity(routine.getId(),routine.getDetail(),routine.getAverageRating(),routine.getName(),routine.getCreator().getId(),routine.getCategory().getId(),routine.getDifficulty())) {
+                new RoutineEntity(routine.getId(),routine.getDetail(),routine.getAverageRating(),routine.getName(),routine.getCreator().getId(),routine.getDifficulty(),routine.getCategory().getId(),routine.getCategory().getName(),routine.getCategory().getDetail())) {
 
             @Override
             protected void saveCallResult(@NonNull RoutineEntity entity) {

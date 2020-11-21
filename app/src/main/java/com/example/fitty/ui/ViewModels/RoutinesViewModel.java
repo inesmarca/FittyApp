@@ -2,6 +2,7 @@ package com.example.fitty.ui.ViewModels;
 
 import android.app.Activity;
 import android.app.Application;
+import android.content.Context;
 
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MediatorLiveData;
@@ -25,15 +26,14 @@ public class RoutinesViewModel extends RepoViewModel<RoutineRepository> {
 
     private final static int PAGE_SIZE = 10;
 
-    private int page = 0;
+    private int local_page = 0;
     private boolean isLastPage = false;
-    private final List<Routine> allRoutines = new ArrayList<>();
-    private final MediatorLiveData<Resource<List<Routine>>> routines = new MediatorLiveData<>();
+    private final PagedList<Routine> allRoutines = new PagedList<>();
+    private final MediatorLiveData<Resource<PagedList<Routine>>> routines = new MediatorLiveData<>();
     private final LiveData<Resource<Routine>> routine;
-    private  MainActivity activity;
 
 
-    public RoutinesViewModel(RoutineRepository repository, MainActivity activity) {
+    public RoutinesViewModel(RoutineRepository repository){
         super(repository);
 
         MutableLiveData<Integer> routineId1 = new MutableLiveData<>();
@@ -41,32 +41,36 @@ public class RoutinesViewModel extends RepoViewModel<RoutineRepository> {
             if (routineId == null) {
                 return EmptyLiveData.create();
             } else {
-                return repository.getRoutine(activity,routineId);
+                return repository.getRoutine(routineId);
             }
         });
 
     }
 
-    public LiveData<Resource<List<Routine>>> getRoutines(MainActivity activity) {
-        getMoreRoutines(activity);
+    public LiveData<Resource<PagedList<Routine>>> getRoutines( String search, String diff, int page, int size, String orderBy, String dir) {
+        getMoreRoutines( search, diff, page, size, orderBy, dir);
         return routines;
     }
 
-    public void getMoreRoutines(MainActivity activity) {
+    public void getMoreRoutines(String search, String diff, Integer page, Integer size, String orderBy, String dir) {
         if (isLastPage)
             return;
 
-        routines.addSource(repository.getRoutines(activity,null,null,page, PAGE_SIZE,null,null),resource -> {
+        routines.addSource(repository.getRoutines(search,diff,page != null ? page: local_page , size !=null ? size : PAGE_SIZE ,orderBy,dir),resource -> {
             if (resource.getStatus() == Status.SUCCESS) {
-                if ((resource.getData().getResults().size() == 0) || (resource.getData().getResults().size() < PAGE_SIZE))
-                    isLastPage = true;
 
-                page++;
+                if(page == null) {
+                 //Puede pedirme algo especifico, em ese caso no entraria a este if
+                    local_page++;
+                    isLastPage = resource.getData().isIsLastPage();
+
+                }
 
                 allRoutines.addAll(resource.getData().getResults());
                 routines.setValue(Resource.success(allRoutines));
             } else if (resource.getStatus() == Status.LOADING) {
-                routines.setValue(new Resource<>(Status.LOADING,resource.getData().getResults(),resource.getError()));
+
+                routines.setValue(resource);
             }
         });
     }
