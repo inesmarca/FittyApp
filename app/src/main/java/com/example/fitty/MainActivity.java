@@ -81,10 +81,8 @@ public class MainActivity extends AppCompatActivity {
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if(requestCode==2) {
-            Log.d("--------IM HERE-------", data.getStringExtra("token"));
             preferences.setAuthToken(data.getStringExtra("token"));
             navController.navigate(R.id.action_home_self);
-            Log.d("-----DATA-----", String.valueOf(data));
             if (idLink != null) {
                 app.getRoutineRepository().getRoutineById(idLink).observe(this, r -> {
                     if(r.getStatus() == Status.SUCCESS) {

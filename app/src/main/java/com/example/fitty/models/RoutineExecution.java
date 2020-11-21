@@ -37,6 +37,11 @@ public class RoutineExecution {
         this.routine = routine;
     }
 
+    public RoutineExecution(int duration, boolean wasModified) {
+        this.duration = duration;
+        this.wasModified = wasModified;
+    }
+
     public int getId() {
         return id;
     }

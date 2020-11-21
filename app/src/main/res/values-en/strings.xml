@@ -76,6 +76,9 @@
     <string name="mensaje_ejecucion_terminada">It took you %1$d minutes and %2$d seconds.</string>
     <string name="ok">Ok</string>
     <string name="view_routine">View Routine</string>
-    <string name="signOut">Cerrar Sesión</string>
+    <string name="signOut">Close Sesion</string>
+    <string name="rating_popup_title">¿How was the routine?</string>
+    <string name="puntuar">Rate It</string>
+    <string name="text_no_favorites">No has seleccionado ninguna rutina como favorita</string>
 
 </resources>

@@ -50,6 +50,7 @@ public class Rating {
         this.review = review;
         this.routine=routine;
     }
+
     public Rating(int score, String review) {
         super();
         this.score = score;
