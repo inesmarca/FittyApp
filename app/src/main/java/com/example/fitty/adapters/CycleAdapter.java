@@ -67,7 +67,9 @@ public class CycleAdapter extends RecyclerView.Adapter<CycleAdapter.CycleViewHol
                 adapter = new ExerciseAdapter(exercises, current, routineView);
                 gridLayoutManager = new GridLayoutManager(view.getContext(), 1);
                 listView.setLayoutManager(gridLayoutManager);
-                listView.setAdapter(adapter);;
+                listView.setAdapter(adapter);
+                if(position+1 == getItemCount())
+                    routineView.buttonInitiate.setEnabled(true);
             }
             else
                 defaultResourceHandler(r);
