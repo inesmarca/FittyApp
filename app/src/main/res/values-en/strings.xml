@@ -88,7 +88,7 @@
     <string name="display_hora">%1$s:%2$s</string>
     <string name="ahora">Now:</string>
     <string name="luego">Next:</string>
-    <string name="rutinas_destacadas">Rutinas destacadas</string>
-    <string name="rutinas_recientes">Rutinas recientes</string>
+    <string name="rutinas_destacadas">Featured Routines</string>
+    <string name="rutinas_recientes">Recent routines</string>
 
 </resources>
