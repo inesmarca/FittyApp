@@ -10,6 +10,7 @@ import android.widget.Toast;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
 import com.example.fitty.adapters.ExecuteCycleAdapter;
@@ -17,9 +18,11 @@ import com.example.fitty.databinding.ExecuteActivityBinding;
 import com.example.fitty.models.Cycle;
 import com.example.fitty.models.Exercise;
 import com.example.fitty.models.Routine;
+import com.google.android.youtube.player.YouTubeBaseActivity;
 import com.google.android.youtube.player.YouTubeInitializationResult;
 import com.google.android.youtube.player.YouTubePlayer;
 import com.google.android.youtube.player.YouTubePlayerFragment;
+import com.google.android.youtube.player.YouTubePlayerView;
 
 import java.time.LocalTime;
 import java.util.ArrayList;
@@ -31,7 +34,7 @@ import java.util.concurrent.FutureTask;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 
-public class ExecuteActivity extends AppCompatActivity/* implements YouTubePlayer.OnInitializedListener*/ {
+public class ExecuteActivity extends YouTubeBaseActivity {
 
     ExecuteActivityBinding binding;
 
@@ -43,7 +46,7 @@ public class ExecuteActivity extends AppCompatActivity/* implements YouTubePlaye
 
     LocalTime elapsedTime;
     Timer timerElapsedTime;
-    Boolean ejecutando = false;
+    public Boolean ejecutando = false;
 
     int currentCycleIdx, currentExerciseIdx;
 
@@ -55,6 +58,13 @@ public class ExecuteActivity extends AppCompatActivity/* implements YouTubePlaye
 
     private int secondsRemaining, totalTimeCurrentExercise;
 
+    public static final String API_KEY = "AIzaSyAEsONprWWPgR9MQ3jFLMnOu1qgrYqA_8o";
+
+    YouTubePlayer.OnInitializedListener onInitializedListener;
+
+    YouTubePlayerFragment youTubePlayerFragment;
+    YouTubePlayer routineYouTubePlayer;
+
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -64,10 +74,9 @@ public class ExecuteActivity extends AppCompatActivity/* implements YouTubePlaye
 
         activity = this;
 
-        /*YouTubePlayerFragment youTubePlayerFragment = (YouTubePlayerFragment) getFragmentManager()
+        youTubePlayerFragment = (YouTubePlayerFragment) getFragmentManager()
                 .findFragmentById(R.id.youtubePlayerFragment);
 
-        youTubePlayerFragment.initialize(API_KEY, this);*/
 
         Routine routine = (Routine) getIntent().getExtras().getSerializable("routine");
 
@@ -83,26 +92,35 @@ public class ExecuteActivity extends AppCompatActivity/* implements YouTubePlaye
                 fullCycles.add(cycle);
             }
         }
-        adapter = new ExecuteCycleAdapter(fullCycles, this);//routine.getCycles()
+        adapter = new ExecuteCycleAdapter(fullCycles, this);
 
         binding.recyclerExecuteCycles.setLayoutManager(new LinearLayoutManager(this));
 
         binding.recyclerExecuteCycles.setAdapter(adapter);
 
-        binding.btnPauseResume.setOnClickListener((view) -> {
-            if(ejecutando == true) {
-                ejecutando = false;
-                pausar();
-                binding.btnPauseResume.setImageResource(R.drawable.ic_baseline_play_arrow_24);
-            } else {
-                ejecutando = true;
-                resumir();
-                binding.btnPauseResume.setImageResource(R.drawable.ic_baseline_pause_24);
-            }
-        });
+        binding.btnPauseResume.setOnClickListener(btnPauseResumeListener);
+        binding.btnPauseResumeVideo.setOnClickListener(btnPauseResumeListener);
+
+
 
         cuentaRegresiva();
     }
+
+    View.OnClickListener btnPauseResumeListener = (view) -> {
+        if(ejecutando == true) {
+            ejecutando = false;
+            pausar();
+            binding.btnPauseResume.setImageResource(R.drawable.ic_baseline_play_arrow_24);
+            binding.btnPauseResumeVideo.setImageResource(R.drawable.ic_baseline_play_arrow_24);
+        } else {
+            ejecutando = true;
+            resumir();
+            binding.btnPauseResume.setImageResource(R.drawable.ic_baseline_pause_24);
+            binding.btnPauseResumeVideo.setImageResource(R.drawable.ic_baseline_pause_24);
+        }
+    };
+
+
 
     private void cuentaRegresiva() {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
@@ -120,7 +138,8 @@ public class ExecuteActivity extends AppCompatActivity/* implements YouTubePlaye
     private void displayElapsedTime() {
         String minutes = String.valueOf(elapsedTime.getMinute());
         String seconds = elapsedTime.getSecond() >= 10 ? String.valueOf(elapsedTime.getSecond()) : "0"+String.valueOf(elapsedTime.getSecond());
-        binding.txtElapsedTime.setText(minutes + ":" + seconds);
+        binding.txtElapsedTime.setText(getString(R.string.display_hora, minutes, seconds));
+        binding.txtElapsedTimeVideo.setText(getString(R.string.display_hora, minutes, seconds));
     }
 
 
@@ -169,7 +188,11 @@ public class ExecuteActivity extends AppCompatActivity/* implements YouTubePlaye
     private void terminarRutina() {
         timerElapsedTime.cancel();
         binding.txtCabeceraCant.setText("");
+        binding.txtCabeceraCantVideo.setText("");
         binding.txtCabeceraNombre.setText("");
+        binding.txtCabeceraNombreVideo.setText("");
+        if(routineYouTubePlayer.isPlaying())
+            routineYouTubePlayer.pause();
 
 
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
@@ -193,27 +216,130 @@ public class ExecuteActivity extends AppCompatActivity/* implements YouTubePlaye
     private void asignarEjecucion(int cycleIdx, int exerciseIdx) {
         Exercise exercise = adapter.asignarEjecucion(cycleIdx, exerciseIdx);
         binding.txtCabeceraNombre.setText(exercise.getName());
+        binding.txtCabeceraNombreVideo.setText(exercise.getName());
         if(exercise.getDuration() > 0) {
             binding.txtCabeceraCant.setText(String.valueOf(exercise.getDuration()) + "s");
+            binding.txtCabeceraCantVideo.setText(String.valueOf(exercise.getDuration()) + "s");
             //Al ser por tiempo debemos mostrar cuenta atras
             timerContarAtrasEjercicio = new Timer();
             timerContarAtrasEjercicio.schedule(new ContarAtrasEjercicio(exercise.getDuration()), 0, 1000);
         } else {
             timerContarAtrasEjercicio = null;
             binding.txtCabeceraCant.setText("x"+String.valueOf(exercise.getRepetitions()));
+            binding.txtCabeceraCantVideo.setText("x"+String.valueOf(exercise.getRepetitions()));
+        }
+
+        //Tiene video?
+        if(exercise.getUrlVideo() != null) {
+            iniciarModoVideo();
+            //binding.fondoNegro.setMinimumHeight(binding.youtubePlayerView.getHeight());
+            onInitializedListener = new YouTubePlayer.OnInitializedListener() {
+                @Override
+                public void onInitializationSuccess(YouTubePlayer.Provider provider, YouTubePlayer youTubePlayer, boolean wasRestored) {
+                    routineYouTubePlayer = youTubePlayer;
+                    routineYouTubePlayer.setPlayerStyle(YouTubePlayer.PlayerStyle.CHROMELESS);
+
+
+                    if(!wasRestored) {
+                        routineYouTubePlayer.loadVideo(exercise.getUrlVideo().getYouTubeId());
+                        routineYouTubePlayer.setPlayerStateChangeListener(new YouTubePlayer.PlayerStateChangeListener() {
+                            @Override
+                            public void onLoading() {
+                                pausar();
+                            }
+
+                            @Override
+                            public void onLoaded(String s) {
+                                resumir();
+                                routineYouTubePlayer.play();
+                            }
+
+                            @Override
+                            public void onAdStarted() {
+                                pausar();
+                            }
+
+                            @Override
+                            public void onVideoStarted() {
+
+                            }
+
+                            @Override
+                            public void onVideoEnded() {
+
+                            }
+
+                            @Override
+                            public void onError(YouTubePlayer.ErrorReason errorReason) {
+
+                                Toast.makeText(activity, "Hubo un error al reproducir el video. " + errorReason.toString(), Toast.LENGTH_LONG).show();
+                                youTubePlayerFragment.onDestroy();
+                                cerrarModoVideo();
+
+                            }
+                        });
+                    }
+                }
+
+                @Override
+                public void onInitializationFailure(YouTubePlayer.Provider provider, YouTubeInitializationResult youTubeInitializationResult) {
+                    errorVideo(youTubeInitializationResult);
+                }
+            };
+            youTubePlayerFragment.initialize(API_KEY, onInitializedListener);
+        } else {
+            youTubePlayerFragment.onDestroy();
+            cerrarModoVideo();
+
         }
 
     }
 
+    private void iniciarModoVideo() {
+        binding.youtubePlayerView.setVisibility(View.VISIBLE);
+        binding.linearLayoutCabeceraVideo.setVisibility(View.VISIBLE);
+        binding.imgNoVideo.setVisibility(View.GONE);
+        binding.fondoNegro.setVisibility(View.GONE);
+        binding.btnPauseResume.setVisibility(View.GONE);
+        binding.txtElapsedTime.setVisibility(View.GONE);
+        binding.txtCabeceraCant.setVisibility(View.GONE);
+        binding.txtCabeceraNombre.setVisibility(View.GONE);
+
+    }
+    private void cerrarModoVideo() {
+        binding.youtubePlayerView.setVisibility(View.GONE);
+        binding.linearLayoutCabeceraVideo.setVisibility(View.GONE);
+        binding.imgNoVideo.setVisibility(View.VISIBLE);
+        binding.fondoNegro.setVisibility(View.VISIBLE);
+        binding.btnPauseResume.setVisibility(View.VISIBLE);
+        binding.txtElapsedTime.setVisibility(View.VISIBLE);
+        binding.txtCabeceraCant.setVisibility(View.VISIBLE);
+        binding.txtCabeceraNombre.setVisibility(View.VISIBLE);
+    }
+
+    private void errorVideo(YouTubeInitializationResult error) {
+        final int REQUEST_CODE = 1;
+
+        if(error.isUserRecoverableError()) {
+            error.getErrorDialog(this,REQUEST_CODE).show();
+        } else {
+            String errorMessage = String.format("There was an error initializing the YoutubePlayer (%1$s)", error.toString());
+            Toast.makeText(this, errorMessage, Toast.LENGTH_LONG).show();
+        }
+    }
+
     private void pausar() {
         timerElapsedTime.cancel();
+        if(routineYouTubePlayer != null && routineYouTubePlayer.isPlaying())
+            routineYouTubePlayer.pause();
         if(timerContarAtrasEjercicio != null)
             timerContarAtrasEjercicio.cancel();
     }
     private void resumir() {
         timerElapsedTime = new Timer();
         timerElapsedTime.schedule(new SumarSegundo(), 1000, 1000);
-
+        if(routineYouTubePlayer != null && !routineYouTubePlayer.isPlaying())
+            routineYouTubePlayer.play();
         if(timerContarAtrasEjercicio != null) {
             timerContarAtrasEjercicio = new Timer();
             timerContarAtrasEjercicio.schedule(new ContarAtrasEjercicio(), 1000, 1000);
@@ -267,8 +393,10 @@ public class ExecuteActivity extends AppCompatActivity/* implements YouTubePlaye
                 });
             } else {
                 activity.runOnUiThread(() -> {
-                    binding.txtCabeceraCant.setText(String.valueOf(secondsRemaining--) + "s");
+                    binding.txtCabeceraCant.setText(String.valueOf(secondsRemaining) + "s");
+                    binding.txtCabeceraCantVideo.setText(String.valueOf(secondsRemaining) + "s");
                     binding.progressExecution.setProgress((int) (100 - (Double.valueOf(secondsRemaining)/totalTimeCurrentExercise)*100));
+                    secondsRemaining--;
                 });
 
             }
@@ -304,48 +432,6 @@ public class ExecuteActivity extends AppCompatActivity/* implements YouTubePlaye
 
     }
 
-
-
-
-
-
-
-
-
-
-
-
-    // Youtube
-
-    /*public static final String API_KEY = "AIzaSyAEsONprWWPgR9MQ3jFLMnOu1qgrYqA_8o";
-    public static final String VIDEO_ID = "B08iLAtS3AQ";
-
-
-
-    @Override
-    public void onInitializationSuccess(YouTubePlayer.Provider provider, YouTubePlayer youTubePlayer, boolean wasRestored) {
-
-        youTubePlayer.setPlayerStyle(YouTubePlayer.PlayerStyle.CHROMELESS);
-
-
-        if(!wasRestored) {
-            youTubePlayer.cueVideo(VIDEO_ID);
-        }
-    }
-
-
-    @Override
-    public void onInitializationFailure(YouTubePlayer.Provider provider, YouTubeInitializationResult error) {
-
-        final int REQUEST_CODE = 1;
-
-        if(error.isUserRecoverableError()) {
-            error.getErrorDialog(this,REQUEST_CODE).show();
-        } else {
-            String errorMessage = String.format("There was an error initializing the YoutubePlayer (%1$s)", error.toString());
-            Toast.makeText(this, errorMessage, Toast.LENGTH_LONG).show();
-        }
-    }*/
 
 
 

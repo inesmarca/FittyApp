@@ -4,7 +4,11 @@ package com.example.fitty.models;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
-public class Video {
+import java.io.Serializable;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
+public class Video implements Serializable {
 
     @SerializedName("id")
     @Expose
@@ -49,6 +53,17 @@ public class Video {
 
     public void setUrl(String url) {
         this.url = url;
+    }
+
+    public String getYouTubeId () {
+        String pattern = "(?<=youtu.be/|watch\\?v=|/videos/|embed\\/)[^#\\&\\?]*";
+        Pattern compiledPattern = Pattern.compile(pattern);
+        Matcher matcher = compiledPattern.matcher(this.url);
+        if(matcher.find()){
+            return matcher.group();
+        } else {
+            return "error";
+        }
     }
 
 }

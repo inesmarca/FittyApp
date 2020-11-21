@@ -85,5 +85,6 @@
     <string name="recent">Recent</string>
     <string name="leastDificulty">Less Difficulty</string>
     <string name="moreDificulty">More Difficulty</string>
+    <string name="display_hora">%1$s:%2$s</string>
 
 </resources>

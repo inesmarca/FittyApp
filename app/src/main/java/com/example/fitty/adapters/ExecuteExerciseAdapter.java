@@ -81,10 +81,11 @@ public class ExecuteExerciseAdapter extends RecyclerView.Adapter<ExecuteExercise
                     holder.radioExerciseFinished.setVisibility(View.VISIBLE);
                     holder.radioExerciseFinished.setImageResource(R.drawable.ic_baseline_radio_button_unchecked_24);
                     holder.radioExerciseFinished.setOnClickListener(view -> {
-                        excerciseWithState.state = State.FINISHED;
-                        holder.radioExerciseFinished.setImageResource(R.drawable.ic_baseline_check_24);
-                        //notifyItemChanged(position);
-                        activity.siguienteEjercicio();
+                        if(excerciseWithState.state == State.RUNNING && activity.ejecutando) {
+                            excerciseWithState.state = State.FINISHED;
+                            holder.radioExerciseFinished.setImageResource(R.drawable.ic_baseline_check_24);
+                            activity.siguienteEjercicio();
+                        }
                     });
                 break;
             case FINISHED:
